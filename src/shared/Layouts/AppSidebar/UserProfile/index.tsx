@@ -35,8 +35,8 @@ const UserProfile = () => {
               className="!tw-bg-inherit !tw-p-0 tw-border-none tw-w-fit"
             >
               <Avatar className="tw-size-12 tw-rounded-full">
-                <AvatarImage src="https://github.com/shadcn.png" alt={user.name} />
-                <AvatarFallback className="tw-rounded-full">CN</AvatarFallback>
+                <AvatarImage src={user.avatar} alt={user.name} />
+                <AvatarFallback className="tw-bg-brand-200 tw-rounded-full">{user.name.charAt(0)}</AvatarFallback>
               </Avatar>
             </SidebarMenuButton>
           </DropdownMenuTrigger>
