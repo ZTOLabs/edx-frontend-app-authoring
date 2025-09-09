@@ -120,7 +120,7 @@ const SwitchContainer = () => {
       values={languageOptions}
       value={language}
       onValueChange={toggleLanguage}
-      className="tw-bg-grayWarm-100 tw-border tw-font-medium"
+      className="tw-bg-grayWarm-100 tw-border tw-border-solid tw-border-brand-200 tw-font-medium"
     />
   );
 };
