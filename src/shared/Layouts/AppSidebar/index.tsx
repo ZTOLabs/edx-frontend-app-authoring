@@ -1,0 +1,142 @@
+import {
+  Bell01,
+  BookClosed,
+  ClipboardCheck,
+  GraduationHat01,
+  HomeLine,
+} from '@untitledui/icons';
+import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
+import {
+  Sidebar, SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarSeparator,
+} from 'components/ui/sidebar';
+import { useLanguageSwitch } from 'hooks/useLanguageSwitch';
+import React, { useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
+import { Switch } from 'shared/Components/Switch';
+import AppLogo from '../AppLogo';
+import Items from './Navigation/item';
+
+const getBaseRoute = (pathname: string): string => {
+  const segments = pathname.split('/').filter(Boolean);
+  return segments[0] || '';
+};
+
+const appNavigation = [
+  {
+    title: 'Home',
+    url: '/home',
+    icon: HomeLine,
+    isActive: false,
+  },
+  {
+    title: 'Courses',
+    url: '/courses',
+    icon: ClipboardCheck,
+    isActive: false,
+  },
+  {
+    title: 'Library',
+    url: '/libraries',
+    icon: BookClosed,
+    isActive: false,
+  },
+  {
+    title: 'Students',
+    url: '/students',
+    icon: GraduationHat01,
+    isActive: false,
+  },
+];
+
+const appSettingItems = [
+  {
+    url: '/notification',
+    icon: Bell01,
+    isActive: false,
+  },
+];
+
+const AppSidebar = ({ ...props } : React.ComponentProps<typeof Sidebar>) => {
+  const location = useLocation();
+
+  const navItems = useMemo(() => {
+    const currentBaseRoute = getBaseRoute(location.pathname);
+    return appNavigation.map((item) => ({
+      ...item,
+      isActive: getBaseRoute(item.url) === currentBaseRoute,
+    }));
+  }, [appNavigation, location.pathname]);
+
+  const appSettingNavItems = useMemo(() => {
+    const currentBaseRoute = getBaseRoute(location.pathname);
+    return appSettingItems.map((item) => ({
+      ...item,
+      isActive: getBaseRoute(item.url) === currentBaseRoute,
+    }));
+  }, [appSettingItems, location.pathname]);
+
+  return (
+    <Sidebar
+      collapsible="icon"
+      className="tw-w-auto tw-h-screen !tw-px-3 !tw-py-6 tw-bg-brand-25"
+      {...props}
+    >
+      <SidebarHeader className="tw-flex tw-items-center tw-justify-center !tw-pb-6">
+        <AppLogo />
+      </SidebarHeader>
+
+      <SidebarContent className="tw-flex tw-flex-col tw-justify-between tw-flex-1">
+
+        {/* Main Menu Navigation */}
+        <SidebarGroup {...props} className="!tw-p-0 !tw-pt-6 tw-flex-1">
+          <SidebarGroupContent>
+            <SidebarMenu className="tw-list-none tw-flex tw-flex-col tw-gap-4 tw-pl-0">
+              {navItems.map((item) => (
+                <Items item={item} />))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+
+      <SidebarFooter className="tw-flex tw-flex-col tw-gap-4 !tw-p-0 tw-items-center">
+        <SidebarMenu className="tw-list-none tw-flex tw-flex-col tw-pl-0 tw-mb-0">
+          {appSettingNavItems.map((item) => (
+            <Items item={item} />))}
+        </SidebarMenu>
+
+        <SwitchContainer />
+
+        <SidebarSeparator className="tw-mx-0 !tw-bg-brand-200" />
+
+        {/* User Profile */}
+        <Avatar className="tw-rounded-full !tw-size-12">
+          <AvatarImage src="https://github.com/shadcn.png" />
+          <AvatarFallback>CN</AvatarFallback>
+        </Avatar>
+
+      </SidebarFooter>
+    </Sidebar>
+  );
+};
+
+const SwitchContainer = () => {
+  const { language, languageOptions, toggleLanguage } = useLanguageSwitch();
+
+  return (
+    <Switch
+      reverseOptions
+      values={languageOptions}
+      value={language}
+      onValueChange={toggleLanguage}
+      className="tw-bg-grayWarm-100 tw-border tw-font-medium"
+    />
+  );
+};
+
+export default AppSidebar;

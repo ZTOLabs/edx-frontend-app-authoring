@@ -11,6 +11,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
+import AppLayout from 'shared/Layouts/AppLayout';
 
 import { initializeHotjar } from '@edx/frontend-enterprise-hotjar';
 import { logError } from '@edx/frontend-platform/logging';
@@ -65,7 +66,7 @@ const App = () => {
 
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route>
+      <Route path="/" element={<AppLayout />}>
         <Route path="/home" element={<StudioHome />} />
         <Route path="/libraries" element={<StudioHome />} />
         <Route path="/libraries-v1" element={<StudioHome />} />
