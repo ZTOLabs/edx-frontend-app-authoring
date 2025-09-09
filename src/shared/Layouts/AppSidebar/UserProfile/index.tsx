@@ -1,4 +1,5 @@
 import { getAuthenticatedUser, redirectToLogout } from '@edx/frontend-platform/auth';
+import { getConfig } from '@edx/frontend-platform';
 
 import {
   SidebarMenu,
@@ -67,7 +68,10 @@ const UserProfile = () => {
                 </DropdownMenuItem>
               ))}
             </DropdownMenuGroup>
-            <DropdownMenuItem className="tw-cursor-pointer" onClick={redirectToLogout}>
+            <DropdownMenuItem
+              className="tw-cursor-pointer"
+              onClick={() => redirectToLogout(getConfig().LMS_BASE_URL)}
+            >
               <LogOut01 />
               Log out
             </DropdownMenuItem>
