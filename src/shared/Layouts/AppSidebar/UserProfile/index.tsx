@@ -26,7 +26,7 @@ const UserProfile = () => {
   const navigate = useNavigate();
 
   return (
-    <SidebarMenu className="tw-list-none !tw-p-0">
+    <SidebarMenu className="!tw-w-auto tw-list-none !tw-p-0">
       <SidebarMenuItem className="tw-flex tw-items-center tw-justify-center">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -34,7 +34,7 @@ const UserProfile = () => {
               size="lg"
               className="!tw-bg-inherit !tw-p-0 tw-border-none tw-w-fit"
             >
-              <Avatar className="tw-size-12 tw-rounded-full">
+              <Avatar className="!tw-size-12 tw-rounded-full">
                 <AvatarImage src={user.avatar} alt={user.name} />
                 <AvatarFallback className="tw-bg-brand-200 tw-rounded-full">{user.name.charAt(0)}</AvatarFallback>
               </Avatar>
