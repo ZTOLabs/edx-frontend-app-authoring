@@ -89,7 +89,7 @@ const AppSidebar = ({ ...props } : React.ComponentProps<typeof Sidebar>) => {
           <SidebarGroupContent>
             <SidebarMenu className="tw-list-none tw-flex tw-flex-col tw-gap-4 tw-pl-0">
               {navItems.map((item) => (
-                <Items item={item} />))}
+                <Items item={item} key={item.title} />))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -98,7 +98,7 @@ const AppSidebar = ({ ...props } : React.ComponentProps<typeof Sidebar>) => {
       <SidebarFooter className="tw-flex tw-flex-col tw-gap-4 !tw-p-0 tw-items-center">
         <SidebarMenu className="tw-list-none tw-flex tw-flex-col tw-pl-0 tw-mb-0">
           {appSettingItems.map((item) => (
-            <Items item={item} />))}
+            <Items item={item} key={item.url} />))}
         </SidebarMenu>
 
         <SwitchContainer />
