@@ -5,7 +5,6 @@ import {
   GraduationHat01,
   HomeLine,
 } from '@untitledui/icons';
-import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
 import {
   Sidebar, SidebarContent,
   SidebarFooter,
@@ -19,8 +18,9 @@ import { useLanguageSwitch } from 'hooks/useLanguageSwitch';
 import React, { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Switch } from 'shared/Components/Switch';
-import AppLogo from '../AppLogo';
 import Items from './Navigation/item';
+import AppLogo from '../AppLogo';
+import UserProfile from './UserProfile';
 
 const getBaseRoute = (pathname: string): string => {
   const segments = pathname.split('/').filter(Boolean);
@@ -58,7 +58,6 @@ const appSettingItems = [
   {
     url: '/notification',
     icon: Bell01,
-    isActive: false,
   },
 ];
 
@@ -72,14 +71,6 @@ const AppSidebar = ({ ...props } : React.ComponentProps<typeof Sidebar>) => {
       isActive: getBaseRoute(item.url) === currentBaseRoute,
     }));
   }, [appNavigation, location.pathname]);
-
-  const appSettingNavItems = useMemo(() => {
-    const currentBaseRoute = getBaseRoute(location.pathname);
-    return appSettingItems.map((item) => ({
-      ...item,
-      isActive: getBaseRoute(item.url) === currentBaseRoute,
-    }));
-  }, [appSettingItems, location.pathname]);
 
   return (
     <Sidebar
@@ -106,7 +97,7 @@ const AppSidebar = ({ ...props } : React.ComponentProps<typeof Sidebar>) => {
 
       <SidebarFooter className="tw-flex tw-flex-col tw-gap-4 !tw-p-0 tw-items-center">
         <SidebarMenu className="tw-list-none tw-flex tw-flex-col tw-pl-0 tw-mb-0">
-          {appSettingNavItems.map((item) => (
+          {appSettingItems.map((item) => (
             <Items item={item} />))}
         </SidebarMenu>
 
@@ -114,12 +105,7 @@ const AppSidebar = ({ ...props } : React.ComponentProps<typeof Sidebar>) => {
 
         <SidebarSeparator className="tw-mx-0 !tw-bg-brand-200" />
 
-        {/* User Profile */}
-        <Avatar className="tw-rounded-full !tw-size-12">
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
-
+        <UserProfile />
       </SidebarFooter>
     </Sidebar>
   );
