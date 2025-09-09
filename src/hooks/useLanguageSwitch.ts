@@ -1,28 +1,63 @@
-import { useState } from 'react';
+import {
+  useState, useCallback, useMemo,
+} from 'react';
+import Cookies from 'universal-cookie';
+import { getLocale } from '@edx/frontend-platform/i18n';
 
-type SwitchLanguage = 'en' | 'vi';
+type SupportedLanguage = 'en' | 'vi';
 
-const languageOptions = [
-  {
-    value: 'en' as const,
-    label: 'EN',
-  },
-  {
-    value: 'vi' as const,
-    label: 'VI',
-  },
+interface LanguageOption {
+  readonly value: SupportedLanguage;
+  readonly label: string;
+}
+
+const LANGUAGE_COOKIE_NAME = 'openedx-language-preference';
+const COOKIE_MAX_AGE = 365 * 24 * 60 * 60; // 1 year in seconds
+const RELOAD_DELAY = 50; // milliseconds
+
+const LANGUAGE_OPTIONS: readonly [LanguageOption, LanguageOption] = [
+  { value: 'en', label: 'EN' },
+  { value: 'vi', label: 'VI' },
 ] as const;
 
+const isValidLanguage = (lang: string): lang is SupportedLanguage => lang === 'en' || lang === 'vi';
+
+const getInitialLanguage = (cookies: Cookies): SupportedLanguage => {
+  const cookieLanguage = cookies.get(LANGUAGE_COOKIE_NAME);
+  const currentLocale = getLocale();
+
+  // Priority: cookie > current locale > default fallback
+  if (cookieLanguage && isValidLanguage(cookieLanguage)) {
+    return cookieLanguage;
+  }
+
+  return isValidLanguage(currentLocale) ? currentLocale : 'en';
+};
+
 export const useLanguageSwitch = () => {
-  const [language, setLanguage] = useState<SwitchLanguage>('vi');
-  const toggleLanguage = (newLanguage: SwitchLanguage) => {
+  const cookies = useMemo(() => new Cookies(), []);
+
+  const [language, setLanguage] = useState<SupportedLanguage>(
+    () => getInitialLanguage(cookies),
+  );
+
+  const toggleLanguage = useCallback((newLanguage: SupportedLanguage) => {
+    if (newLanguage === language) {
+      return;
+    }
     setLanguage(newLanguage);
-    // i18n.changeLanguage(newLanguage);
-  };
+    cookies.set(LANGUAGE_COOKIE_NAME, newLanguage, {
+      path: '/',
+      maxAge: COOKIE_MAX_AGE,
+      sameSite: 'lax',
+    });
+
+    setTimeout(() => window.location.reload(), RELOAD_DELAY);
+  }, [language, cookies]);
 
   return {
     language,
-    languageOptions,
+    languageOptions: LANGUAGE_OPTIONS,
     toggleLanguage,
-  };
+  } as const;
 };
