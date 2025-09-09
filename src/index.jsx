@@ -16,6 +16,8 @@ import AppLayout from 'shared/Layouts/AppLayout';
 import { initializeHotjar } from '@edx/frontend-enterprise-hotjar';
 import { logError } from '@edx/frontend-platform/logging';
 import messages from './i18n';
+import { StudentsPage } from './students-page/index.ts';
+import { CoursesPage } from './courses-page/index';
 
 import '@fontsource/plus-jakarta-sans/400.css';
 import '@fontsource/plus-jakarta-sans/500.css';
@@ -72,6 +74,10 @@ const App = () => {
         <Route path="/libraries-v1" element={<StudioHome />} />
         <Route path="/library/create" element={<CreateLibrary />} />
         <Route path="/library/:libraryId/*" element={<LibraryLayout />} />
+
+        <Route path="/courses" element={<CoursesPage />} />
+        <Route path="/students" element={<StudentsPage />} />
+
         <Route
           path="/component-picker"
           element={<ComponentPicker extraFilter={['NOT block_type = "unit"']} />}
