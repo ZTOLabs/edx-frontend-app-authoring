@@ -84,7 +84,7 @@ const AppSidebar = ({ ...props } : React.ComponentProps<typeof Sidebar>) => {
   return (
     <Sidebar
       collapsible="icon"
-      className="tw-w-auto tw-h-screen !tw-px-3 !tw-py-6 tw-bg-brand-25"
+      className="tw-h-screen !tw-px-3 !tw-py-6 tw-bg-brand-25"
       {...props}
     >
       <SidebarHeader className="tw-flex tw-items-center tw-justify-center !tw-pb-6">
