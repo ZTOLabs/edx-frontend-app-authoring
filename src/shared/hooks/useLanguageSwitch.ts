@@ -3,6 +3,7 @@ import {
 } from 'react';
 import Cookies from 'universal-cookie';
 import { getLocale } from '@edx/frontend-platform/i18n';
+import { getConfig } from '@edx/frontend-platform/config';
 
 type SupportedLanguage = 'en' | 'vi';
 
@@ -35,6 +36,7 @@ const getInitialLanguage = (cookies: Cookies): SupportedLanguage => {
 };
 
 export const useLanguageSwitch = () => {
+  const lmsHost = new URL(getConfig().LMS_BASE_URL).hostname;
   const cookies = useMemo(() => new Cookies(), []);
 
   const [language, setLanguage] = useState<SupportedLanguage>(
@@ -50,10 +52,11 @@ export const useLanguageSwitch = () => {
       path: '/',
       maxAge: COOKIE_MAX_AGE,
       sameSite: 'lax',
+      domain: lmsHost,
     });
 
     setTimeout(() => window.location.reload(), RELOAD_DELAY);
-  }, [language, cookies]);
+  }, [language, cookies, lmsHost]);
 
   return {
     language,
