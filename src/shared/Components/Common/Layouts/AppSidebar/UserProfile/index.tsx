@@ -5,12 +5,12 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from 'components/ui/sidebar';
-import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
+} from '@/shared/Components/ui/sidebar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/shared/Components/ui/avatar';
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuGroup,
   DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger,
-} from 'components/ui/dropdown-menu';
+} from '@/shared/Components/ui/dropdown-menu';
 import { User01, LogOut01 } from '@untitledui/icons';
 import { useNavigate } from 'react-router';
 

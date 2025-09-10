@@ -1,8 +1,8 @@
 import { Outlet } from 'react-router-dom';
-import { SidebarInset, SidebarProvider } from 'components/ui/sidebar';
+import { SidebarInset, SidebarProvider } from '@/shared/Components/ui/sidebar';
 import background from '@/assets/images/main-content-background.png';
 
-import { cn } from '@/lib/utils';
+import { cn } from 'shared/lib/utils';
 
 import AppSidebar from './AppSidebar';
 

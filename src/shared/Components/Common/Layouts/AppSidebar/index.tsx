@@ -13,11 +13,11 @@ import {
   SidebarHeader,
   SidebarMenu,
   SidebarSeparator,
-} from 'components/ui/sidebar';
-import { useLanguageSwitch } from 'hooks/useLanguageSwitch';
+} from '@/shared/Components/ui/sidebar';
+import { useLanguageSwitch } from 'shared/hooks/useLanguageSwitch';
 import React, { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Switch } from 'shared/Components/Switch';
+import { Switch } from 'shared/Components/Common/Switch';
 import Items from './Navigation/item';
 import AppLogo from '../AppLogo';
 import UserProfile from './UserProfile';

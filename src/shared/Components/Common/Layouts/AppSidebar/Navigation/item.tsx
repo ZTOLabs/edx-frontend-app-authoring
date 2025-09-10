@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   SidebarMenuButton,
   SidebarMenuItem,
-} from 'components/ui/sidebar';
+} from '@/shared/Components/ui/sidebar';
 import { AppNavigation } from 'types/app';
 
 const Items = ({
