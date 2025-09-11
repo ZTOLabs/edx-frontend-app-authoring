@@ -14,6 +14,8 @@ import LibraryItem from './library-item';
 
 type Props = Record<never, never>;
 
+const MAX_ITEMS = 9;
+
 const Libraries: React.FC<Props> = () => {
   const intl = useIntl();
 
@@ -50,7 +52,7 @@ const Libraries: React.FC<Props> = () => {
   ) : (
     <div className="courses-tab-container">
       { hasMaterials
-        ? data!.results.map(({
+        ? data!.results.slice(0, MAX_ITEMS).map(({
           id, org, slug, title,
         }) => (
           <LibraryItem

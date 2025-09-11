@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { useNavigate } from 'react-router';
@@ -8,6 +9,8 @@ import { RequestStatus } from '../../data/constants';
 import { getLoadingStatuses, getStudioHomeData } from '../data/selectors';
 import Courses from './courses';
 import messages from './messages';
+
+const MAX_ITEMS = 3;
 
 const FeaturedCourses = ({
   hasAbilityToCreateNewCourse,
@@ -22,6 +25,12 @@ const FeaturedCourses = ({
   const navigate = useNavigate();
 
   const { courses } = useSelector(getStudioHomeData);
+
+  // Make sure it only shows the first 3 items
+  const filteredCourses = useMemo(
+    () => courses.slice(0, MAX_ITEMS),
+    [courses],
+  );
 
   const { courseLoadingStatus } = useSelector(getLoadingStatuses);
 
@@ -55,7 +64,7 @@ const FeaturedCourses = ({
   return (
     <FeaturedLayout title={intl.formatMessage(messages.coursesTabTitle)} actions={actions}>
       <Courses
-        coursesDataItems={courses}
+        coursesDataItems={filteredCourses}
         showNewCourseContainer={false}
         onClickNewCourse={onClickNewCourse}
         isLoading={isLoadingCourses}

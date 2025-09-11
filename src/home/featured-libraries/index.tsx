@@ -29,7 +29,7 @@ const FeaturedLibraries = () => {
         disabled={false}
         // TODO: Add new library button
         onClick={() => undefined}
-        labels={{ default: intl.formatMessage(messages.addNewCourseBtnText) }}
+        labels={{ default: intl.formatMessage(messages.addNewLibraryBtnText) }}
       />
     </>
   );
