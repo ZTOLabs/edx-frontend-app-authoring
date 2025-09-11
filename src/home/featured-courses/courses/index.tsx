@@ -6,10 +6,6 @@ import { Error } from '@openedx/paragon/icons';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { Plus } from '@untitledui/icons';
-
-import StatefulButtonWrapper from 'shared/Components/Common/StatefulButtonWrapper';
-import { useNavigate } from 'react-router';
 import { COURSE_CREATOR_STATES } from '../../../constants';
 import { LoadingSpinner } from '../../../generic/Loading';
 import AlertMessage from '../../../generic/alert-message';
@@ -20,7 +16,6 @@ import messages from '../messages';
 import CardItem from './card-item';
 
 interface Props {
-  hasAbilityToCreateNewCourse: boolean;
   coursesDataItems: {
     courseKey: string;
     displayName: string;
@@ -33,24 +28,20 @@ interface Props {
   }[];
   showNewCourseContainer: boolean;
   onClickNewCourse: () => void;
-  isShowProcessing: boolean;
   isLoading: boolean;
   isFailed: boolean;
   isEnabledPagination?: boolean;
 }
 
 const Courses: React.FC<Props> = ({
-  hasAbilityToCreateNewCourse,
   coursesDataItems,
   showNewCourseContainer,
   onClickNewCourse,
-  isShowProcessing,
   isLoading,
   isFailed,
   isEnabledPagination = false,
 }) => {
   const intl = useIntl();
-  const navigate = useNavigate();
   const { courseCreatorStatus, optimizationEnabled } = useSelector(getStudioHomeData);
   const studioHomeCoursesParams = useSelector(getStudioHomeCoursesParams);
   const { isFiltered } = studioHomeCoursesParams;
@@ -80,66 +71,38 @@ const Courses: React.FC<Props> = ({
       )}
     />
   ) : (
-    <div className="tw-flex tw-flex-col tw-gap-6">
-      <div className="tw-flex tw-justify-between tw-items-center">
-        <h3 className="tw-font-semibold tw-text-lg tw-text-gray-900">
-          {intl.formatMessage(messages.coursesTabTitle)}
-        </h3>
-        <div className="tw-flex tw-gap-2">
-          {hasAbilityToCreateNewCourse && (
-          <StatefulButtonWrapper
-            className="!tw-w-auto"
-            variant="link"
-            size="sm"
-            disabled={showNewCourseContainer}
-            onClick={() => navigate('/courses')}
-            labels={{ default: intl.formatMessage(messages.allCoursesBtnText) }}
-          />
+    <div className="tw-grid tw-grid-cols-1 tw-gap-4 sm:tw-grid-cols-2 md:tw-grid-cols-2 lg:tw-grid-cols-3">
+      {hasCourses ? (
+        <>
+          {coursesDataItems.map(
+            ({
+              courseKey, displayName, lmsLink, org, rerunLink, number, run, url,
+            }) => (
+              <CardItem
+                key={courseKey}
+                courseKey={courseKey}
+                displayName={displayName}
+                lmsLink={lmsLink}
+                rerunLink={rerunLink}
+                org={org}
+                number={number}
+                run={run}
+                url={url}
+                isPaginated={isEnabledPagination}
+              />
+            ),
           )}
-          <StatefulButtonWrapper
-            className="!tw-w-auto tw-border-gray-300 tw-text-gray-700"
-            variant="secondary"
-            iconBefore={Plus}
-            size="sm"
-            disabled={showNewCourseContainer}
-            onClick={onClickNewCourse}
-            labels={{ default: intl.formatMessage(messages.addNewCourseBtnText) }}
-          />
-        </div>
-      </div>
-      <div className="tw-grid tw-grid-cols-1 tw-gap-4 sm:tw-grid-cols-2 md:tw-grid-cols-2 lg:tw-grid-cols-3">
-        {hasCourses ? (
-          <>
-            {coursesDataItems.map(
-              ({
-                courseKey, displayName, lmsLink, org, rerunLink, number, run, url,
-              }) => (
-                <CardItem
-                  key={courseKey}
-                  courseKey={courseKey}
-                  displayName={displayName}
-                  lmsLink={lmsLink}
-                  rerunLink={rerunLink}
-                  org={org}
-                  number={number}
-                  run={run}
-                  url={url}
-                  isPaginated={isEnabledPagination}
-                />
-              ),
-            )}
-          </>
-        ) : (
-          !optimizationEnabled
+        </>
+      ) : (
+        !optimizationEnabled
           && isNotFilteringCourses && (
             <ContactAdministrator
               hasAbilityToCreateCourse={hasAbilityToCreateCourse}
               showNewCourseContainer={showNewCourseContainer}
               onClickNewCourse={onClickNewCourse}
             />
-          )
-        )}
-      </div>
+        )
+      )}
     </div>
   );
 };
