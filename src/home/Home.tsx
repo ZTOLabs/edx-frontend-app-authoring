@@ -16,6 +16,7 @@ import messages from './messages';
 import { useStudioHome } from './hooks';
 import AlertMessage from '../generic/alert-message';
 import FeaturedCourses from './featured-courses';
+import FeaturedLibraries from './featured-libraries';
 
 const Home = () => {
   const intl = useIntl();
@@ -25,7 +26,6 @@ const Home = () => {
     isLoadingPage,
     isFailedLoadingPage,
     studioHomeData,
-    isShowProcessing,
     anyQueryIsFailed,
     anyQueryIsPending,
     showNewCourseContainer,
@@ -62,17 +62,17 @@ const Home = () => {
       return <VerifyEmailLayout />;
     }
     return (
-      <section>
+      <section className="tw-flex tw-flex-col tw-gap-8">
         {showNewCourseContainer
           ? <CreateNewCourseForm handleOnClickCancel={() => setShowNewCourseContainer(false)} />
           : (
             <FeaturedCourses
               hasAbilityToCreateNewCourse={hasAbilityToCreateNewCourse}
               onClickNewCourse={() => setShowNewCourseContainer(true)}
-              isShowProcessing={isShowProcessing}
               isPaginationCoursesEnabled={isPaginationCoursesEnabled}
             />
           )}
+        <FeaturedLibraries />
       </section>
     );
   };
