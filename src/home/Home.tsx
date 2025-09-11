@@ -62,7 +62,7 @@ const Home = () => {
       return <VerifyEmailLayout />;
     }
     return (
-      <section className="tw-flex tw-flex-col tw-gap-8">
+      <section className="tw-flex tw-flex-col tw-gap-8 tw-overflow-auto tw-h-0 tw-flex-1 tw-min-h-0">
         {showNewCourseContainer
           ? <CreateNewCourseForm handleOnClickCancel={() => setShowNewCourseContainer(false)} />
           : (
@@ -79,8 +79,8 @@ const Home = () => {
 
   return (
     <>
-      <Container size="xl" className="">
-        <section className="mb-4">
+      <Container size="xl" className="tw-h-full">
+        <section className="tw-h-full tw-flex tw-flex-col">
           <article className="studio-home-sub-header">
             <section>
               <SubHeader
