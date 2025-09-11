@@ -18,6 +18,8 @@ import { useLanguageSwitch } from 'shared/hooks/useLanguageSwitch';
 import React, { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Switch } from 'shared/Components/Common/Switch';
+import { useIntl } from '@edx/frontend-platform/i18n';
+import messages from '../../../../../messages';
 import Items from './Navigation/item';
 import AppLogo from '../AppLogo';
 import UserProfile from './UserProfile';
@@ -26,33 +28,6 @@ const getBaseRoute = (pathname: string): string => {
   const segments = pathname.split('/').filter(Boolean);
   return segments[0] || '';
 };
-
-const appNavigation = [
-  {
-    title: 'Home',
-    url: '/home',
-    icon: HomeLine,
-    isActive: false,
-  },
-  {
-    title: 'Courses',
-    url: '/courses',
-    icon: ClipboardCheck,
-    isActive: false,
-  },
-  {
-    title: 'Library',
-    url: '/libraries',
-    icon: BookClosed,
-    isActive: false,
-  },
-  {
-    title: 'Students',
-    url: '/students',
-    icon: GraduationHat01,
-    isActive: false,
-  },
-];
 
 const appSettingItems = [
   {
@@ -63,6 +38,35 @@ const appSettingItems = [
 
 const AppSidebar = ({ ...props } : React.ComponentProps<typeof Sidebar>) => {
   const location = useLocation();
+
+  const intl = useIntl();
+
+  const appNavigation = useMemo(() => [
+    {
+      title: intl.formatMessage(messages.home),
+      url: '/home',
+      icon: HomeLine,
+      isActive: false,
+    },
+    {
+      title: intl.formatMessage(messages.courses),
+      url: '/courses',
+      icon: ClipboardCheck,
+      isActive: false,
+    },
+    {
+      title: intl.formatMessage(messages.library),
+      url: '/libraries',
+      icon: BookClosed,
+      isActive: false,
+    },
+    {
+      title: intl.formatMessage(messages.students),
+      url: '/students',
+      icon: GraduationHat01,
+      isActive: false,
+    },
+  ], [intl]);
 
   const navItems = useMemo(() => {
     const currentBaseRoute = getBaseRoute(location.pathname);
