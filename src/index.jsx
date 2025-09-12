@@ -16,7 +16,7 @@ import AppLayout from 'shared/Components/Common/Layouts/AppLayout';
 import { initializeHotjar } from '@edx/frontend-enterprise-hotjar';
 import { logError } from '@edx/frontend-platform/logging';
 import messages from './i18n';
-import { StudentsPage } from './students-page/index.ts';
+import { StudentsPage } from './students-page/index';
 import { CoursesPage } from './courses-page/index';
 
 import '@fontsource/plus-jakarta-sans/400.css';
