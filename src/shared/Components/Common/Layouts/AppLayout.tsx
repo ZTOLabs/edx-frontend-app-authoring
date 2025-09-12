@@ -30,7 +30,7 @@ const AppLayout = () => (
           <main
             className={cn(
               'tw-relative tw-z-10 tw-h-full',
-              'tw-p-8 tw-flex-1',
+              'tw-p-8 tw-pb-0 tw-flex-1',
               'tw-border tw-border-white tw-border-solid',
               'tw-rounded-[20px]',
               'tw-shadow-[0px_2px_4px_-2px_#1018280F,0px_4px_8px_-2px_#1018281A]',
