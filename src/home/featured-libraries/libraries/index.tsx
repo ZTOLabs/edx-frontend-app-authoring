@@ -50,17 +50,18 @@ const Libraries: React.FC<Props> = () => {
       <span>{intl.formatMessage(messages.librariesTabErrorMessage)}</span>
     </AlertWrapper>
   ) : (
-    <div className="courses-tab-container">
+    <div className="courses-tab-container tw-grid tw-grid-cols-3 tw-gap-4">
       { hasMaterials
         ? data!.results.slice(0, MAX_ITEMS).map(({
-          id, org, slug, title,
+          id, title, type, image, isAIGenerated,
         }) => (
           <LibraryItem
-            key={`${org}+${slug}`}
+            key={id}
             displayName={title}
-            org={org}
-            number={slug}
+            image={image}
+            type={type}
             path={`/library/${id}`}
+            isAIGenerated={isAIGenerated}
           />
         )) : isFiltered && !isLoading && (
         <Alert className="mt-4">

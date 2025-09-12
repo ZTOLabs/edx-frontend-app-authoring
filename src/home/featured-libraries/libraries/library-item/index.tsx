@@ -12,9 +12,8 @@ import { getWaffleFlags } from '../../../../data/selectors';
 
 interface BaseProps {
   displayName: string;
-  org: string;
-  number: string;
-  run?: string;
+  type: string;
+  image: string;
   lmsLink?: string | null;
   rerunLink?: string | null;
   courseKey?: string;
@@ -35,11 +34,10 @@ type Props = BaseProps & (
  */
 const LibraryItem: React.FC<Props> = ({
   displayName,
+  type,
+  image,
   lmsLink = '',
   rerunLink = '',
-  org,
-  number,
-  run = '',
   courseKey = '',
   path,
   url,
@@ -52,7 +50,7 @@ const LibraryItem: React.FC<Props> = ({
       ? url
       : new URL(url, getConfig().STUDIO_BASE_URL).toString()
   );
-  const subtitle = `${org} / ${number} / ${run}dsadssas`;
+
   const readOnlyItem = !(lmsLink || rerunLink || url || path);
   const hasDisplayName = (displayName ?? '').trim().length ? displayName : courseKey;
 
@@ -61,13 +59,12 @@ const LibraryItem: React.FC<Props> = ({
       'tw-bg-white/70 tw-border tw-border-solid tw-border-white tw-h-full',
       'tw-rounded-2xl tw-p-2',
       'tw-flex tw-flex-row tw-gap-4',
-      'tw-w-[292px]',
       'tw-shadow-none',
     )}
     >
       <div
         style={{
-          backgroundImage: 'url(https://placehold.co/600x400)',
+          backgroundImage: `url(${image})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -91,7 +88,7 @@ const LibraryItem: React.FC<Props> = ({
             </span>
           )}
           subtitle={
-            <span className="tw-text-xs tw-font-normal tw-text-gray-500 tw-block tw-truncate tw-whitespace-nowrap hover:tw-no-underline">{subtitle}</span>
+            <span className="tw-text-xs tw-font-normal tw-text-gray-500 tw-block tw-truncate tw-whitespace-nowrap hover:tw-no-underline">{type}</span>
           }
         />
       </div>
