@@ -1,13 +1,16 @@
 import { useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { SearchField } from '@openedx/paragon';
 import { debounce } from 'lodash';
 
+import { SearchField } from '@openedx/paragon';
+import { SearchLg, X } from '@untitledui/icons';
+import { cn } from 'shared/lib/utils';
+import { Spinner } from 'shared/Components/ui/shadcn-io/spinner';
+import SearchFieldWrapper from 'shared/Components/Common/SearchFieldWrapper';
 import { getStudioHomeCoursesParams } from '../../../data/selectors';
 import { updateStudioHomeCoursesCustomParams } from '../../../data/slice';
 import { fetchStudioHomeData } from '../../../data/thunks';
-import { LoadingSpinner } from '../../../../generic/Loading';
 import CoursesTypesFilterMenu from './courses-types-filter-menu';
 import CoursesOrderFilterMenu from './courses-order-filter-menu';
 import './index.scss';
@@ -99,25 +102,20 @@ const CoursesFilters = ({
   );
 
   return (
-    <div className="d-flex">
-      <div className="d-flex flex-row">
-        <SearchField
+    <div className="tw-flex tw-flex-row tw-items-center tw-justify-between tw-my-8">
+      <div className="d-flex flex-row tw-w-[384px]">
+        <SearchFieldWrapper
           onSubmit={onSubmitSearchField}
           onChange={handleSearchCoursesDebounced}
           value={cleanFilters ? '' : inputSearchValue}
-          className="mr-4"
           data-testid="input-filter-courses-search"
-          placeholder="Search"
         />
-        {isLoading && (
-          <span className="search-field-loading" data-testid="loading-search-spinner">
-            <LoadingSpinner size="sm" />
-          </span>
-        )}
       </div>
 
-      <CoursesTypesFilterMenu onItemMenuSelected={handleMenuFilterItemSelected} />
-      <CoursesOrderFilterMenu onItemMenuSelected={handleMenuFilterItemSelected} />
+      <div className="tw-flex tw-flex-row tw-items-center tw-gap-3">
+        <CoursesTypesFilterMenu onItemMenuSelected={handleMenuFilterItemSelected} />
+        <CoursesOrderFilterMenu onItemMenuSelected={handleMenuFilterItemSelected} />
+      </div>
     </div>
   );
 };

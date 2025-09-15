@@ -42,7 +42,6 @@ interface Props {
   isLoading: boolean;
   isFailed: boolean;
   numPages: number;
-  coursesCount: number;
   isEnabledPagination?: boolean;
 }
 
@@ -54,7 +53,6 @@ const CoursesTab: React.FC<Props> = ({
   isLoading,
   isFailed,
   numPages = 0,
-  coursesCount = 0,
   isEnabledPagination = false,
 }) => {
   const dispatch = useDispatch();
@@ -131,83 +129,81 @@ const CoursesTab: React.FC<Props> = ({
         )}
       />
     ) : (
-      <div className="courses-tab-container">
-        {isShowProcessing && !isEnabledPagination && <ProcessingCourses />}
-        {isEnabledPagination && (
-          <div className="d-flex flex-row justify-content-between my-4">
-            <CoursesFilters dispatch={dispatch} locationValue={locationValue} isLoading={isLoading} />
-            <p data-testid="pagination-info">
-              {intl.formatMessage(messages.coursesPaginationInfo, {
-                length: coursesDataItems.length,
-                total: coursesCount,
-              })}
-            </p>
-          </div>
-        )}
-        {hasCourses ? (
-          <div className="tw-grid tw-grid-cols-3 tw-gap-4">
-            {coursesDataItems.map(
-              ({
-                courseKey,
-                displayName,
-                lmsLink,
-                org,
-                rerunLink,
-                number,
-                run,
-                url,
-              }) => (
-                <CardItem
-                  key={courseKey}
-                  courseKey={courseKey}
-                  displayName={displayName}
-                  lmsLink={lmsLink}
-                  rerunLink={rerunLink}
-                  org={org}
-                  number={number}
-                  run={run}
-                  url={url}
-                  isPaginated={isEnabledPagination}
-                />
-              ),
-            )}
-            {numPages > 1 && isEnabledPagination && (
+      <div className="courses-tab-container tw-flex tw-flex-col tw-h-full">
+        <div className="tw-flex-1">
+          {isShowProcessing && !isEnabledPagination && <ProcessingCourses />}
+          {isEnabledPagination && (
+          <CoursesFilters dispatch={dispatch} locationValue={locationValue} isLoading={isLoading} />
+          )}
+          {hasCourses ? (
+            <div className="tw-grid tw-grid-cols-3 2xl:tw-grid-cols-4 tw-gap-4">
+              {coursesDataItems.map(
+                ({
+                  courseKey,
+                  displayName,
+                  lmsLink,
+                  org,
+                  rerunLink,
+                  number,
+                  run,
+                  url,
+                }) => (
+                  <CardItem
+                    key={courseKey}
+                    courseKey={courseKey}
+                    displayName={displayName}
+                    lmsLink={lmsLink}
+                    rerunLink={rerunLink}
+                    org={org}
+                    number={number}
+                    run={run}
+                    url={url}
+                    isPaginated={isEnabledPagination}
+                  />
+                ),
+              )}
+            </div>
+          ) : (!optimizationEnabled && isNotFilteringCourses && (
+            <ContactAdministrator
+              hasAbilityToCreateCourse={hasAbilityToCreateCourse}
+              showNewCourseContainer={showNewCourseContainer}
+              onClickNewCourse={onClickNewCourse}
+            />
+          )
+          )}
+
+          {isFiltered && !hasCourses && !isLoading && (
+            <Alert className="mt-4">
+              <Alert.Heading>
+                {intl.formatMessage(messages.coursesTabCourseNotFoundAlertTitle)}
+              </Alert.Heading>
+              <p data-testid="courses-not-found-alert">
+                {intl.formatMessage(messages.coursesTabCourseNotFoundAlertMessage)}
+              </p>
+              <Button variant="primary" onClick={handleCleanFilters}>
+                {intl.formatMessage(messages.coursesTabCourseNotFoundAlertCleanFiltersButton)}
+              </Button>
+            </Alert>
+          )}
+          {showCollapsible && (
+            <CollapsibleStateWithAction
+              state={courseCreatorStatus}
+              className="mt-3"
+            />
+          )}
+        </div>
+
+        {/* Pagination always at the bottom when pagination is enabled */}
+        {isEnabledPagination && numPages > 0 && (
+          <div className="tw-mt-auto tw-pt-6 tw-pb-4">
             <Pagination
-              className="d-flex justify-content-center"
+              className="tw-flex tw-justify-center"
               paginationLabel="pagination navigation"
               pageCount={numPages}
               currentPage={currentPage}
               onPageSelect={handlePageSelected}
             />
-            )}
           </div>
-        ) : (!optimizationEnabled && isNotFilteringCourses && (
-          <ContactAdministrator
-            hasAbilityToCreateCourse={hasAbilityToCreateCourse}
-            showNewCourseContainer={showNewCourseContainer}
-            onClickNewCourse={onClickNewCourse}
-          />
-        )
-        )}
-
-        {isFiltered && !hasCourses && !isLoading && (
-          <Alert className="mt-4">
-            <Alert.Heading>
-              {intl.formatMessage(messages.coursesTabCourseNotFoundAlertTitle)}
-            </Alert.Heading>
-            <p data-testid="courses-not-found-alert">
-              {intl.formatMessage(messages.coursesTabCourseNotFoundAlertMessage)}
-            </p>
-            <Button variant="primary" onClick={handleCleanFilters}>
-              {intl.formatMessage(messages.coursesTabCourseNotFoundAlertCleanFiltersButton)}
-            </Button>
-          </Alert>
-        )}
-        {showCollapsible && (
-          <CollapsibleStateWithAction
-            state={courseCreatorStatus}
-            className="mt-3"
-          />
         )}
       </div>
     )

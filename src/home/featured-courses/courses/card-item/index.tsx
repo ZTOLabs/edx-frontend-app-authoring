@@ -93,7 +93,7 @@ const CardItem: React.FC<Props> = ({
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
         }}
-        className="tw-h-[144px] tw-w-full tw-rounded-[8px] tw-relative"
+        className="tw-h-[144px] tw-w-full tw-rounded-[8px] tw-relative tw-overflow-hidden"
       >
         <BadgesList badges={getBadgesList()} />
       </div>
