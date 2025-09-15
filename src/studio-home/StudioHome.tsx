@@ -3,7 +3,6 @@ import {
   Button,
   Container,
   Icon,
-  Layout,
   MailtoLink,
   Row,
 } from '@openedx/paragon';
@@ -15,7 +14,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Loading from '../generic/Loading';
 import InternetConnectionAlert from '../generic/internet-connection-alert';
 import SubHeader from '../generic/sub-header/SubHeader';
-import HomeSidebar from './home-sidebar';
 import TabsSection from './tabs-section';
 import OrganizationSection from './organization-section';
 import VerifyEmailLayout from './verify-email-layout';
@@ -134,33 +132,20 @@ const StudioHome = () => {
       return <VerifyEmailLayout />;
     }
     return (
-      <Layout
-        lg={[{ span: 9 }, { span: 3 }]}
-        md={[{ span: 9 }, { span: 3 }]}
-        sm={[{ span: 9 }, { span: 3 }]}
-        xs={[{ span: 9 }, { span: 3 }]}
-        xl={[{ span: 9 }, { span: 3 }]}
-      >
-        <Layout.Element>
-          <section>
-            {showNewCourseContainer && (
-              <CreateNewCourseForm handleOnClickCancel={() => setShowNewCourseContainer(false)} />
-            )}
-            {isShowOrganizationDropdown && <OrganizationSection />}
-            <TabsSection
-              showNewCourseContainer={showNewCourseContainer}
-              onClickNewCourse={() => setShowNewCourseContainer(true)}
-              isShowProcessing={isShowProcessing && !isFiltered}
-              isPaginationCoursesEnabled={isPaginationCoursesEnabled}
-              librariesV1Enabled={librariesV1Enabled}
-              librariesV2Enabled={librariesV2Enabled}
-            />
-          </section>
-        </Layout.Element>
-        <Layout.Element>
-          <HomeSidebar />
-        </Layout.Element>
-      </Layout>
+      <>
+        {showNewCourseContainer && (
+        <CreateNewCourseForm handleOnClickCancel={() => setShowNewCourseContainer(false)} />
+        )}
+        {isShowOrganizationDropdown && <OrganizationSection />}
+        <TabsSection
+          showNewCourseContainer={showNewCourseContainer}
+          onClickNewCourse={() => setShowNewCourseContainer(true)}
+          isShowProcessing={isShowProcessing && !isFiltered}
+          isPaginationCoursesEnabled={isPaginationCoursesEnabled}
+          librariesV1Enabled={librariesV1Enabled}
+          librariesV2Enabled={librariesV2Enabled}
+        />
+      </>
     );
   };
 

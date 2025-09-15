@@ -11,11 +11,11 @@ import {
 } from '@openedx/paragon';
 import { Error } from '@openedx/paragon/icons';
 
+import CardItem from 'home/featured-courses/courses/card-item';
 import { COURSE_CREATOR_STATES } from '../../../constants';
 import { getStudioHomeData, getStudioHomeCoursesParams } from '../../data/selectors';
 import { updateStudioHomeCoursesCustomParams } from '../../data/slice';
 import { fetchStudioHomeData } from '../../data/thunks';
-import CardItem from '../../card-item';
 import CollapsibleStateWithAction from '../../collapsible-state-with-action';
 import ContactAdministrator from './contact-administrator';
 import CoursesFilters from './courses-filters';
@@ -145,7 +145,7 @@ const CoursesTab: React.FC<Props> = ({
           </div>
         )}
         {hasCourses ? (
-          <>
+          <div className="tw-grid tw-grid-cols-3 tw-gap-4">
             {coursesDataItems.map(
               ({
                 courseKey,
@@ -171,17 +171,16 @@ const CoursesTab: React.FC<Props> = ({
                 />
               ),
             )}
-
             {numPages > 1 && isEnabledPagination && (
-              <Pagination
-                className="d-flex justify-content-center"
-                paginationLabel="pagination navigation"
-                pageCount={numPages}
-                currentPage={currentPage}
-                onPageSelect={handlePageSelected}
-              />
+            <Pagination
+              className="d-flex justify-content-center"
+              paginationLabel="pagination navigation"
+              pageCount={numPages}
+              currentPage={currentPage}
+              onPageSelect={handlePageSelected}
+            />
             )}
-          </>
+          </div>
         ) : (!optimizationEnabled && isNotFilteringCourses && (
           <ContactAdministrator
             hasAbilityToCreateCourse={hasAbilityToCreateCourse}
