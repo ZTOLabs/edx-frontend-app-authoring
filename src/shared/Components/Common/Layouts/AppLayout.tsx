@@ -29,7 +29,7 @@ const AppLayout = () => (
           />
           <main
             className={cn(
-              'tw-relative tw-z-10 tw-h-full',
+              'tw-relative tw-z-10 tw-h-full tw-overflow-scroll',
               'tw-p-8 tw-pb-0 tw-flex-1',
               'tw-border tw-border-white tw-border-solid',
               'tw-rounded-[20px]',
