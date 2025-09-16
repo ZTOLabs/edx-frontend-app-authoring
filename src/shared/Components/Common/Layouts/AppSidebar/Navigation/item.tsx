@@ -33,7 +33,7 @@ const Items = ({
           }}
         >
           <div className={`tw-w-12 tw-h-12 tw-flex tw-items-center tw-justify-center tw-rounded-[12px] ${item.isActive ? 'tw-bg-brand-100' : ''}`}>
-            <item.icon fill={item.isActive ? '#7839EE' : 'none'} className={`tw-w-5 tw-h-5 ${item.isActive ? 'tw-text-brand-600' : 'tw-text-gray-500'}`} />
+            {item.isActive && item.activeIcon ? <item.activeIcon /> : <item.icon className="tw-text-gray-500 tw-size-5" />}
           </div>
           {item.title && <div className="tw-text-gray-700 tw-text-xs tw-font-normal tw-h-[18px]">{item.title}</div>}
         </div>
