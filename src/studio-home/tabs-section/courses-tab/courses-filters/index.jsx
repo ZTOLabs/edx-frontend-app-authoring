@@ -3,10 +3,6 @@ import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { debounce } from 'lodash';
 
-import { SearchField } from '@openedx/paragon';
-import { SearchLg, X } from '@untitledui/icons';
-import { cn } from 'shared/lib/utils';
-import { Spinner } from 'shared/Components/ui/shadcn-io/spinner';
 import SearchFieldWrapper from 'shared/Components/Common/SearchFieldWrapper';
 import { getStudioHomeCoursesParams } from '../../../data/selectors';
 import { updateStudioHomeCoursesCustomParams } from '../../../data/slice';
