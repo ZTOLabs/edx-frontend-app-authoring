@@ -46,7 +46,7 @@ const CourseItem = ({ course }) => {
           <Card.Section className="p-3.5 small text-gray-700 bg-light-200">
             {intl.formatMessage(messages.itemInProgressFooterText, {
               refresh: (
-                <Hyperlink destination="/home">
+                <Hyperlink destination="/courses">
                   {intl.formatMessage(messages.itemInProgressFooterHyperlink)}
                 </Hyperlink>
               ),
