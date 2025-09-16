@@ -1,6 +1,6 @@
 import { RequestStatus } from '../../data/constants';
 import {
-  getStudioHomeLibraries,
+  getLibraries,
 } from './api';
 import {
   updateLoadingStatuses,
@@ -14,7 +14,7 @@ function fetchLibraryData(
   return async (dispatch) => {
     dispatch(updateLoadingStatuses({ libraryLoadingStatus: RequestStatus.IN_PROGRESS }));
     try {
-      const libraryData = await getStudioHomeLibraries(search, requestParams);
+      const libraryData = await getLibraries(search, requestParams);
       dispatch(fetchLibraryDataSuccess(libraryData));
       dispatch(updateLoadingStatuses({ libraryLoadingStatus: RequestStatus.SUCCESSFUL }));
     } catch (error) {

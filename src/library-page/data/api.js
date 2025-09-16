@@ -15,8 +15,10 @@ export const getRequestCourseCreatorUrl = () => new URL('request_course_creator'
  * Features such as pagination, filtering, and ordering are better handled in the new version.
  * Please refer to this PR for further details: https://github.com/openedx/edx-platform/pull/34173
  */
-export async function getStudioHomeLibraries(search, customParams) {
+export async function getLibraries(search, customParams) {
   const customParamsFormat = snakeCaseObject(customParams);
+
+  // TODO: Change to real api when BE is ready
   const { data } = await getAuthenticatedHttpClient().get(`${getApiBaseUrl()}/api/libraries${search}`, { params: customParamsFormat });
   return camelCaseObject(data);
 }
