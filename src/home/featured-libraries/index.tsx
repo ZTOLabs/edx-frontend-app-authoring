@@ -1,7 +1,7 @@
 import React from 'react';
 import FeaturedLayout from 'home/layout/featured';
 import { useIntl } from '@edx/frontend-platform/i18n';
-import StatefulButtonWrapper from 'shared/Components/Common/StatefulButtonWrapper';
+import Button from 'shared/Components/Common/Button';
 import { Plus } from '@untitledui/icons';
 import { useNavigate } from 'react-router';
 import Libraries from './libraries';
@@ -13,7 +13,7 @@ const FeaturedLibraries = () => {
 
   const actions = (
     <>
-      <StatefulButtonWrapper
+      <Button
         className="!tw-w-auto"
         variant="link"
         size="sm"
@@ -21,7 +21,7 @@ const FeaturedLibraries = () => {
         onClick={() => navigate('/libraries')}
         labels={{ default: intl.formatMessage(messages.allCoursesBtnText) }}
       />
-      <StatefulButtonWrapper
+      <Button
         className="!tw-w-auto tw-border-gray-300 tw-text-gray-700"
         variant="secondary"
         iconBefore={Plus}

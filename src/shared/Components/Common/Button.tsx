@@ -4,7 +4,7 @@ import { cva } from 'class-variance-authority';
 import { StatefulButton } from '@openedx/paragon';
 import { cn } from '../../lib/utils';
 
-interface StatefulButtonProps {
+interface ButtonProps {
   className?: string;
   name?: string;
   id?: string;
@@ -19,8 +19,6 @@ interface StatefulButtonProps {
   disabled?: boolean;
   size?: 'sm' | 'md' | 'lg';
 }
-
-interface StatefulButtonWrapperProps extends StatefulButtonProps {}
 
 const buttonVariants = cva('tw-font-semibold focus:before:tw-hidden focus:!tw-outline-none focus:!tw-ring-0 focus:!tw-border-0', {
   variants: {
@@ -62,12 +60,12 @@ const buttonVariants = cva('tw-font-semibold focus:before:tw-hidden focus:!tw-ou
   },
 });
 
-const StatefulButtonWrapper = ({
+const Button = ({
   className,
   variant,
   size,
   ...restProps
-}: StatefulButtonWrapperProps) => (
+}: ButtonProps) => (
   <StatefulButton
     {...restProps}
     variant={variant}
@@ -76,4 +74,4 @@ const StatefulButtonWrapper = ({
   />
 );
 
-export default StatefulButtonWrapper;
+export default Button;
