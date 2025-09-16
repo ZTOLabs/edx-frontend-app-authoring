@@ -1,4 +1,3 @@
-export const getStudioHomeData = state => state.studioHome.studioHomeData;
-export const getLoadingStatuses = (state) => state.studioHome.loadingStatuses;
-export const getSavingStatuses = (state) => state.studioHome.savingStatuses;
-export const getStudioHomeCoursesParams = (state) => state.studioHome.studioHomeCoursesRequestParams;
+export const getLibraryData = state => state.libraryPage.libraryData;
+export const getLoadingStatuses = (state) => state.libraryPage.loadingStatuses;
+export const getLibraryRequestParams = (state) => state.libraryPage.libraryRequestParams;
