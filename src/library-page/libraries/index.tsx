@@ -1,44 +1,68 @@
 import React from 'react';
-import FeaturedLayout from 'home/layout/featured';
+import {
+  Row,
+} from '@openedx/paragon';
 import { useIntl } from '@edx/frontend-platform/i18n';
-import StatefulButtonWrapper from 'shared/Components/Common/StatefulButtonWrapper';
-import { Plus } from '@untitledui/icons';
-import { useNavigate } from 'react-router';
-import Libraries from './libraries';
-import messages from './messages';
 
-const FeaturedLibraries = () => {
+import AlertWrapper from 'shared/Components/Common/AlertWrapper';
+import { useSelector } from 'react-redux';
+import { LoadingSpinner } from '../../generic/Loading';
+import LibraryItem from './library-item';
+import { getLibraryData, getLoadingStatuses } from '../data/selectors';
+import { RequestStatus } from '../../data/constants';
+import messages from '../message';
+
+type Props = Record<never, never>;
+
+const Libraries: React.FC<Props> = () => {
   const intl = useIntl();
-  const navigate = useNavigate();
 
-  const actions = (
-    <>
-      <StatefulButtonWrapper
-        className="!tw-w-auto"
-        variant="link"
-        size="sm"
-        disabled={false}
-        onClick={() => navigate('/libraries')}
-        labels={{ default: intl.formatMessage(messages.allCoursesBtnText) }}
-      />
-      <StatefulButtonWrapper
-        className="!tw-w-auto tw-border-gray-300 tw-text-gray-700"
-        variant="secondary"
-        iconBefore={Plus}
-        size="sm"
-        disabled={false}
-        // TODO: Add new library button
-        onClick={() => undefined}
-        labels={{ default: intl.formatMessage(messages.addNewLibraryBtnText) }}
-      />
-    </>
-  );
+  const {
+    libraryLoadingStatus,
+  } = useSelector(getLoadingStatuses);
+  const isLoadingLibrary = libraryLoadingStatus === RequestStatus.IN_PROGRESS;
+  const isFailedLibraryPage = libraryLoadingStatus === RequestStatus.FAILED;
 
-  return (
-    <FeaturedLayout title={intl.formatMessage(messages.librariesTabTitle)} actions={actions}>
-      <Libraries />
-    </FeaturedLayout>
+  const {
+    materials,
+    numPages,
+  } = useSelector(getLibraryData);
+
+  if (isLoadingLibrary) {
+    return (
+      <Row className="m-0 mt-4 justify-content-center">
+        <LoadingSpinner />
+      </Row>
+    );
+  }
+
+  const hasMaterials = !isLoadingLibrary && !isFailedLibraryPage && ((materials.length || 0) > 0);
+
+  return isFailedLibraryPage ? (
+    <AlertWrapper status="danger">
+      <span>{intl.formatMessage(messages.librariesTabErrorMessage)}</span>
+    </AlertWrapper>
+  ) : (
+    <div className="courses-tab-container tw-grid tw-grid-cols-3 tw-gap-4">
+      { hasMaterials
+        ? materials.map(({
+          id, title, type, image, isAIGenerated,
+        }) => (
+          <LibraryItem
+            key={id}
+            displayName={title}
+            image={image}
+            type={type}
+            path={`/library/${id}`}
+            isAIGenerated={isAIGenerated}
+          />
+        )) : !isLoadingLibrary && (
+        <AlertWrapper status="danger">
+          <span>{intl.formatMessage(messages.librariesTabLibraryNotFoundAlertTitle)}</span>
+        </AlertWrapper>
+        )}
+    </div>
   );
 };
 
-export default FeaturedLibraries;
+export default Libraries;

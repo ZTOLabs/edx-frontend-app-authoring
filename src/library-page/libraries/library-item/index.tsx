@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 
 import { cn } from 'shared/lib/utils';
 import { Stars02 } from '@untitledui/icons';
-import { getWaffleFlags } from '../../../../data/selectors';
+import { getWaffleFlags } from '../../../data/selectors';
 
 interface BaseProps {
   displayName: string;
