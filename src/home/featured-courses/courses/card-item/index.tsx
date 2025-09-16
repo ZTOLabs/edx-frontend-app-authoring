@@ -10,7 +10,7 @@ import {
 import { MoreVert } from '@openedx/paragon/icons';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { getConfig } from '@edx/frontend-platform';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { cn } from 'shared/lib/utils';
 import { convertFromSnakeCaseToTitleCase } from '../../../../utils';
@@ -62,9 +62,8 @@ const CardItem: React.FC<Props> = ({
     rerunCreatorStatus,
   } = useSelector(getStudioHomeData);
   const waffleFlags = useSelector(getWaffleFlags);
-
   const getBadgesList = (): string[] => [org, convertFromSnakeCaseToTitleCase(run)].filter(Boolean);
-
+  const navigate = useNavigate();
   const destinationUrl: string = path ?? (
     waffleFlags.useNewCourseOutlinePage
       ? url
@@ -86,23 +85,27 @@ const CardItem: React.FC<Props> = ({
       'tw-shadow-none',
     )}
     >
-      <div
+      <button
+        type="button"
+        onClick={() => {
+          navigate(destinationUrl);
+        }}
         style={{
           backgroundImage: 'url(https://placehold.co/600x400)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
         }}
-        className="tw-h-[144px] tw-w-full tw-rounded-[8px] tw-relative"
+        className="tw-h-[144px] tw-w-full tw-rounded-[8px] tw-relative tw-cursor-pointer tw-border-none tw-outline-none"
       >
         <BadgesList badges={getBadgesList()} />
-      </div>
+      </button>
       <Card.Header
         className="!tw-pl-3 !tw-p-0 tw-flex tw-flex-row tw-gap-2 "
         size="sm"
         title={!readOnlyItem ? (
           <Link
-            className="tw-text-sm tw-font-semibold tw-text-gray-900 tw-w-full tw-truncate tw-line-clamp-1 hover:tw-no-underline"
+            className="tw-text-sm tw-font-semibold tw-text-gray-900 tw-w-fit tw-truncate tw-line-clamp-1 hover:tw-no-underline"
             to={destinationUrl}
           >
             {hasDisplayName}
