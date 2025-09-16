@@ -31,7 +31,7 @@ const UserProfile = () => {
   ], [intl]);
 
   return (
-    <SidebarMenu className="!tw-w-auto tw-list-none !tw-p-0">
+    <SidebarMenu className="!tw-w-auto tw-list-none !tw-p-0 tw-mb-0">
       <SidebarMenuItem className="tw-flex tw-items-center tw-justify-center">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
