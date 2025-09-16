@@ -43,18 +43,20 @@ const Libraries: React.FC<Props> = () => {
       <span>{intl.formatMessage(messages.librariesTabErrorMessage)}</span>
     </AlertWrapper>
   ) : (
-    <div className="courses-tab-container tw-grid tw-grid-cols-3 tw-gap-4">
+    <div className="tw-grid tw-grid-cols-3 tw-gap-4">
       { hasMaterials
         ? materials.map(({
-          id, title, type, image, isAIGenerated,
+          id, title, fileType, image, isAIGenerated, size, courseKey,
         }) => (
           <LibraryItem
             key={id}
             displayName={title}
             image={image}
-            type={type}
+            fileType={fileType}
+            size={size}
             path={`/library/${id}`}
             isAIGenerated={isAIGenerated}
+            courseKey={courseKey}
           />
         )) : !isLoadingLibrary && (
         <AlertWrapper status="danger">
