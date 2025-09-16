@@ -105,7 +105,7 @@ const CardItem: React.FC<Props> = ({
         size="sm"
         title={!readOnlyItem ? (
           <Link
-            className="tw-text-sm tw-font-semibold tw-text-gray-900 tw-w-fit tw-truncate tw-line-clamp-1 hover:tw-no-underline"
+            className="tw-text-sm tw-font-semibold tw-text-gray-900 tw-w-fit tw-max-w-full tw-truncate tw-line-clamp-1 hover:tw-no-underline"
             to={destinationUrl}
           >
             {hasDisplayName}
