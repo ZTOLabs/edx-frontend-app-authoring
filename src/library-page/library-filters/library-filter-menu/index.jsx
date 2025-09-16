@@ -5,7 +5,7 @@ import { Icon, Dropdown } from '@openedx/paragon';
 import { Check } from '@openedx/paragon/icons';
 import { cn } from 'shared/lib/utils';
 import { ChevronDown } from '@untitledui/icons';
-import { getStudioHomeCoursesParams } from '../../../../data/selectors';
+import { getLibraryRequestParams } from '../../data/selectors';
 
 const LibraryFilterMenu = ({
   id: idProp,
@@ -14,7 +14,7 @@ const LibraryFilterMenu = ({
   defaultItemSelectedText,
 }) => {
   const [itemMenuSelected, setItemMenuSelected] = useState(defaultItemSelectedText);
-  const { cleanFilters } = useSelector(getStudioHomeCoursesParams);
+  const { cleanFilters } = useSelector(getLibraryRequestParams);
   const handleCourseTypeSelected = (name, value) => {
     setItemMenuSelected(name);
     onItemMenuSelected(value);
