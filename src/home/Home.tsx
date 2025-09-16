@@ -79,7 +79,7 @@ const Home = () => {
 
   return (
     <>
-      <section className="tw-h-full tw-flex tw-flex-col">
+      <section className="tw-h-full tw-flex tw-flex-col tw-gap-8">
         <article className="studio-home-sub-header">
           <section>
             <SubHeader
