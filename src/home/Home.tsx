@@ -79,21 +79,19 @@ const Home = () => {
 
   return (
     <>
-      <Container size="xl" className="tw-h-full">
-        <section className="tw-h-full tw-flex tw-flex-col">
-          <article className="studio-home-sub-header">
-            <section>
-              <SubHeader
-                hideBorder
-                title={intl.formatMessage(messages.headingTitle, {
-                  userName: capitalizeString(username) || 'Teacher',
-                })}
-              />
-            </section>
-          </article>
-          {getMainBody()}
-        </section>
-      </Container>
+      <section className="tw-h-full tw-flex tw-flex-col">
+        <article className="studio-home-sub-header">
+          <section>
+            <SubHeader
+              hideBorder
+              title={intl.formatMessage(messages.headingTitle, {
+                userName: capitalizeString(username) || 'Teacher',
+              })}
+            />
+          </section>
+        </article>
+        {getMainBody()}
+      </section>
       <div className="alert-toast">
         <InternetConnectionAlert isFailed={anyQueryIsFailed} isQueryPending={anyQueryIsPending} />
       </div>
