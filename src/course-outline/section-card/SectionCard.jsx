@@ -237,7 +237,7 @@ const SectionCard = ({
                 <ChevronDown className="tw-cursor-pointer" onClick={handleExpandContent} />
               ) : (
                 <ChevronDown
-                  className="tw-rotate-270 tw-cursor-pointer"
+                  className="tw-rotate-[270deg] tw-cursor-pointer"
                   onClick={handleExpandContent}
                 />
               )}
