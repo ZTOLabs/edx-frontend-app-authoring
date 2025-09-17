@@ -213,11 +213,11 @@ const UnitCard = ({
           <div className="tw-flex tw-gap-2 tw-items-center">
             <div
               className={classNames(
-                'tw-py-[2px] tw-pl-[6px] tw-pr-[8px] tw-rounded-2xl tw-border tw-flex tw-items-center tw-gap-1',
+                'tw-py-[2px] tw-pl-[6px] tw-pr-[8px] tw-rounded-2xl tw-border tw-flex tw-items-center tw-gap-1 tw-border-solid',
                 {
                   'tw-bg-green-50 tw-border-green-200': unitStatus === 'live',
                   'tw-bg-yellow-50 tw-border-yellow-200': unitStatus === 'draft',
-                  'tw-bg-gray-50 tw-border-gray-200':
+                  'tw-bg-[#FFFAEB] tw-border-[#FEDF89]':
                     unitStatus !== 'live' && unitStatus !== 'draft',
                 },
               )}
@@ -225,14 +225,14 @@ const UnitCard = ({
               <div
                 className={classNames('tw-w-[6px] tw-h-[6px] tw-rounded-full', {
                   'tw-bg-green-500': unitStatus === 'live',
-                  'tw-bg-yellow-500': unitStatus === 'draft',
+                  'tw-bg-[#F79009]': unitStatus === 'draft',
                   'tw-bg-gray-400': unitStatus !== 'live' && unitStatus !== 'draft',
                 })}
               />
               <span
                 className={classNames('tw-text-xs tw-font-medium', {
                   'tw-text-green-700': unitStatus === 'live',
-                  'tw-text-yellow-700': unitStatus === 'draft',
+                  'tw-text-[#B54708]': unitStatus === 'draft',
                   'tw-text-gray-600': unitStatus !== 'live' && unitStatus !== 'draft',
                 })}
               >
