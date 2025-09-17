@@ -8,7 +8,9 @@ import {
 } from '@openedx/paragon';
 import { DragIndicator } from '@openedx/paragon/icons';
 
+import classNames from 'classnames';
 import messages from './messages';
+import { Grip } from 'lucide-react';
 
 const SortableItem = ({
   id,
@@ -19,6 +21,7 @@ const SortableItem = ({
   children,
   // injected
   intl,
+  gripContainerClassName,
 }) => {
   const {
     attributes,
@@ -45,39 +48,30 @@ const SortableItem = ({
     zIndex: isDragging ? 200 : undefined,
     transform: CSS.Translate.toString(transform),
     transition,
-    background: 'white',
-    padding: '1rem 1.5rem',
-    marginBottom: '1.5rem',
-    borderRadius: '0.35rem',
-    boxShadow: '0 0 .125rem rgba(0, 0, 0, .15), 0 0 .25rem rgba(0, 0, 0, .15)',
     ...componentStyle,
   };
 
   return (
-    <Row
-      ref={setNodeRef}
-      style={style}
-      className="mx-0"
-    >
-      <Col className="extend-margin px-0">
-        {children}
-      </Col>
+    <div ref={setNodeRef} style={style} className="tw-flex tw-items-center">
       {isDraggable && (
-        <button
-          ref={setActivatorNodeRef}
-          key="drag-to-reorder-icon"
-          aria-label={intl.formatMessage(messages.tooltipContent)}
-          className="btn-icon btn-icon-secondary btn-icon-md"
-          type="button"
-          {...attributes}
-          {...listeners}
+        <div
+          className={classNames(
+            'tw-flex tw-items-center tw-justify-center tw-mr-2',
+            gripContainerClassName,
+          )}
         >
-          <span className="btn-icon__icon-container">
-            <Icon src={DragIndicator} />
-          </span>
-        </button>
+          <Grip
+            className="tw-w-4 tw-h-4"
+            ref={setActivatorNodeRef}
+            key="drag-to-reorder-icon"
+            aria-label={intl.formatMessage(messages.tooltipContent)}
+            {...attributes}
+            {...listeners}
+          />
+        </div>
       )}
-    </Row>
+      <div className="tw-flex-1">{children}</div>
+    </div>
   );
 };
 
@@ -94,6 +88,7 @@ SortableItem.propTypes = {
   isDraggable: PropTypes.bool,
   children: PropTypes.node.isRequired,
   componentStyle: PropTypes.shape({}),
+  gripContainerClassName: PropTypes.string,
   // injected
   intl: intlShape.isRequired,
 };

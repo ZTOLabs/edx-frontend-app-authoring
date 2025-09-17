@@ -5,7 +5,7 @@ import React, {
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { useIntl } from '@edx/frontend-platform/i18n';
-import { Bubble, Button, useToggle } from '@openedx/paragon';
+import { Bubble, Button as OpenEdxButton, useToggle } from '@openedx/paragon';
 import { Add as IconAdd } from '@openedx/paragon/icons';
 import { useSearchParams } from 'react-router-dom';
 import classNames from 'classnames';
@@ -18,7 +18,29 @@ import { DragContext } from '../drag-helper/DragContextProvider';
 import TitleButton from '../card-header/TitleButton';
 import XBlockStatus from '../xblock-status/XBlockStatus';
 import { getItemStatus, getItemStatusBorder, scrollToElement } from '../utils';
-import messages from './messages';
+import xblockStatusMessages from '../xblock-status/messages';
+import { Plus } from 'lucide-react';
+import courseUnitMessages from '../../course-unit/course-sequence/messages';
+import CardHeaderWithDropdownOnly from '../card-header/CardHeaderWithDropdownOnly';
+import Button from 'shared/Components/Common/Button';
+
+const ChevronDown = ({ className, onClick }) => (
+  <svg
+    width="10"
+    height="6"
+    viewBox="0 0 10 6"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    onClick={onClick}
+  >
+    <path d="M1.00014 1.00016L5.00014 5.00016L9.00014 1.00016" fill="#475467" />
+    <path
+      d="M9.00014 0.333496C9.26975 0.333496 9.51282 0.495887 9.61603 0.744954C9.71922 0.994071 9.66216 1.28085 9.4715 1.47152L5.4715 5.47152C5.21115 5.73187 4.78914 5.73187 4.52879 5.47152L0.52879 1.47152C0.338124 1.28085 0.281071 0.994071 0.384258 0.744954C0.487466 0.495887 0.730533 0.333496 1.00014 0.333496H9.00014ZM5.00014 4.05745L7.39077 1.66683H2.60952L5.00014 4.05745Z"
+      fill="#475467"
+    />
+  </svg>
+);
 
 const SectionCard = ({
   section,
@@ -36,6 +58,7 @@ const SectionCard = ({
   onDuplicateSubmit,
   isSectionsExpanded,
   onNewSubsectionSubmit,
+  onNewUnitSubmit,
   onOrderChange,
 }) => {
   const currentRef = useRef(null);
@@ -155,6 +178,15 @@ const SectionCard = ({
     onNewSubsectionSubmit(id);
   };
 
+  const handleNewUnitSubmit = () => {
+    // Find the topmost subsection (first subsection in the section)
+    const subsections = section.childInfo?.children;
+    if (subsections && subsections.length > 0) {
+      const topmostSubsection = subsections[0];
+      onNewUnitSubmit(topmostSubsection.id);
+    }
+  };
+
   const handleSectionMoveUp = () => {
     onOrderChange(index, index - 1);
   };
@@ -179,6 +211,7 @@ const SectionCard = ({
   );
 
   const isDraggable = actions.draggable && (actions.allowMoveUp || actions.allowMoveDown);
+  const releaseDate = section.releaseDate ? section.releaseDate.replace('UTC', '') : '';
 
   return (
     <SortableItem
@@ -187,18 +220,45 @@ const SectionCard = ({
       isDraggable={isDraggable}
       isDroppable={actions.childAddable}
       componentStyle={{
-        padding: '1.75rem',
-        ...borderStyle,
+        padding: '16px',
+        borderRadius: '16px',
+        border: '1px solid #FFF',
+        background: 'rgba(255, 255, 255, 0.70)',
+        marginBottom: '16px',
+        alignItems: 'start',
       }}
+      gripContainerClassName="tw-mt-[6px]"
     >
-      <div
-        className={`section-card ${isScrolledToElement ? 'highlight' : ''}`}
-        data-testid="section-card"
-        ref={currentRef}
-      >
-        <div>
-          {isHeaderVisible && (
-            <CardHeader
+      <div className="tw-flex tw-flex-col tw-gap-6">
+        <div className="tw-flex tw-gap-2 tw-items-start">
+          <div className="tw-flex tw-flex-col tw-gap-1 tw-flex-1">
+            <div className="tw-text-gray-900 tw-text-lg tw-font-bold tw-leading-7 tw-flex tw-gap-2 tw-items-center">
+              {isExpanded ? (
+                <ChevronDown className="tw-cursor-pointer" onClick={handleExpandContent} />
+              ) : (
+                <ChevronDown
+                  className="tw-rotate-270 tw-cursor-pointer"
+                  onClick={handleExpandContent}
+                />
+              )}
+              {displayName}
+            </div>
+            {releaseDate && (
+              <div className="tw-text-gray-500 tw-text-xs tw-font-normal tw-leading-none tw-ml-4">
+                {intl.formatMessage(xblockStatusMessages.releasedLabel)} {releaseDate}
+              </div>
+            )}
+          </div>
+          <div className="tw-flex tw-gap-2 tw-items-center">
+            <Button
+              variant="secondary"
+              size="sm"
+              iconBefore={Plus}
+              className="!tw-w-auto tw-border-gray-300 tw-text-gray-700 !tw-py-[6px] !tw-px-[10px] focus:!tw-border"
+              labels={{ default: intl.formatMessage(courseUnitMessages.newUnitBtnText) }}
+              onClick={handleNewUnitSubmit}
+            />
+            <CardHeaderWithDropdownOnly
               cardId={id}
               title={displayName}
               status={sectionStatus}
@@ -219,48 +279,16 @@ const SectionCard = ({
               namePrefix={namePrefix}
               actions={actions}
             />
-          )}
-          <div className="section-card__content" data-testid="section-card__content">
-            <div className="outline-section__status mb-1">
-              <Button
-                className="p-0 bg-transparent"
-                data-destid="section-card-highlights-button"
-                variant="tertiary"
-                onClick={handleOpenHighlightsModal}
-              >
-                <Bubble className="mr-1">
-                  {highlights.length}
-                </Bubble>
-                <p className="m-0 text-black">{messages.sectionHighlightsBadge.defaultMessage}</p>
-              </Button>
-            </div>
-            <XBlockStatus
-              isSelfPaced={isSelfPaced}
-              isCustomRelativeDatesActive={isCustomRelativeDatesActive}
-              blockData={section}
-            />
           </div>
-          {isExpanded && (
-            <div
-              data-testid="section-card__subsections"
-              className={classNames('section-card__subsections', { 'item-children': isDraggable })}
-            >
-              {children}
-              {actions.childAddable && (
-                <Button
-                  data-testid="new-subsection-button"
-                  className="mt-4"
-                  variant="outline-primary"
-                  iconBefore={IconAdd}
-                  block
-                  onClick={handleNewSubsectionSubmit}
-                >
-                  {intl.formatMessage(messages.newSubsectionButton)}
-                </Button>
-              )}
-            </div>
-          )}
         </div>
+        {isExpanded && (
+          <div
+            data-testid="section-card__subsections"
+            className={classNames('section-card__subsections', { 'item-children': isDraggable })}
+          >
+            {children}
+          </div>
+        )}
       </div>
     </SortableItem>
   );
@@ -314,6 +342,7 @@ SectionCard.propTypes = {
   onDuplicateSubmit: PropTypes.func.isRequired,
   isSectionsExpanded: PropTypes.bool.isRequired,
   onNewSubsectionSubmit: PropTypes.func.isRequired,
+  onNewUnitSubmit: PropTypes.func.isRequired,
   index: PropTypes.number.isRequired,
   canMoveItem: PropTypes.func.isRequired,
   onOrderChange: PropTypes.func.isRequired,

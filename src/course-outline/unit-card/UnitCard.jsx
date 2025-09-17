@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { useToggle } from '@openedx/paragon';
 import { isEmpty } from 'lodash';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import CourseOutlineUnitCardExtraActionsSlot from '../../plugin-slots/CourseOutlineUnitCardExtraActionsSlot';
 import { setCurrentItem, setCurrentSection, setCurrentSubsection } from '../data/slice';
@@ -20,9 +20,18 @@ import CardHeader from '../card-header/CardHeader';
 import SortableItem from '../drag-helper/SortableItem';
 import TitleLink from '../card-header/TitleLink';
 import XBlockStatus from '../xblock-status/XBlockStatus';
-import { getItemStatus, getItemStatusBorder, scrollToElement } from '../utils';
+import {
+  getItemStatus,
+  getItemStatusBadgeContent,
+  getItemStatusBorder,
+  scrollToElement,
+} from '../utils';
 import { useClipboard } from '../../generic/clipboard';
 import { PreviewLibraryXBlockChanges } from '../../course-unit/preview-changes';
+import { useIntl } from '@edx/frontend-platform/i18n';
+import messages from '../card-header/messages';
+import CardHeaderWithDropdownOnly from '../card-header/CardHeaderWithDropdownOnly';
+import classNames from 'classnames';
 
 const UnitCard = ({
   unit,
@@ -52,7 +61,7 @@ const UnitCard = ({
   const namePrefix = 'unit';
 
   const { copyToClipboard } = useClipboard();
-
+  const navigate = useNavigate();
   const {
     id,
     category,
@@ -134,19 +143,11 @@ const UnitCard = ({
   }, [dispatch, section]);
 
   const titleComponent = (
-    <TitleLink
-      title={displayName}
-      titleLink={getTitleLink(id)}
-      namePrefix={namePrefix}
-    />
+    <TitleLink title={displayName} titleLink={getTitleLink(id)} namePrefix={namePrefix} />
   );
 
   const extraActionsComponent = (
-    <CourseOutlineUnitCardExtraActionsSlot
-      unit={unit}
-      subsection={subsection}
-      section={section}
-    />
+    <CourseOutlineUnitCardExtraActionsSlot unit={unit} subsection={subsection} section={section} />
   );
 
   useEffect(() => {
@@ -166,6 +167,9 @@ const UnitCard = ({
     }
   }, [savingStatus]);
 
+  const intl = useIntl();
+  const { badgeTitle } = getItemStatusBadgeContent(unitStatus, messages, intl);
+
   if (!isHeaderVisible) {
     return null;
   }
@@ -181,50 +185,89 @@ const UnitCard = ({
         isDraggable={isDraggable}
         isDroppable={actions.childAddable}
         componentStyle={{
-          background: '#fdfdfd',
-          ...borderStyle,
+          marginBottom: '24px',
         }}
       >
-        <div
-          className={`unit-card ${isScrolledToElement ? 'highlight' : ''}`}
-          data-testid="unit-card"
-          ref={currentRef}
-        >
-          <CardHeader
-            title={displayName}
-            status={unitStatus}
-            hasChanges={hasChanges}
-            cardId={id}
-            onClickMenuButton={handleClickMenuButton}
-            onClickPublish={onOpenPublishModal}
-            onClickConfigure={onOpenConfigureModal}
-            onClickEdit={openForm}
-            onClickDelete={onOpenDeleteModal}
-            onClickMoveUp={handleUnitMoveUp}
-            onClickMoveDown={handleUnitMoveDown}
-            onClickSync={openSyncModal}
-            isFormOpen={isFormOpen}
-            closeForm={closeForm}
-            onEditSubmit={handleEditSubmit}
-            isDisabledEditField={readOnly || savingStatus === RequestStatus.IN_PROGRESS}
-            onClickDuplicate={onDuplicateSubmit}
-            titleComponent={titleComponent}
-            namePrefix={namePrefix}
-            actions={actions}
-            isVertical
-            enableCopyPasteUnits={enableCopyPasteUnits}
-            onClickCopy={handleCopyClick}
-            discussionEnabled={discussionEnabled}
-            discussionsSettings={discussionsSettings}
-            parentInfo={parentInfo}
-            extraActionsComponent={extraActionsComponent}
-            readyToSync={upstreamInfo.readyToSync}
-          />
-          <div className="unit-card__content item-children" data-testid="unit-card__content">
-            <XBlockStatus
-              isSelfPaced={isSelfPaced}
-              isCustomRelativeDatesActive={isCustomRelativeDatesActive}
-              blockData={unit}
+        <div className="tw-flex tw-gap-2 tw-items-center">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9.33317 1.51318V4.26688C9.33317 4.64025 9.33317 4.82693 9.40583 4.96954C9.46975 5.09498 9.57173 5.19697 9.69718 5.26088C9.83978 5.33354 10.0265 5.33354 10.3998 5.33354H13.1535M9.33317 11.3335H5.33317M10.6665 8.66683H5.33317M13.3332 6.65898V11.4668C13.3332 12.5869 13.3332 13.147 13.1152 13.5748C12.9234 13.9511 12.6175 14.2571 12.2412 14.4488C11.8133 14.6668 11.2533 14.6668 10.1332 14.6668H5.8665C4.7464 14.6668 4.18635 14.6668 3.75852 14.4488C3.3822 14.2571 3.07624 13.9511 2.88449 13.5748C2.6665 13.147 2.6665 12.5869 2.6665 11.4668V4.5335C2.6665 3.41339 2.6665 2.85334 2.88449 2.42552C3.07624 2.04919 3.3822 1.74323 3.75852 1.55148C4.18635 1.3335 4.7464 1.3335 5.8665 1.3335H8.00769C8.49687 1.3335 8.74146 1.3335 8.97163 1.38876C9.17571 1.43775 9.3708 1.51856 9.54974 1.62822C9.75157 1.7519 9.92453 1.92485 10.2704 2.27075L12.3959 4.39624C12.7418 4.74214 12.9148 4.91509 13.0385 5.11693C13.1481 5.29587 13.2289 5.49096 13.2779 5.69503C13.3332 5.92521 13.3332 6.1698 13.3332 6.65898Z"
+              stroke="#875BF7"
+              strokeWidth="1.33"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          <div
+            className="tw-text-slate-700 tw-text-sm tw-font-semibold tw-leading-tight tw-flex-1 tw-cursor-pointer"
+            onClick={() => navigate(getTitleLink(id))}
+          >
+            {displayName}
+          </div>
+          <div className="tw-flex tw-gap-2 tw-items-center">
+            <div
+              className={classNames(
+                'tw-py-[2px] tw-pl-[6px] tw-pr-[8px] tw-rounded-2xl tw-border tw-flex tw-items-center tw-gap-1',
+                {
+                  'tw-bg-green-50 tw-border-green-200': unitStatus === 'live',
+                  'tw-bg-yellow-50 tw-border-yellow-200': unitStatus === 'draft',
+                  'tw-bg-gray-50 tw-border-gray-200':
+                    unitStatus !== 'live' && unitStatus !== 'draft',
+                },
+              )}
+            >
+              <div
+                className={classNames('tw-w-[6px] tw-h-[6px] tw-rounded-full', {
+                  'tw-bg-green-500': unitStatus === 'live',
+                  'tw-bg-yellow-500': unitStatus === 'draft',
+                  'tw-bg-gray-400': unitStatus !== 'live' && unitStatus !== 'draft',
+                })}
+              />
+              <span
+                className={classNames('tw-text-xs tw-font-medium', {
+                  'tw-text-green-700': unitStatus === 'live',
+                  'tw-text-yellow-700': unitStatus === 'draft',
+                  'tw-text-gray-600': unitStatus !== 'live' && unitStatus !== 'draft',
+                })}
+              >
+                {badgeTitle}
+              </span>
+            </div>
+            <CardHeaderWithDropdownOnly
+              title={displayName}
+              status={unitStatus}
+              hasChanges={hasChanges}
+              cardId={id}
+              onClickMenuButton={handleClickMenuButton}
+              onClickPublish={onOpenPublishModal}
+              onClickConfigure={onOpenConfigureModal}
+              onClickEdit={openForm}
+              onClickDelete={onOpenDeleteModal}
+              onClickMoveUp={handleUnitMoveUp}
+              onClickMoveDown={handleUnitMoveDown}
+              onClickSync={openSyncModal}
+              isFormOpen={isFormOpen}
+              closeForm={closeForm}
+              onEditSubmit={handleEditSubmit}
+              isDisabledEditField={readOnly || savingStatus === RequestStatus.IN_PROGRESS}
+              onClickDuplicate={onDuplicateSubmit}
+              titleComponent={titleComponent}
+              namePrefix={namePrefix}
+              actions={actions}
+              isVertical
+              enableCopyPasteUnits={enableCopyPasteUnits}
+              onClickCopy={handleCopyClick}
+              discussionEnabled={discussionEnabled}
+              discussionsSettings={discussionsSettings}
+              parentInfo={parentInfo}
+              extraActionsComponent={extraActionsComponent}
+              readyToSync={upstreamInfo.readyToSync}
             />
           </div>
         </div>
