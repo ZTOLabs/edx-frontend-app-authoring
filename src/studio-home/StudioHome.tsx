@@ -9,8 +9,8 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 import { getConfig } from '@edx/frontend-platform';
 import { useLocation } from 'react-router-dom';
 
-import StatefulButtonWrapper from 'shared/Components/Common/StatefulButtonWrapper';
 import { Plus } from '@untitledui/icons';
+import Button from 'shared/Components/Common/Button';
 import Loading from '../generic/Loading';
 import InternetConnectionAlert from '../generic/internet-connection-alert';
 import SubHeader from '../generic/sub-header/SubHeader';
@@ -62,7 +62,7 @@ const StudioHome = () => {
 
     if (hasAbilityToCreateNewCourse) {
       headerButtons.push(
-        <StatefulButtonWrapper
+        <Button
           className="!tw-w-auto tw-border-gray-300 "
           variant="brand"
           iconBefore={Plus}
