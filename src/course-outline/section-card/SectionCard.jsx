@@ -152,7 +152,10 @@ const SectionCard = ({
   const borderStyle = getItemStatusBorder(!isExpanded ? sectionStatus : '');
 
   const handleExpandContent = () => {
-    setIsExpanded((prevState) => !prevState);
+    const firstSection = section.childInfo?.children?.[0];
+    if (firstSection && firstSection.childInfo?.children?.length > 0) {
+      setIsExpanded((prevState) => !prevState);
+    }
   };
 
   const handleClickMenuButton = () => {
