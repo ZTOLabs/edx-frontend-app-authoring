@@ -1,5 +1,4 @@
 import {
-  Bell01,
   BookClosed,
   ClipboardCheck,
   GraduationHat01,
@@ -23,18 +22,15 @@ import messages from '../../../../../messages';
 import Items from './Navigation/item';
 import AppLogo from '../AppLogo';
 import UserProfile from './UserProfile';
+import Notification from './Notification';
+import HomeLineSolidIcon from '../../../../Icons/HomeLineSolidIcon';
+import BookClosedSolidIcon from '../../../../Icons/BookClosedSolidIcon';
+import ClipboardCheckSolidIcon from '../../../../Icons/ClipboardCheckSolidIcon';
 
 const getBaseRoute = (pathname: string): string => {
   const segments = pathname.split('/').filter(Boolean);
   return segments[0] || '';
 };
-
-const appSettingItems = [
-  {
-    url: '/notification',
-    icon: Bell01,
-  },
-];
 
 const AppSidebar = ({ ...props } : React.ComponentProps<typeof Sidebar>) => {
   const location = useLocation();
@@ -46,18 +42,21 @@ const AppSidebar = ({ ...props } : React.ComponentProps<typeof Sidebar>) => {
       title: intl.formatMessage(messages.home),
       url: '/home',
       icon: HomeLine,
+      activeIcon: HomeLineSolidIcon,
       isActive: false,
     },
     {
       title: intl.formatMessage(messages.courses),
       url: '/courses',
       icon: ClipboardCheck,
+      activeIcon: ClipboardCheckSolidIcon,
       isActive: false,
     },
     {
       title: intl.formatMessage(messages.library),
       url: '/libraries',
       icon: BookClosed,
+      activeIcon: BookClosedSolidIcon,
       isActive: false,
     },
     {
@@ -101,8 +100,7 @@ const AppSidebar = ({ ...props } : React.ComponentProps<typeof Sidebar>) => {
 
       <SidebarFooter className="tw-flex tw-flex-col tw-gap-4 !tw-p-0 tw-items-center">
         <SidebarMenu className="tw-list-none tw-flex tw-flex-col tw-pl-0 tw-mb-0">
-          {appSettingItems.map((item) => (
-            <Items item={item} key={item.url} />))}
+          <Notification />
         </SidebarMenu>
 
         <SwitchContainer />
