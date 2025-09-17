@@ -40,8 +40,7 @@ const ChatBoxContainer = () => {
       <div
         className={cn(
           'tw-z-10 tw-h-full',
-          'tw-p-8',
-          'tw-border tw-border-white tw-border-solid',
+          'tw-border tw-border-white tw-border-solid tw-overflow-hidden',
           'tw-rounded-[20px]',
           'tw-shadow-[0px_2px_4px_-2px_#1018280F,0px_4px_8px_-2px_#1018281A]',
           'tw-flex tw-flex-col tw-gap-8',
@@ -51,7 +50,7 @@ const ChatBoxContainer = () => {
           title="chatbox-iframe"
           id="chatbox-iframe"
           src="http://localhost:3000/chatbox"
-          height="600"
+          className="tw-h-full tw-w-full tw-border-none"
         />
       </div>
     </Sidebar>
