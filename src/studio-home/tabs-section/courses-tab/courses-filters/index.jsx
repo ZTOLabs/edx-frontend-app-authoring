@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { debounce } from 'lodash';
@@ -20,7 +20,6 @@ const CoursesFilters = ({
   dispatch,
   locationValue,
   onSubmitSearchField,
-  isLoading,
 }) => {
   const studioHomeCoursesParams = useSelector(getStudioHomeCoursesParams);
   const {
@@ -64,11 +63,14 @@ const CoursesFilters = ({
       currentPage,
       ...customParams
     } = filterParamsFormat;
+
     dispatch(updateStudioHomeCoursesCustomParams(filterParamsFormat));
     dispatch(fetchStudioHomeData(locationValue, false, { page: 1, ...customParams }, true));
   };
 
-  const handleSearchCourses = (searchValueDebounced) => {
+  // Use ref to store the search handler that always gets current filter values
+  const searchHandlerRef = useRef();
+  searchHandlerRef.current = (searchValueDebounced) => {
     const valueFormatted = searchValueDebounced.trim();
     const filterParams = {
       search: valueFormatted.length > 0 ? valueFormatted : undefined,
@@ -92,9 +94,10 @@ const CoursesFilters = ({
     setInputSearchValue(searchValueDebounced);
   };
 
+  // Stable debounced function that calls the current search handler
   const handleSearchCoursesDebounced = useCallback(
-    debounce((value) => handleSearchCourses(value), 400),
-    [activeOnly, archivedOnly, order, inputSearchValue],
+    debounce((value) => searchHandlerRef.current(value), 400),
+    [],
   );
 
   return (
@@ -119,14 +122,12 @@ const CoursesFilters = ({
 CoursesFilters.defaultProps = {
   locationValue: '',
   onSubmitSearchField: () => {},
-  isLoading: false,
 };
 
 CoursesFilters.propTypes = {
   dispatch: PropTypes.func.isRequired,
   locationValue: PropTypes.string,
   onSubmitSearchField: PropTypes.func,
-  isLoading: PropTypes.bool,
 };
 
 export default CoursesFilters;
