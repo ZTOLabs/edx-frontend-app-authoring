@@ -3,6 +3,9 @@ import { Sidebar, useSidebar } from 'shared/Components/ui/sidebar';
 import iframeEvents from 'shared/constants/iframeEvents';
 import { cn } from 'shared/lib/utils';
 
+// TODO: Get from env variable
+const CHATBOX_URL = 'http://localhost:3000/chatbox';
+
 const ChatBoxContainer = () => {
   const { setOpen } = useSidebar();
 
@@ -46,10 +49,11 @@ const ChatBoxContainer = () => {
           'tw-flex tw-flex-col tw-gap-8',
         )}
       >
+        {/* TODO:Add real url src */}
         <iframe
           title="chatbox-iframe"
           id="chatbox-iframe"
-          src="http://localhost:3000/chatbox"
+          src={CHATBOX_URL}
           className="tw-h-full tw-w-full tw-border-none"
         />
       </div>
