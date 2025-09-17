@@ -2,9 +2,9 @@ import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { useNavigate } from 'react-router';
-import StatefulButtonWrapper from 'shared/Components/Common/StatefulButtonWrapper';
 import { Plus } from '@untitledui/icons';
 import FeaturedLayout from 'home/layout/featured';
+import Button from 'shared/Components/Common/Button';
 import { RequestStatus } from '../../data/constants';
 import { getLoadingStatuses, getStudioHomeData } from '../data/selectors';
 import Courses from './courses';
@@ -40,7 +40,7 @@ const FeaturedCourses = ({
   const actions = (
     <>
       {hasAbilityToCreateNewCourse && (
-      <StatefulButtonWrapper
+      <Button
         className="!tw-w-auto"
         variant="link"
         size="sm"
@@ -49,7 +49,7 @@ const FeaturedCourses = ({
         labels={{ default: intl.formatMessage(messages.allCoursesBtnText) }}
       />
       )}
-      <StatefulButtonWrapper
+      <Button
         className="!tw-w-auto tw-border-gray-300 tw-text-gray-700"
         variant="secondary"
         iconBefore={Plus}

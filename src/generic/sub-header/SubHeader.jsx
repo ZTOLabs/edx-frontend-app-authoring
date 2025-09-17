@@ -19,7 +19,7 @@ const SubHeader = ({
       <div className="sub-header-breadcrumbs">{breadcrumbs}</div>
     )}
     <header className="sub-header">
-      <h2 className="tw-font-semibold tw-text-2xl tw-text-gray-900 tw-mb-0">
+      <h2 className="tw-font-medium tw-text-4xl tw-leading-[44px] tw-text-gray-900 tw-tracking-[-0.72px] tw-mb-0">
         <small className="sub-header-title-subtitle">{subtitle}</small>
         {title}
         {titleActions && (

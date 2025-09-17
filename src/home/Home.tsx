@@ -9,6 +9,7 @@ import { capitalizeString } from '../utils';
 
 import Loading from '../generic/Loading';
 import InternetConnectionAlert from '../generic/internet-connection-alert';
+import SubHeader from '../generic/sub-header/SubHeader';
 import VerifyEmailLayout from './verify-email-layout';
 import CreateNewCourseForm from './create-new-course-form';
 import messages from './messages';
@@ -78,20 +79,19 @@ const Home = () => {
 
   return (
     <>
-      <Container size="xl" className="tw-h-full">
-        <section className="tw-h-full tw-flex tw-flex-col">
-          <article className="studio-home-sub-header">
-            <section>
-              <h2 className="tw-font-medium tw-text-4xl tw-leading-[44px] tw-text-gray-900 tw-tracking-[-0.72px] tw-mb-8">
-                {intl.formatMessage(messages.headingTitle, {
-                  userName: capitalizeString(username) || 'Teacher',
-                })}
-              </h2>
-            </section>
-          </article>
-          {getMainBody()}
-        </section>
-      </Container>
+      <section className="tw-h-full tw-flex tw-flex-col tw-gap-8">
+        <article className="studio-home-sub-header">
+          <section>
+            <SubHeader
+              hideBorder
+              title={intl.formatMessage(messages.headingTitle, {
+                userName: capitalizeString(username) || 'Teacher',
+              })}
+            />
+          </section>
+        </article>
+        {getMainBody()}
+      </section>
       <div className="alert-toast">
         <InternetConnectionAlert isFailed={anyQueryIsFailed} isQueryPending={anyQueryIsPending} />
       </div>
