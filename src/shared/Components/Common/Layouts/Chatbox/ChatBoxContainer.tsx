@@ -1,28 +1,61 @@
-import { Sidebar } from 'shared/Components/ui/sidebar';
+import { useEffect } from 'react';
+import { Sidebar, useSidebar } from 'shared/Components/ui/sidebar';
+import iframeEvents from 'shared/constants/iframeEvents';
 import { cn } from 'shared/lib/utils';
 
-const ChatBoxContainer = () => (
-  <Sidebar
-    side="right"
-    collapsible="offcanvas"
-    className={cn(
-      'tw-w-[352px] tw-right-3',
-      'tw-py-3',
-    )}
-  >
-    <div
+const ChatBoxContainer = () => {
+  const { setOpen } = useSidebar();
+
+  const handleCloseChatbox = () => {
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      const { type } = event.data;
+
+      switch (type) {
+        case iframeEvents.CLOSE_CHATBOX:
+          handleCloseChatbox();
+          break;
+        default:
+          break;
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+
+    return () => window.removeEventListener('message', handleMessage);
+  }, []);
+
+  return (
+    <Sidebar
+      side="right"
+      collapsible="offcanvas"
       className={cn(
-        'tw-z-10 tw-h-full',
-        'tw-p-8',
-        'tw-border tw-border-white tw-border-solid',
-        'tw-rounded-[20px]',
-        'tw-shadow-[0px_2px_4px_-2px_#1018280F,0px_4px_8px_-2px_#1018281A]',
-        'tw-flex tw-flex-col tw-gap-8',
+        'tw-w-[352px] tw-right-3',
+        'tw-py-3',
       )}
     >
-      Chatbox
-    </div>
-  </Sidebar>
-);
+      <div
+        className={cn(
+          'tw-z-10 tw-h-full',
+          'tw-p-8',
+          'tw-border tw-border-white tw-border-solid',
+          'tw-rounded-[20px]',
+          'tw-shadow-[0px_2px_4px_-2px_#1018280F,0px_4px_8px_-2px_#1018281A]',
+          'tw-flex tw-flex-col tw-gap-8',
+        )}
+      >
+        <iframe
+          title="chatbox-iframe"
+          id="chatbox-iframe"
+          src="http://localhost:3000/chatbox"
+          height="600"
+        />
+      </div>
+    </Sidebar>
+  );
+};
 
 export default ChatBoxContainer;
