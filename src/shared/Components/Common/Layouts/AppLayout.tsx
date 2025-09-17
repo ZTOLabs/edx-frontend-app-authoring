@@ -11,10 +11,10 @@ const AppLayout = () => (
     <div className="tw-flex tw-flex-row tw-h-screen tw-w-screen">
       <AppSidebar />
       <SidebarInset className={cn(
-        'tw-bg-gradient-to-r tw-from-[#FBFAFF] tw-to-[#ECE9FE]',
-        'tw-p-3 tw-gap-3',
-        'tw-flex !tw-flex-row',
-      )}
+          'tw-bg-gradient-to-r tw-from-[#FBFAFF] tw-to-[#ECE9FE]',
+          'tw-p-3 tw-gap-3',
+          'tw-flex !tw-flex-row',
+        )}
       >
         <div className="tw-relative tw-flex-1 tw-overflow-hidden tw-rounded-[20px] tw-shadow-[0px_2px_4px_-2px_#1018280F,0px_4px_8px_-2px_#1018281A]">
           {/* Background overlay with 50% opacity */}
@@ -34,6 +34,7 @@ const AppLayout = () => (
               'tw-border tw-border-white tw-border-solid',
               'tw-rounded-[20px]',
               'tw-flex tw-flex-col tw-gap-8',
+              'tw-overflow-y-auto',
             )}
           >
             <Outlet />
