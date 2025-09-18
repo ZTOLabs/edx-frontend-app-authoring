@@ -100,7 +100,7 @@ const StudioHome = () => {
       return <VerifyEmailLayout />;
     }
     return (
-      <>
+      <section className="tw-flex tw-flex-col tw-gap-8 tw-overflow-auto tw-flex-1 tw-min-h-0 tw-pb-8">
         {showNewCourseContainer && (
         <CreateNewCourseForm handleOnClickCancel={() => setShowNewCourseContainer(false)} />
         )}
@@ -111,13 +111,13 @@ const StudioHome = () => {
           isShowProcessing={isShowProcessing && !isFiltered}
           isPaginationCoursesEnabled={isPaginationCoursesEnabled}
         />
-      </>
+      </section>
     );
   };
 
   return (
     <>
-      <section>
+      <section className="tw-h-full tw-flex tw-flex-col">
         <article className="studio-home-sub-header">
           <section>
             <SubHeader
