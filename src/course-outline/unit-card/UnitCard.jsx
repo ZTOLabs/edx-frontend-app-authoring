@@ -188,7 +188,7 @@ const UnitCard = ({
           marginBottom: '24px',
         }}
       >
-        <div className="tw-flex tw-gap-2 tw-items-center">
+        <div className="tw-flex tw-gap-2 tw-items-center" ref={currentRef}>
           <svg
             width="16"
             height="16"

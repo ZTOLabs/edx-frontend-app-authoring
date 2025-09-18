@@ -232,7 +232,7 @@ const SectionCard = ({
       }}
       gripContainerClassName="tw-mt-[6px]"
     >
-      <div className="tw-flex tw-flex-col tw-gap-6">
+      <div className="tw-flex tw-flex-col tw-gap-6" ref={currentRef}>
         <div className="tw-flex tw-gap-2 tw-items-start">
           <div className="tw-flex tw-flex-col tw-gap-1 tw-flex-1">
             <div className="tw-text-gray-900 tw-text-lg tw-font-bold tw-leading-7 tw-flex tw-gap-2 tw-items-center">
