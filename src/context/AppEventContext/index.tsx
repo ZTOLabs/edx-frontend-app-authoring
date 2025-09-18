@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Socket, io } from 'socket.io-client';
-
 import { createContext } from 'utils/context';
 
 import {
@@ -24,7 +23,7 @@ export const [useAppEventContext, AppEventContext] = createContext<AppEventConte
 export const AppEvent = SocketEvent;
 
 // TODO: use real url and token
-const socketUrl = 'http://localhost:8000';
+const socketUrl = 'http://localhost:8081';
 const token = '123';
 
 const createEmptyRegistryMap = () => {
@@ -67,6 +66,16 @@ export default function AppEventContextProvider({ children }: { children: React.
       [SocketEvent.DISCONNECT]: {
         handler: () => {
           setIsConnected(false);
+        },
+      },
+      [SocketEvent.OPEN_CANVAS]: {
+        handler: (data) => {
+          console.log('received data', data);
+        },
+      },
+      [SocketEvent.UPDATE_CANVAS]: {
+        handler: (data) => {
+          console.log('received update data', data);
         },
       },
     };

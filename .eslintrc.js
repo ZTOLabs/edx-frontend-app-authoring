@@ -16,6 +16,7 @@ module.exports = createConfig('eslint', {
     // There is no reason to disallow this syntax anymore; we don't use regenerator-runtime in new browsers
     'no-restricted-syntax': 'off',
     'no-use-before-define': 'off',
+    'react/jsx-wrap-multilines': 'off',
     '@typescript-eslint/no-use-before-define': 'off',
     'arrow-body-style': 'off',
     'object-curly-newline': 'off',

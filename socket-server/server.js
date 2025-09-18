@@ -5,6 +5,9 @@ const { Server } = require('socket.io');
 const app = express();
 const httpServer = createServer(app);
 
+// Middleware
+app.use(express.json());
+
 // Create Socket.IO server with CORS configuration
 const io = new Server(httpServer, {
   cors: {
@@ -13,24 +16,6 @@ const io = new Server(httpServer, {
     credentials: true,
   },
 });
-
-// Mock data generator
-function generateMockNotification(id) {
-  return {
-    id,
-    type: 'new_message',
-    content: `This is a test notification message ${id}. Long message content that should be truncated.`,
-    status: 'unread',
-    data: {
-      type: 'new_message',
-      fromEmail: 'test@example.com',
-      referenceId: Math.floor(Math.random() * 1000),
-      referenceName: `Test Project ${Math.floor(Math.random() * 100)}`,
-      referenceType: 'project',
-    },
-    createdAt: new Date().toISOString(),
-  };
-}
 
 // Socket.IO connection handler
 io.on('connection', (socket) => {
@@ -42,35 +27,44 @@ io.on('connection', (socket) => {
     console.log('Authenticated with token:', token);
   }
 
-  // Send a welcome notification
-  socket.emit('new_notification', generateMockNotification(Date.now()));
-
-  // Setup periodic notifications (every 10 seconds)
-  const notificationInterval = setInterval(() => {
-    const notification = generateMockNotification(Date.now());
-    console.log('Sending notification:', notification);
-    socket.emit('notification', notification);
-  }, 10000);
-
-  // Command line interface to send notifications
-  process.stdin.on('data', (data) => {
-    const input = data.toString().trim();
-    if (input === 'n') {
-      const notification = generateMockNotification(Date.now());
-      console.log('Manually sending notification:', notification);
-      socket.emit('notification', notification);
-    }
-  });
-
   // Handle disconnection
   socket.on('disconnect', () => {
     console.log('Client disconnected:', socket.id);
-    clearInterval(notificationInterval);
   });
 });
 
+// REST API route to send events to clients
+app.post('/send-event', (req, res) => {
+  try {
+    const { event, data } = req.body;
+
+    // Validate required fields
+    if (!event) {
+      return res.status(400).json({
+        error: 'Missing required field: event',
+      });
+    }
+
+    // Broadcast event to all connected clients
+    io.emit(event, data || {});
+
+    console.log(`Event "${event}" sent to all clients with data:`, data);
+
+    res.json({
+      success: true,
+      message: `Event "${event}" sent to ${io.engine.clientsCount} connected clients`,
+      clientsCount: io.engine.clientsCount,
+    });
+  } catch (error) {
+    console.error('Error sending event:', error);
+    res.status(500).json({
+      error: 'Internal server error',
+    });
+  }
+});
+
 // Start server
-const PORT = process.env.PORT || 3003;
+const PORT = process.env.PORT || 8081;
 httpServer.listen(PORT, () => {
   console.log(`Socket.IO server running on port ${PORT}`);
   console.log('Press "n" + Enter to send a test notification');
