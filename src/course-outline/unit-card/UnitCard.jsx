@@ -182,7 +182,7 @@ const UnitCard = ({
         id={id}
         category={category}
         key={id}
-        isDraggable={isDraggable}
+        isDraggable
         isDroppable={actions.childAddable}
         componentStyle={{
           marginBottom: '24px',
