@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Sidebar, useSidebar } from 'shared/Components/ui/sidebar';
 import iframeEvents from 'shared/constants/iframeEvents';
 import { cn } from 'shared/lib/utils';
@@ -9,9 +9,9 @@ const CHATBOX_URL = 'http://localhost:3000/chatbox';
 const ChatBoxContainer = () => {
   const { setOpen } = useSidebar();
 
-  const handleCloseChatbox = () => {
+  const handleCloseChatbox = useCallback(() => {
     setOpen(false);
-  };
+  }, [setOpen]);
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
@@ -29,7 +29,7 @@ const ChatBoxContainer = () => {
     window.addEventListener('message', handleMessage);
 
     return () => window.removeEventListener('message', handleMessage);
-  }, []);
+  }, [handleCloseChatbox]);
 
   return (
     <Sidebar
@@ -49,7 +49,6 @@ const ChatBoxContainer = () => {
           'tw-flex tw-flex-col tw-gap-8',
         )}
       >
-        {/* TODO:Add real url src */}
         <iframe
           title="chatbox-iframe"
           id="chatbox-iframe"
