@@ -216,8 +216,8 @@ const UnitCard = ({
                 'tw-py-[2px] tw-pl-[6px] tw-pr-[8px] tw-rounded-2xl tw-border tw-flex tw-items-center tw-gap-1 tw-border-solid',
                 {
                   'tw-bg-green-50 tw-border-green-200': unitStatus === 'live',
-                  'tw-bg-yellow-50 tw-border-yellow-200': unitStatus === 'draft',
-                  'tw-bg-[#FFFAEB] tw-border-[#FEDF89]':
+                  'tw-bg-[#FFFAEB] tw-border-[#FEDF89]': unitStatus === 'draft',
+                  'tw-bg-gray-50 tw-border-gray-200':
                     unitStatus !== 'live' && unitStatus !== 'draft',
                 },
               )}
