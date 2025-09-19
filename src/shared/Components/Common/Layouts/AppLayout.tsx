@@ -14,9 +14,8 @@ const AppLayout = () => {
       <SidebarInset
         className={cn(
           'tw-bg-gradient-to-r tw-from-[#FBFAFF] tw-to-[#ECE9FE]',
-          'tw-p-3 tw-gap-3',
           'tw-flex !tw-flex-row',
-          open ? 'tw-pr-3' : 'tw-pr-0',
+          open && 'tw-gap-3',
         )}
       >
         <Outlet />

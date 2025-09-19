@@ -7,7 +7,7 @@ import ChatBoxTrigger from './Chatbox/ChatBoxTrigger';
 export const MainCardLayout = ({ children }: { children: React.ReactNode }) => {
   const { open } = useSidebar();
   return (
-    <div className="tw-relative tw-flex-1 tw-overflow-hidden tw-rounded-[20px] tw-shadow-[0px_2px_4px_-2px_#1018280F,0px_4px_8px_-2px_#1018281A]">
+    <div className="tw-relative tw-flex-1 tw-overflow-hidden tw-rounded-[20px] tw-shadow-[0px_2px_4px_-2px_#1018280F,0px_4px_8px_-2px_#1018281A] tw-h-full">
       {/* Background overlay with 50% opacity */}
       <div
         className="tw-absolute tw-inset-0 tw-opacity-30 tw-z-0 tw-scale-x-[-1] "

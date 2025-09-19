@@ -15,7 +15,6 @@ import AppLayout from 'shared/Components/Common/Layouts/AppLayout';
 
 import { initializeHotjar } from '@edx/frontend-enterprise-hotjar';
 import { logError } from '@edx/frontend-platform/logging';
-import { MainCardLayout } from 'shared/Components/Common/Layouts/MainCardLayout';
 import messages from './i18n';
 import { StudentsPage } from './students-page/index';
 
@@ -73,9 +72,7 @@ const App = () => {
         <Route
           path="/home"
           element={(
-            <MainCardLayout>
-              <Home />
-            </MainCardLayout>
+            <Home />
           )}
         />
         {/* <Route path="/libraries" element={<StudioHome />} />
@@ -83,80 +80,62 @@ const App = () => {
         <Route
           path="/library/create"
           element={(
-            <MainCardLayout>
-              <CreateLibrary />
-            </MainCardLayout>
+            <CreateLibrary />
           )}
         />
         <Route
           path="/library/:libraryId/*"
           element={(
-            <MainCardLayout>
-              <LibraryLayout />
-            </MainCardLayout>
+            <LibraryLayout />
           )}
         />
 
         <Route
           path="/courses"
           element={(
-            <MainCardLayout>
-              <StudioHome />
-            </MainCardLayout>
+            <StudioHome />
           )}
         />
         <Route
           path="/students"
           element={(
-            <MainCardLayout>
-              <StudentsPage />
-            </MainCardLayout>
+            <StudentsPage />
           )}
         />
 
         <Route
           path="/component-picker"
           element={(
-            <MainCardLayout>
-              <ComponentPicker extraFilter={['NOT block_type = "unit"']} />
-            </MainCardLayout>
+            <ComponentPicker extraFilter={['NOT block_type = "unit"']} />
           )}
         />
         <Route
           path="/component-picker/multiple"
           element={(
-            <MainCardLayout>
-              <ComponentPicker
-                componentPickerMode="multiple"
-                extraFilter={['NOT block_type = "unit"']}
-              />
-            </MainCardLayout>
+            <ComponentPicker
+              componentPickerMode="multiple"
+              extraFilter={['NOT block_type = "unit"']}
+            />
           )}
         />
         <Route
           path="/legacy/preview-changes/:usageKey"
           element={(
-            <MainCardLayout>
-              <PreviewChangesEmbed />
-            </MainCardLayout>
+            <PreviewChangesEmbed />
           )}
         />
         <Route path="/course/:courseId/*" element={<CourseAuthoringRoutes />} />
         <Route
           path="/course_rerun/:courseId"
           element={(
-            <MainCardLayout>
-              <CourseRerun />
-            </MainCardLayout>
+            <CourseRerun />
           )}
         />
         {getConfig().ENABLE_ACCESSIBILITY_PAGE === 'true' && (
           <Route
             path="/accessibility"
             element={(
-              <MainCardLayout>
-                <AccessibilityPage />
-              </MainCardLayout>
+              <AccessibilityPage />
             )}
           />
         )}
@@ -165,9 +144,7 @@ const App = () => {
             <Route
               path="/taxonomies"
               element={(
-                <MainCardLayout>
-                  <TaxonomyLayout />
-                </MainCardLayout>
+                <TaxonomyLayout />
               )}
             >
               <Route index element={<TaxonomyListPage />} />
@@ -175,9 +152,7 @@ const App = () => {
             <Route
               path="/taxonomy"
               element={(
-                <MainCardLayout>
-                  <TaxonomyLayout />
-                </MainCardLayout>
+                <TaxonomyLayout />
               )}
             >
               <Route path="/taxonomy/:taxonomyId" element={<TaxonomyDetailPage />} />
@@ -185,9 +160,7 @@ const App = () => {
             <Route
               path="/tagging/components/widget/:contentId"
               element={(
-                <MainCardLayout>
-                  <ContentTagsDrawer />
-                </MainCardLayout>
+                <ContentTagsDrawer />
               )}
             />
           </>
