@@ -234,7 +234,9 @@ const SectionCard = ({
               >
                 <ChevronTriangleDown />
               </button>
-              {displayName}
+              <span className="tw-flex-1 tw-line-clamp-1 tw-overflow-hidden tw-text-ellipsis tw-max-w-[391px]">
+                {displayName}
+              </span>
             </div>
             {releaseDate && (
               <div className="tw-text-gray-500 tw-text-xs tw-font-normal tw-leading-none tw-ml-8">
