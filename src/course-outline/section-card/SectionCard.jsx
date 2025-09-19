@@ -223,7 +223,7 @@ const SectionCard = ({
       isDraggable
       isDroppable={actions.childAddable}
       componentStyle={{
-        padding: '16px',
+        padding: '24px 16px',
         borderRadius: '16px',
         border: '1px solid #FFF',
         background: 'rgba(255, 255, 255, 0.70)',
