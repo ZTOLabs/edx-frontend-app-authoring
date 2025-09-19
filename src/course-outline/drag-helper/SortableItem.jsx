@@ -1,16 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { intlShape, injectIntl } from '@edx/frontend-platform/i18n';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import {
-  Col, Icon, Row,
-} from '@openedx/paragon';
-import { DragIndicator } from '@openedx/paragon/icons';
+import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
+import PropTypes from 'prop-types';
 
+import { DotsGrid } from '@untitledui/icons';
 import classNames from 'classnames';
 import messages from './messages';
-import { Grip } from 'lucide-react';
 
 const SortableItem = ({
   id,
@@ -21,7 +16,7 @@ const SortableItem = ({
   children,
   // injected
   intl,
-  gripContainerClassName,
+  gripContainerClassName = '',
 }) => {
   const {
     attributes,
@@ -62,7 +57,7 @@ const SortableItem = ({
           {...attributes}
           {...listeners}
         >
-          <Grip
+          <DotsGrid
             className="tw-w-4 tw-h-4 focus:tw-outline-none"
             ref={setActivatorNodeRef}
             key="drag-to-reorder-icon"
