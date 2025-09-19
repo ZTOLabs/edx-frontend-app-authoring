@@ -1,45 +1,31 @@
 // @ts-check
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-} from 'react';
-import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
 import { useToggle } from '@openedx/paragon';
 import { isEmpty } from 'lodash';
+import PropTypes from 'prop-types';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
+import { useIntl } from '@edx/frontend-platform/i18n';
+import { File05 } from '@untitledui/icons';
+import classNames from 'classnames';
+import { isUnitReadOnly } from '../../course-unit/data/utils';
+import { PreviewLibraryXBlockChanges } from '../../course-unit/preview-changes';
+import { RequestStatus } from '../../data/constants';
+import { useClipboard } from '../../generic/clipboard';
 import CourseOutlineUnitCardExtraActionsSlot from '../../plugin-slots/CourseOutlineUnitCardExtraActionsSlot';
+import CardHeaderWithDropdownOnly from '../card-header/CardHeaderWithDropdownOnly';
+import messages from '../card-header/messages';
+import TitleLink from '../card-header/TitleLink';
 import { setCurrentItem, setCurrentSection, setCurrentSubsection } from '../data/slice';
 import { fetchCourseSectionQuery } from '../data/thunk';
-import { RequestStatus } from '../../data/constants';
-import { isUnitReadOnly } from '../../course-unit/data/utils';
-import CardHeader from '../card-header/CardHeader';
 import SortableItem from '../drag-helper/SortableItem';
-import TitleLink from '../card-header/TitleLink';
-import XBlockStatus from '../xblock-status/XBlockStatus';
-import {
-  getItemStatus,
-  getItemStatusBadgeContent,
-  getItemStatusBorder,
-  scrollToElement,
-} from '../utils';
-import { useClipboard } from '../../generic/clipboard';
-import { PreviewLibraryXBlockChanges } from '../../course-unit/preview-changes';
-import { useIntl } from '@edx/frontend-platform/i18n';
-import messages from '../card-header/messages';
-import CardHeaderWithDropdownOnly from '../card-header/CardHeaderWithDropdownOnly';
-import classNames from 'classnames';
-import { File05 } from '@untitledui/icons';
+import { getItemStatus, getItemStatusBadgeContent, scrollToElement } from '../utils';
 
 const UnitCard = ({
   unit,
   subsection,
   section,
-  isSelfPaced,
-  isCustomRelativeDatesActive,
   index,
   getPossibleMoves,
   onOpenPublishModal,
@@ -88,6 +74,8 @@ const UnitCard = ({
       upstreamBlockVersionSynced: upstreamInfo.versionSynced,
       isVertical: true,
     };
+    // OpenEdx implementation
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [upstreamInfo]);
 
   const readOnly = isUnitReadOnly(unit);
@@ -110,7 +98,6 @@ const UnitCard = ({
     visibilityState,
     hasChanges,
   });
-  const borderStyle = getItemStatusBorder(unitStatus);
 
   const handleClickMenuButton = () => {
     dispatch(setCurrentItem(unit));
@@ -160,12 +147,16 @@ const UnitCard = ({
       const alignWithTop = !!isScrolledToElement;
       scrollToElement(currentRef.current, alignWithTop);
     }
+    // OpenEdx implementation
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isScrolledToElement]);
 
   useEffect(() => {
     if (savingStatus === RequestStatus.SUCCESSFUL) {
       closeForm();
     }
+    // OpenEdx implementation
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [savingStatus]);
 
   const intl = useIntl();
@@ -174,8 +165,6 @@ const UnitCard = ({
   if (!isHeaderVisible) {
     return null;
   }
-
-  const isDraggable = actions.draggable && (actions.allowMoveUp || actions.allowMoveDown);
 
   return (
     <>
@@ -332,8 +321,6 @@ UnitCard.propTypes = {
   index: PropTypes.number.isRequired,
   getPossibleMoves: PropTypes.func.isRequired,
   onOrderChange: PropTypes.func.isRequired,
-  isSelfPaced: PropTypes.bool.isRequired,
-  isCustomRelativeDatesActive: PropTypes.bool.isRequired,
   discussionsSettings: PropTypes.shape({
     providerType: PropTypes.string,
     enableGradedUnits: PropTypes.bool,
