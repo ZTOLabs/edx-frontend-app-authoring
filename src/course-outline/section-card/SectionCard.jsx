@@ -225,6 +225,7 @@ const SectionCard = ({
                   },
                 )}
                 onClick={handleExpandContent}
+                disabled={section.childInfo?.children?.[0]?.childInfo?.children?.length === 0}
               >
                 <ChevronTriangleDown />
               </button>
