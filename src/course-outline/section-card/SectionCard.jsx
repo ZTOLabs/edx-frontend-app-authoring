@@ -1,28 +1,23 @@
 // @ts-check
-import React, {
-  useContext, useEffect, useState, useRef,
-} from 'react';
-import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
 import { useIntl } from '@edx/frontend-platform/i18n';
-import { Bubble, Button as OpenEdxButton, useToggle } from '@openedx/paragon';
-import { Add as IconAdd } from '@openedx/paragon/icons';
-import { useSearchParams } from 'react-router-dom';
+import { useToggle } from '@openedx/paragon';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import { useContext, useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 
-import { setCurrentItem, setCurrentSection } from '../data/slice';
-import { RequestStatus } from '../../data/constants';
-import CardHeader from '../card-header/CardHeader';
-import SortableItem from '../drag-helper/SortableItem';
-import { DragContext } from '../drag-helper/DragContextProvider';
-import TitleButton from '../card-header/TitleButton';
-import XBlockStatus from '../xblock-status/XBlockStatus';
-import { getItemStatus, getItemStatusBorder, scrollToElement } from '../utils';
-import xblockStatusMessages from '../xblock-status/messages';
-import { Plus } from 'lucide-react';
-import courseUnitMessages from '../../course-unit/course-sequence/messages';
-import CardHeaderWithDropdownOnly from '../card-header/CardHeaderWithDropdownOnly';
 import Button from 'shared/Components/Common/Button';
+import { Plus } from '@untitledui/icons';
+import courseUnitMessages from '../../course-unit/course-sequence/messages';
+import { RequestStatus } from '../../data/constants';
+import CardHeaderWithDropdownOnly from '../card-header/CardHeaderWithDropdownOnly';
+import TitleButton from '../card-header/TitleButton';
+import { setCurrentItem, setCurrentSection } from '../data/slice';
+import { DragContext } from '../drag-helper/DragContextProvider';
+import SortableItem from '../drag-helper/SortableItem';
+import { getItemStatus, scrollToElement } from '../utils';
+import xblockStatusMessages from '../xblock-status/messages';
 
 const ChevronTriangleDown = () => (
   <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -36,12 +31,9 @@ const ChevronTriangleDown = () => (
 
 const SectionCard = ({
   section,
-  isSelfPaced,
-  isCustomRelativeDatesActive,
   children,
   index,
   canMoveItem,
-  onOpenHighlightsModal,
   onOpenPublishModal,
   onOpenConfigureModal,
   onEditSectionSubmit,
@@ -49,7 +41,6 @@ const SectionCard = ({
   onOpenDeleteModal,
   onDuplicateSubmit,
   isSectionsExpanded,
-  onNewSubsectionSubmit,
   onNewUnitSubmit,
   onOrderChange,
 }) => {
@@ -103,9 +94,7 @@ const SectionCard = ({
     hasChanges,
     published,
     visibilityState,
-    highlights,
     actions: sectionActions,
-    isHeaderVisible = true,
   } = section;
 
   useEffect(() => {
@@ -114,6 +103,8 @@ const SectionCard = ({
     } else if (overId === id && !isExpanded) {
       setIsExpanded(true);
     }
+    // OpenEdx implementation
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeId, overId]);
 
   useEffect(() => {
@@ -122,12 +113,16 @@ const SectionCard = ({
       const alignWithTop = !!isScrolledToElement;
       scrollToElement(currentRef.current, alignWithTop);
     }
+    // OpenEdx implementation
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isScrolledToElement]);
 
   useEffect(() => {
     // If the locatorId is set/changed, we need to make sure that the section is expanded
     // if it contains the result, in order to scroll to it
     setIsExpanded((prevState) => containsSearchResult() || prevState);
+    // OpenEdx implementation
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locatorId, setIsExpanded]);
 
   // re-create actions object for customizations
@@ -141,9 +136,6 @@ const SectionCard = ({
     visibilityState,
     hasChanges,
   });
-
-  // remove border when section is expanded
-  const borderStyle = getItemStatusBorder(!isExpanded ? sectionStatus : '');
 
   const handleExpandContent = () => {
     const firstSection = section.childInfo?.children?.[0];
@@ -167,14 +159,6 @@ const SectionCard = ({
     closeForm();
   };
 
-  const handleOpenHighlightsModal = () => {
-    onOpenHighlightsModal(section);
-  };
-
-  const handleNewSubsectionSubmit = () => {
-    onNewSubsectionSubmit(id);
-  };
-
   const handleNewUnitSubmit = () => {
     // Find the topmost subsection (first subsection in the section)
     const subsections = section.childInfo?.children;
@@ -196,6 +180,8 @@ const SectionCard = ({
     if (savingStatus === RequestStatus.SUCCESSFUL) {
       closeForm();
     }
+    // OpenEdx implementation
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [savingStatus]);
 
   const titleComponent = (
@@ -331,10 +317,7 @@ SectionCard.propTypes = {
       ).isRequired,
     }).isRequired,
   }).isRequired,
-  isSelfPaced: PropTypes.bool.isRequired,
-  isCustomRelativeDatesActive: PropTypes.bool.isRequired,
   children: PropTypes.node,
-  onOpenHighlightsModal: PropTypes.func.isRequired,
   onOpenPublishModal: PropTypes.func.isRequired,
   onOpenConfigureModal: PropTypes.func.isRequired,
   onEditSectionSubmit: PropTypes.func.isRequired,
@@ -342,7 +325,6 @@ SectionCard.propTypes = {
   onOpenDeleteModal: PropTypes.func.isRequired,
   onDuplicateSubmit: PropTypes.func.isRequired,
   isSectionsExpanded: PropTypes.bool.isRequired,
-  onNewSubsectionSubmit: PropTypes.func.isRequired,
   onNewUnitSubmit: PropTypes.func.isRequired,
   index: PropTypes.number.isRequired,
   canMoveItem: PropTypes.func.isRequired,
