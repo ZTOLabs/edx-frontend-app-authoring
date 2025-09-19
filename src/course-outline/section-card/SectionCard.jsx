@@ -196,6 +196,8 @@ const SectionCard = ({
   const isDraggable = actions.draggable && (actions.allowMoveUp || actions.allowMoveDown);
   const releaseDate = section.releaseDate ? section.releaseDate.replace('UTC', '') : '';
 
+  const isSectionWithNoUnit = section.childInfo?.children?.[0]?.childInfo?.children?.length === 0;
+
   return (
     <SortableItem
       id={id}
@@ -212,7 +214,10 @@ const SectionCard = ({
       }}
       gripContainerClassName="tw-mt-[2px]"
     >
-      <div className="tw-flex tw-flex-col tw-gap-6" ref={currentRef}>
+      <div
+        className={classNames('tw-flex tw-flex-col', !isSectionWithNoUnit && 'tw-gap-6')}
+        ref={currentRef}
+      >
         <div className="tw-flex tw-gap-2 tw-items-start">
           <div className="tw-flex tw-flex-col tw-gap-1 tw-flex-1">
             <div className="tw-text-gray-900 tw-text-lg tw-font-bold tw-leading-7 tw-flex tw-gap-2 tw-items-center">
@@ -221,11 +226,11 @@ const SectionCard = ({
                 className={classNames(
                   'tw-w-6 tw-h-6 tw-flex tw-items-center tw-justify-center tw-border-0 tw-bg-transparent',
                   {
-                    'tw-rotate-[270deg]': !isExpanded,
+                    'tw-rotate-[270deg]': !isExpanded || isSectionWithNoUnit,
                   },
                 )}
                 onClick={handleExpandContent}
-                disabled={section.childInfo?.children?.[0]?.childInfo?.children?.length === 0}
+                disabled={isSectionWithNoUnit}
               >
                 <ChevronTriangleDown />
               </button>
