@@ -15,6 +15,7 @@ import AppLayout from 'shared/Components/Common/Layouts/AppLayout';
 
 import { initializeHotjar } from '@edx/frontend-enterprise-hotjar';
 import { logError } from '@edx/frontend-platform/logging';
+import { MainCardLayout } from 'shared/Components/Common/Layouts/MainCardLayout';
 import messages from './i18n';
 import { StudentsPage } from './students-page/index';
 
@@ -42,7 +43,6 @@ import { ToastProvider } from './generic/toast-context';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import './index.scss';
-import { OneSidebarLayout } from 'shared/Components/Common/Layouts/OneSidebarLayout';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -72,123 +72,123 @@ const App = () => {
       <Route path="/" element={<AppLayout />}>
         <Route
           path="/home"
-          element={
-            <OneSidebarLayout>
+          element={(
+            <MainCardLayout>
               <Home />
-            </OneSidebarLayout>
-          }
+            </MainCardLayout>
+          )}
         />
         {/* <Route path="/libraries" element={<StudioHome />} />
         <Route path="/libraries-v1" element={<StudioHome />} /> */}
         <Route
           path="/library/create"
-          element={
-            <OneSidebarLayout>
+          element={(
+            <MainCardLayout>
               <CreateLibrary />
-            </OneSidebarLayout>
-          }
+            </MainCardLayout>
+          )}
         />
         <Route
           path="/library/:libraryId/*"
-          element={
-            <OneSidebarLayout>
+          element={(
+            <MainCardLayout>
               <LibraryLayout />
-            </OneSidebarLayout>
-          }
+            </MainCardLayout>
+          )}
         />
 
         <Route
           path="/courses"
-          element={
-            <OneSidebarLayout>
+          element={(
+            <MainCardLayout>
               <StudioHome />
-            </OneSidebarLayout>
-          }
+            </MainCardLayout>
+          )}
         />
         <Route
           path="/students"
-          element={
-            <OneSidebarLayout>
+          element={(
+            <MainCardLayout>
               <StudentsPage />
-            </OneSidebarLayout>
-          }
+            </MainCardLayout>
+          )}
         />
 
         <Route
           path="/component-picker"
-          element={
-            <OneSidebarLayout>
+          element={(
+            <MainCardLayout>
               <ComponentPicker extraFilter={['NOT block_type = "unit"']} />
-            </OneSidebarLayout>
-          }
+            </MainCardLayout>
+          )}
         />
         <Route
           path="/component-picker/multiple"
-          element={
-            <OneSidebarLayout>
+          element={(
+            <MainCardLayout>
               <ComponentPicker
                 componentPickerMode="multiple"
                 extraFilter={['NOT block_type = "unit"']}
               />
-            </OneSidebarLayout>
-          }
+            </MainCardLayout>
+          )}
         />
         <Route
           path="/legacy/preview-changes/:usageKey"
-          element={
-            <OneSidebarLayout>
+          element={(
+            <MainCardLayout>
               <PreviewChangesEmbed />
-            </OneSidebarLayout>
-          }
+            </MainCardLayout>
+          )}
         />
         <Route path="/course/:courseId/*" element={<CourseAuthoringRoutes />} />
         <Route
           path="/course_rerun/:courseId"
-          element={
-            <OneSidebarLayout>
+          element={(
+            <MainCardLayout>
               <CourseRerun />
-            </OneSidebarLayout>
-          }
+            </MainCardLayout>
+          )}
         />
         {getConfig().ENABLE_ACCESSIBILITY_PAGE === 'true' && (
           <Route
             path="/accessibility"
-            element={
-              <OneSidebarLayout>
+            element={(
+              <MainCardLayout>
                 <AccessibilityPage />
-              </OneSidebarLayout>
-            }
+              </MainCardLayout>
+            )}
           />
         )}
         {getConfig().ENABLE_TAGGING_TAXONOMY_PAGES === 'true' && (
           <>
             <Route
               path="/taxonomies"
-              element={
-                <OneSidebarLayout>
+              element={(
+                <MainCardLayout>
                   <TaxonomyLayout />
-                </OneSidebarLayout>
-              }
+                </MainCardLayout>
+              )}
             >
               <Route index element={<TaxonomyListPage />} />
             </Route>
             <Route
               path="/taxonomy"
-              element={
-                <OneSidebarLayout>
+              element={(
+                <MainCardLayout>
                   <TaxonomyLayout />
-                </OneSidebarLayout>
-              }
+                </MainCardLayout>
+              )}
             >
               <Route path="/taxonomy/:taxonomyId" element={<TaxonomyDetailPage />} />
             </Route>
             <Route
               path="/tagging/components/widget/:contentId"
-              element={
-                <OneSidebarLayout>
+              element={(
+                <MainCardLayout>
                   <ContentTagsDrawer />
-                </OneSidebarLayout>
-              }
+                </MainCardLayout>
+              )}
             />
           </>
         )}
