@@ -42,6 +42,7 @@ import { ToastProvider } from './generic/toast-context';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import './index.scss';
+import { OneSidebarLayout } from 'shared/Components/Common/Layouts/OneSidebarLayout';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -69,40 +70,125 @@ const App = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<AppLayout />}>
-        <Route path="/home" element={<Home />} />
+        <Route
+          path="/home"
+          element={
+            <OneSidebarLayout>
+              <Home />
+            </OneSidebarLayout>
+          }
+        />
         {/* <Route path="/libraries" element={<StudioHome />} />
         <Route path="/libraries-v1" element={<StudioHome />} /> */}
-        <Route path="/library/create" element={<CreateLibrary />} />
-        <Route path="/library/:libraryId/*" element={<LibraryLayout />} />
+        <Route
+          path="/library/create"
+          element={
+            <OneSidebarLayout>
+              <CreateLibrary />
+            </OneSidebarLayout>
+          }
+        />
+        <Route
+          path="/library/:libraryId/*"
+          element={
+            <OneSidebarLayout>
+              <LibraryLayout />
+            </OneSidebarLayout>
+          }
+        />
 
-        <Route path="/courses" element={<StudioHome />} />
-        <Route path="/students" element={<StudentsPage />} />
+        <Route
+          path="/courses"
+          element={
+            <OneSidebarLayout>
+              <StudioHome />
+            </OneSidebarLayout>
+          }
+        />
+        <Route
+          path="/students"
+          element={
+            <OneSidebarLayout>
+              <StudentsPage />
+            </OneSidebarLayout>
+          }
+        />
 
         <Route
           path="/component-picker"
-          element={<ComponentPicker extraFilter={['NOT block_type = "unit"']} />}
+          element={
+            <OneSidebarLayout>
+              <ComponentPicker extraFilter={['NOT block_type = "unit"']} />
+            </OneSidebarLayout>
+          }
         />
         <Route
           path="/component-picker/multiple"
-          element={<ComponentPicker componentPickerMode="multiple" extraFilter={['NOT block_type = "unit"']} />}
+          element={
+            <OneSidebarLayout>
+              <ComponentPicker
+                componentPickerMode="multiple"
+                extraFilter={['NOT block_type = "unit"']}
+              />
+            </OneSidebarLayout>
+          }
         />
-        <Route path="/legacy/preview-changes/:usageKey" element={<PreviewChangesEmbed />} />
+        <Route
+          path="/legacy/preview-changes/:usageKey"
+          element={
+            <OneSidebarLayout>
+              <PreviewChangesEmbed />
+            </OneSidebarLayout>
+          }
+        />
         <Route path="/course/:courseId/*" element={<CourseAuthoringRoutes />} />
-        <Route path="/course_rerun/:courseId" element={<CourseRerun />} />
+        <Route
+          path="/course_rerun/:courseId"
+          element={
+            <OneSidebarLayout>
+              <CourseRerun />
+            </OneSidebarLayout>
+          }
+        />
         {getConfig().ENABLE_ACCESSIBILITY_PAGE === 'true' && (
-          <Route path="/accessibility" element={<AccessibilityPage />} />
+          <Route
+            path="/accessibility"
+            element={
+              <OneSidebarLayout>
+                <AccessibilityPage />
+              </OneSidebarLayout>
+            }
+          />
         )}
         {getConfig().ENABLE_TAGGING_TAXONOMY_PAGES === 'true' && (
           <>
-            <Route path="/taxonomies" element={<TaxonomyLayout />}>
+            <Route
+              path="/taxonomies"
+              element={
+                <OneSidebarLayout>
+                  <TaxonomyLayout />
+                </OneSidebarLayout>
+              }
+            >
               <Route index element={<TaxonomyListPage />} />
             </Route>
-            <Route path="/taxonomy" element={<TaxonomyLayout />}>
+            <Route
+              path="/taxonomy"
+              element={
+                <OneSidebarLayout>
+                  <TaxonomyLayout />
+                </OneSidebarLayout>
+              }
+            >
               <Route path="/taxonomy/:taxonomyId" element={<TaxonomyDetailPage />} />
             </Route>
             <Route
               path="/tagging/components/widget/:contentId"
-              element={<ContentTagsDrawer />}
+              element={
+                <OneSidebarLayout>
+                  <ContentTagsDrawer />
+                </OneSidebarLayout>
+              }
             />
           </>
         )}
