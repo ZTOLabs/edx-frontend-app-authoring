@@ -402,7 +402,7 @@ const CourseOutline = ({ courseId }) => {
                     onClick={handleNewSectionSubmit}
                     labels={{ default: intl.formatMessage(messages.newSectionButton) }}
                     variant="secondary"
-                    className="!tw-text-sm !tw-border-0 !tw-font-bold tw-mb-4 !tw-bg-[rgba(255,255,255,0.7)]"
+                    className="!tw-text-sm !tw-border-0 !tw-font-bold tw-mb-4 !tw-bg-[rgba(255,255,255,0.7)] hover:!tw-bg-brand-600"
                   />
                 )}
               </>
