@@ -13,14 +13,19 @@ module.exports = createConfig('eslint', {
     'template-curly-spacing': 'off',
     'react-hooks/exhaustive-deps': 'off',
     'no-restricted-exports': 'off',
+    'no-spaced-func': 'off',
     // There is no reason to disallow this syntax anymore; we don't use regenerator-runtime in new browsers
     'no-restricted-syntax': 'off',
     'no-use-before-define': 'off',
-    'react/jsx-wrap-multilines': 'off',
-    '@typescript-eslint/no-use-before-define': 'off',
+    'implicit-arrow-linebreak': 'off',
     'arrow-body-style': 'off',
     'object-curly-newline': 'off',
+    'react/jsx-wrap-multilines': 'off',
+    'react/prop-types': 'off',
+    'react/jsx-fragments': 'off',
     'react/function-component-definition': 'off',
+    '@typescript-eslint/no-use-before-define': 'off',
+    '@typescript-eslint/indent': 'off',
   },
   settings: {
     // Import URLs should be resolved using aliases
