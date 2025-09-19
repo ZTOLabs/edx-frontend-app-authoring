@@ -56,17 +56,17 @@ const SortableItem = ({
       {isDraggable && (
         <div
           className={classNames(
-            'tw-flex tw-items-center tw-justify-center tw-mr-2 focus-visible:tw-outline-none',
+            'tw-p-1 tw-mr-2 focus-visible:tw-outline-none tw-flex tw-items-center tw-justify-center',
             gripContainerClassName,
           )}
+          {...attributes}
+          {...listeners}
         >
           <Grip
             className="tw-w-4 tw-h-4 focus:tw-outline-none"
             ref={setActivatorNodeRef}
             key="drag-to-reorder-icon"
             aria-label={intl.formatMessage(messages.tooltipContent)}
-            {...attributes}
-            {...listeners}
           />
         </div>
       )}

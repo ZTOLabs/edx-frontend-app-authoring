@@ -224,7 +224,7 @@ const SectionCard = ({
         marginBottom: '16px',
         alignItems: 'start',
       }}
-      gripContainerClassName="tw-mt-[6px]"
+      gripContainerClassName="tw-mt-[2px]"
     >
       <div className="tw-flex tw-flex-col tw-gap-6" ref={currentRef}>
         <div className="tw-flex tw-gap-2 tw-items-start">
