@@ -285,7 +285,7 @@ const CourseOutline = ({ courseId }) => {
             {intl.formatMessage(messages.headingTitle)}
           </div>
           <Button
-            className="!tw-w-auto"
+            className="!tw-w-auto !tw-px-[14px]"
             variant="brand"
             iconBefore={Plus}
             size="sm"
@@ -295,7 +295,7 @@ const CourseOutline = ({ courseId }) => {
         </div>
         <div className="tw-flex tw-flex-col tw-gap-4">
           {!errors?.outlineIndexApi && (
-            <div className="pt-4">
+            <div className="tw-mt-8">
               <>
                 <DraggableList
                   items={sections}
