@@ -8,7 +8,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { File05 } from '@untitledui/icons';
-import classNames from 'classnames';
+import Badge from '../../shared/Components/Common/Badge';
 import { isUnitReadOnly } from '../../course-unit/data/utils';
 import { PreviewLibraryXBlockChanges } from '../../course-unit/preview-changes';
 import { RequestStatus } from '../../data/constants';
@@ -162,6 +162,18 @@ const UnitCard = ({
   const intl = useIntl();
   const { badgeTitle } = getItemStatusBadgeContent(unitStatus, messages, intl);
 
+  // Map unitStatus to Badge variant
+  const getBadgeVariant = (status) => {
+    switch (status) {
+      case 'live':
+        return 'success';
+      case 'draft':
+        return 'warning';
+      default:
+        return 'default';
+    }
+  };
+
   if (!isHeaderVisible) {
     return null;
   }
@@ -192,34 +204,7 @@ const UnitCard = ({
             </button>
           </div>
           <div className="tw-flex tw-gap-2 tw-items-center">
-            <div
-              className={classNames(
-                'tw-py-[2px] tw-pl-[6px] tw-pr-[8px] tw-rounded-2xl tw-border tw-flex tw-items-center tw-gap-1 tw-border-solid',
-                {
-                  'tw-bg-green-50 tw-border-green-200': unitStatus === 'live',
-                  'tw-bg-[#FFFAEB] tw-border-[#FEDF89]': unitStatus === 'draft',
-                  'tw-bg-gray-50 tw-border-gray-200':
-                    unitStatus !== 'live' && unitStatus !== 'draft',
-                },
-              )}
-            >
-              <div
-                className={classNames('tw-w-[6px] tw-h-[6px] tw-rounded-full', {
-                  'tw-bg-green-500': unitStatus === 'live',
-                  'tw-bg-[#F79009]': unitStatus === 'draft',
-                  'tw-bg-gray-400': unitStatus !== 'live' && unitStatus !== 'draft',
-                })}
-              />
-              <span
-                className={classNames('tw-text-xs tw-font-medium', {
-                  'tw-text-green-700': unitStatus === 'live',
-                  'tw-text-[#B54708]': unitStatus === 'draft',
-                  'tw-text-gray-600': unitStatus !== 'live' && unitStatus !== 'draft',
-                })}
-              >
-                {badgeTitle}
-              </span>
-            </div>
+            <Badge variant={getBadgeVariant(unitStatus)}>{badgeTitle}</Badge>
             <CardHeaderWithDropdownOnly
               title={displayName}
               status={unitStatus}
