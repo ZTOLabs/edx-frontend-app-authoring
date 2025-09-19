@@ -232,7 +232,7 @@ const SectionCard = ({
               {displayName}
             </div>
             {releaseDate && (
-              <div className="tw-text-gray-500 tw-text-xs tw-font-normal tw-leading-none tw-ml-4">
+              <div className="tw-text-gray-500 tw-text-xs tw-font-normal tw-leading-none tw-ml-8">
                 {intl.formatMessage(xblockStatusMessages.releasedLabel)} {releaseDate}
               </div>
             )}
