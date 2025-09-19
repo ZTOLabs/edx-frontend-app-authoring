@@ -283,7 +283,7 @@ const CourseOutline = ({ courseId }) => {
           ) : null}
         </TransitionReplace> */}
         <div className="tw-flex tw-justify-between tw-items-center">
-          <div className="tw-text-gray-900 tw-text-2xl tw-font-semibold tw-leading-loose">
+          <div className="tw-text-gray-900 tw-text-2xl tw-font-semibold">
             {intl.formatMessage(messages.headingTitle)}
           </div>
           <Button
