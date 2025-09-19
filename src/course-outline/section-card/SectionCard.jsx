@@ -24,16 +24,8 @@ import courseUnitMessages from '../../course-unit/course-sequence/messages';
 import CardHeaderWithDropdownOnly from '../card-header/CardHeaderWithDropdownOnly';
 import Button from 'shared/Components/Common/Button';
 
-const ChevronDown = ({ className, onClick }) => (
-  <svg
-    width="10"
-    height="6"
-    viewBox="0 0 10 6"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-    onClick={onClick}
-  >
+const ChevronTriangleDown = () => (
+  <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M1.00014 1.00016L5.00014 5.00016L9.00014 1.00016" fill="#475467" />
     <path
       d="M9.00014 0.333496C9.26975 0.333496 9.51282 0.495887 9.61603 0.744954C9.71922 0.994071 9.66216 1.28085 9.4715 1.47152L5.4715 5.47152C5.21115 5.73187 4.78914 5.73187 4.52879 5.47152L0.52879 1.47152C0.338124 1.28085 0.281071 0.994071 0.384258 0.744954C0.487466 0.495887 0.730533 0.333496 1.00014 0.333496H9.00014ZM5.00014 4.05745L7.39077 1.66683H2.60952L5.00014 4.05745Z"
@@ -84,7 +76,9 @@ const SectionCard = ({
           }
 
           // Check if the search result is one of the units
-          const matchedUnit = !!subsection.childInfo?.children?.filter((child) => child.id === locatorId).length;
+          const matchedUnit = !!subsection.childInfo?.children?.filter(
+            (child) => child.id === locatorId,
+          ).length;
           if (matchedUnit) {
             return true;
           }
@@ -236,14 +230,18 @@ const SectionCard = ({
         <div className="tw-flex tw-gap-2 tw-items-start">
           <div className="tw-flex tw-flex-col tw-gap-1 tw-flex-1">
             <div className="tw-text-gray-900 tw-text-lg tw-font-bold tw-leading-7 tw-flex tw-gap-2 tw-items-center">
-              {isExpanded ? (
-                <ChevronDown className="tw-cursor-pointer" onClick={handleExpandContent} />
-              ) : (
-                <ChevronDown
-                  className="tw-rotate-[270deg] tw-cursor-pointer"
-                  onClick={handleExpandContent}
-                />
-              )}
+              <button
+                type="button"
+                className={classNames(
+                  'tw-w-6 tw-h-6 tw-flex tw-items-center tw-justify-center tw-border-0 tw-bg-transparent',
+                  {
+                    'tw-rotate-[270deg]': !isExpanded,
+                  },
+                )}
+                onClick={handleExpandContent}
+              >
+                <ChevronTriangleDown />
+              </button>
               {displayName}
             </div>
             {releaseDate && (
