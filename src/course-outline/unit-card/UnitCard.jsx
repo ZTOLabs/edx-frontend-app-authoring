@@ -27,6 +27,7 @@ const UnitCard = ({
   subsection,
   section,
   index,
+  isLastUnit,
   getPossibleMoves,
   onOpenPublishModal,
   onOpenConfigureModal,
@@ -187,7 +188,7 @@ const UnitCard = ({
         isDraggable
         isDroppable={actions.childAddable}
         componentStyle={{
-          marginBottom: '24px',
+          marginBottom: isLastUnit ? '0px' : '24px',
         }}
       >
         <div className="tw-flex tw-gap-2 tw-items-center" ref={currentRef}>
@@ -304,6 +305,7 @@ UnitCard.propTypes = {
   onDuplicateSubmit: PropTypes.func.isRequired,
   getTitleLink: PropTypes.func.isRequired,
   index: PropTypes.number.isRequired,
+  isLastUnit: PropTypes.bool.isRequired,
   getPossibleMoves: PropTypes.func.isRequired,
   onOrderChange: PropTypes.func.isRequired,
   discussionsSettings: PropTypes.shape({

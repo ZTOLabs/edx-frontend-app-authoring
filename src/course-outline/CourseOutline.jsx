@@ -369,6 +369,9 @@ const CourseOutline = ({ courseId }) => {
                                     subsection={subsection}
                                     section={section}
                                     index={unitIndex}
+                                    isLastUnit={
+                                      unitIndex === subsection.childInfo.children.length - 1
+                                    }
                                     getPossibleMoves={possibleUnitMoves(
                                       [...sections],
                                       sectionIndex,
