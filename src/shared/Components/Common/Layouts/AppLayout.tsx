@@ -5,6 +5,7 @@ import { SidebarInset, SidebarProvider, useSidebar } from '@/shared/Components/u
 import { cn } from 'shared/lib/utils';
 import AppSidebar from './AppSidebar';
 import ChatBoxContainer from './Chatbox/ChatBoxContainer';
+import ChatBoxTrigger from './Chatbox/ChatBoxTrigger';
 
 const AppLayout = () => {
   const { open } = useSidebar();
@@ -14,12 +15,13 @@ const AppLayout = () => {
       <SidebarInset
         className={cn(
           'tw-bg-gradient-to-r tw-from-[#FBFAFF] tw-to-[#ECE9FE]',
-          'tw-flex !tw-flex-row',
+          'tw-flex !tw-flex-row tw-relative',
           open && 'tw-gap-3',
         )}
       >
         <Outlet />
         <ChatBoxContainer />
+        {!open && <ChatBoxTrigger />}
       </SidebarInset>
     </div>
   );
