@@ -70,7 +70,9 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
   console.log(courseDetails);
 
   return (
-    <div className={`tw-h-screen tw-overflow-y-hidden tw-bg-brand-25 tw-border-0 tw-border-l tw-border-solid tw-flex tw-flex-col tw-border-l-gray-200 ${isSidebarOpen ? 'tw-w-56' : 'tw-w-12'}`}>
+    <div
+      className={`tw-h-screen tw-overflow-y-hidden tw-bg-brand-25 tw-border-0 tw-border-l tw-border-solid tw-flex tw-flex-col tw-border-l-gray-200 ${isSidebarOpen ? 'tw-w-56' : 'tw-w-12'}`}
+    >
       <Collapsible
         open={isSidebarOpen}
         onToggle={handleToggleSidebar}
@@ -90,7 +92,7 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
                 )}
               </div>
               <div className="tw-size-6 tw-flex tw-items-center tw-justify-center tw-cursor-pointer">
-                <LayoutLeft className="tw-size-5 tw-text-gray-600" />
+                <LayoutLeft className="tw-size-4 tw-text-gray-600" />
               </div>
             </div>
             {isSidebarOpen && (
@@ -100,7 +102,10 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
                     {chips.slice(0, 2).map((value) => {
                       if (value) {
                         return (
-                          <div key={value} className="tw-px-1.5 tw-py-0.5 tw-bg-white tw-rounded-[6px] tw-shadow-[0px_1px_2px_0px_rgba(16,24,40,0.05)] tw-outline tw-outline-1 tw-outline-offset-[-1px] tw-outline-gray-300 tw-inline-flex tw-justify-start tw-items-center tw-w-fit tw-h-[18px]">
+                          <div
+                            key={value}
+                            className="tw-px-1.5 tw-py-0.5 tw-bg-white tw-rounded-[6px] tw-shadow-[0px_1px_2px_0px_rgba(16,24,40,0.05)] tw-outline tw-outline-1 tw-outline-offset-[-1px] tw-outline-gray-300 tw-inline-flex tw-justify-start tw-items-center tw-w-fit tw-h-[18px]"
+                          >
                             <div className="tw-text-center tw-justify-start tw-text-slate-700 tw-text-xs tw-font-medium tw-leading-none">
                               {value}
                             </div>
