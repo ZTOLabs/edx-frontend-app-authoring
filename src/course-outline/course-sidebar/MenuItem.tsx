@@ -31,7 +31,12 @@ const MenuItem: React.FC<MenuItemProps> = ({ menuItem }) => {
 
   return (
     <Collapsible.Advanced open={!isCollapsed} onToggle={handleToggle}>
-      <Collapsible.Trigger className="tw-flex tw-border-0 tw-items-center tw-justify-between tw-w-full tw-py-[10px] tw-px-3">
+      <Collapsible.Trigger
+        className={classNames(
+          'tw-flex tw-border-0 tw-items-center tw-justify-between tw-w-full tw-py-[10px] tw-px-3',
+          !isCollapsed && 'tw-mb-1',
+        )}
+      >
         <div className="tw-self-stretch tw-justify-start tw-text-slate-700 tw-text-sm tw-font-medium tw-leading-tight">
           {menuItem.title}
         </div>
