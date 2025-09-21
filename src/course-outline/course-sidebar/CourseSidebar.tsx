@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
 import { useIntl } from '@edx/frontend-platform/i18n';
 
+import Button from 'shared/Components/Common/Button';
+import { LayoutLeft, Rocket02 } from '@untitledui/icons';
+import classNames from 'classnames';
 import { useModel } from '../../generic/model-store';
 import { useContentMenuItems, useSettingMenuItems, useToolsMenuItems } from '../../header/hooks';
-import MenuItem from './MenuItem';
-import { useSelector } from 'react-redux';
-import { getStudioHomeData } from '../../studio-home/data/api';
-import Button from 'shared/Components/Common/Button';
+import MenuItem from './MenuItem.tsx';
 import courseOutlineMessages from '../messages';
-import { LayoutLeft, Rocket02 } from '@untitledui/icons';
-import { IconButton, Collapsible } from '@openedx/paragon';
-import { convertFromSnakeCaseToTitleCase } from '../../utils';
 
 interface CourseSidebarProps {
   courseId: string;
 }
+
+const RocketIcon = () => <Rocket02 className="!tw-size-5" />;
 
 const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
   const intl = useIntl();
@@ -51,108 +50,132 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
 
   const handleToggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
-  }
+  };
 
   // Extract run from course ID (e.g., "course-v1:MITx+CS102+2025_T1" -> "2025_T1")
-  const getCourseRun = (courseId) => {
-    if (!courseId) return null;
-    const parts = courseId.split('+');
+  const getCourseRun = (courseIdParam) => {
+    if (!courseIdParam) {
+      return null;
+    }
+    const parts = courseIdParam.split('+');
     return parts[parts.length - 1];
   };
 
   const chips = [courseDetails?.org, courseDetails?.number, getCourseRun(courseDetails?.id)];
   const dueDate = new Intl.DateTimeFormat('en-US', {
-    month: 'short', 
-    day: '2-digit', 
+    month: 'short',
+    day: '2-digit',
     year: 'numeric',
   }).format(courseDetails?.endDate);
 
-  console.log(courseDetails);
-
   return (
     <div
-      className={`tw-h-screen tw-overflow-y-hidden tw-bg-brand-25 tw-border-0 tw-border-l tw-border-solid tw-flex tw-flex-col tw-border-l-gray-200 ${isSidebarOpen ? 'tw-w-56' : 'tw-w-12'}`}
+      className={classNames(
+        'tw-h-screen tw-overflow-y-scroll tw-bg-brand-25 tw-border-0 tw-border-l tw-border-solid tw-flex tw-flex-col tw-border-l-gray-200 tw-transition-all tw-duration-300 tw-ease-in-out',
+        isSidebarOpen ? 'tw-w-56' : 'tw-w-8',
+      )}
     >
-      <Collapsible
-        open={isSidebarOpen}
-        onToggle={handleToggleSidebar}
-        styling=""
-        iconWhenClosed=""
-        iconWhenOpen=""
-        title={
-          <div className="tw-px-4 tw-py-6 tw-flex tw-flex-col tw-gap-3">
-            <div className="tw-flex tw-flex-row">
-              <div className="tw-flex-1">
-                {isSidebarOpen && courseDetails?.media?.image?.raw && (
-                  <img
-                    className="tw-w-24 tw-h-16"
-                    src={courseDetails?.media?.image?.raw}
-                    alt="Course Thumbnail"
-                  />
+      {/* Header Section */}
+      <div
+        className={classNames(
+          'tw-py-6 tw-flex tw-flex-col tw-gap-3',
+          isSidebarOpen ? 'tw-px-4' : 'tw-px-0 !tw-pl-2',
+        )}
+      >
+        <div className="tw-flex tw-flex-row">
+          <div className="tw-flex-1 tw-overflow-hidden">
+            {courseDetails?.media?.image?.raw && (
+              <img
+                className={classNames(
+                  'tw-w-24 tw-h-16 tw-rounded-[8px] tw-transition-all tw-duration-300 tw-ease-in-out',
+                  isSidebarOpen ? 'tw-opacity-100 tw-scale-100' : 'tw-opacity-0 tw-scale-95',
                 )}
-              </div>
-              <div className="tw-size-6 tw-flex tw-items-center tw-justify-center tw-cursor-pointer">
-                <LayoutLeft className="tw-size-4 tw-text-gray-600" />
-              </div>
-            </div>
-            {isSidebarOpen && (
-              <>
-                <div className="tw-flex tw-flex-col tw-gap-1">
-                  <div className="tw-flex tw-flex-row tw-gap-1">
-                    {chips.slice(0, 2).map((value) => {
-                      if (value) {
-                        return (
-                          <div
-                            key={value}
-                            className="tw-px-1.5 tw-py-0.5 tw-bg-white tw-rounded-[6px] tw-shadow-[0px_1px_2px_0px_rgba(16,24,40,0.05)] tw-outline tw-outline-1 tw-outline-offset-[-1px] tw-outline-gray-300 tw-inline-flex tw-justify-start tw-items-center tw-w-fit tw-h-[18px]"
-                          >
-                            <div className="tw-text-center tw-justify-start tw-text-slate-700 tw-text-xs tw-font-medium tw-leading-none">
-                              {value}
-                            </div>
-                          </div>
-                        );
-                      }
-                    })}
-                  </div>
-                  {chips[2] && (
-                    <div className="tw-flex tw-flex-row tw-gap-1">
-                      <div className="tw-px-1.5 tw-py-0.5 tw-bg-white tw-rounded-[6px] tw-shadow-[0px_1px_2px_0px_rgba(16,24,40,0.05)] tw-outline tw-outline-1 tw-outline-offset-[-1px] tw-outline-gray-300 tw-inline-flex tw-justify-start tw-items-center tw-w-fit tw-h-[18px]">
-                        <div className="tw-text-center tw-justify-start tw-text-slate-700 tw-text-xs tw-font-medium tw-leading-none">
-                          {chips[2]}
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-                <div>
-                  <div className="tw-self-stretch tw-justify-start tw-text-gray-900 tw-text-sm tw-font-semibold tw-leading-tight tw-mb-1">
-                    {courseDetails?.name}
-                  </div>
-                  <div className="tw-justify-start tw-text-gray-500 tw-text-xs tw-font-normal tw-leading-none">
-                    {intl.formatMessage(courseOutlineMessages.dueDate, { dueDate })}
-                  </div>
-                </div>
-                <Button
-                  labels={{ default: intl.formatMessage(courseOutlineMessages.publishCourse) }}
-                  onClick={handlePublishCourse}
-                  iconBefore={() => <Rocket02 className="!tw-size-5" />}
-                  variant="secondary"
-                  className="tw-text-sm"
-                  size="sm"
-                />
-              </>
+                src={courseDetails?.media?.image?.raw}
+                alt="Course Thumbnail"
+              />
             )}
           </div>
-        }
-      >
-        <Collapsible.Body className="tw-px-4">
-          <div>
-            {mainMenuDropdowns.map((menuItem) => (
-              <MenuItem key={menuItem.id} menuItem={menuItem} />
-            ))}
+          <button
+            onClick={handleToggleSidebar}
+            className="tw-size-6 tw-flex tw-items-center tw-justify-center tw-cursor-pointer tw-bg-transparent tw-border-none tw-p-0 hover:tw-bg-gray-100 tw-rounded"
+            type="button"
+            aria-label={isSidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
+          >
+            <LayoutLeft className="tw-size-4 tw-text-gray-600" />
+          </button>
+        </div>
+        <div
+          className={classNames(
+            'tw-flex tw-flex-col tw-gap-3 tw-transition-all tw-duration-300 tw-ease-in-out',
+            isSidebarOpen
+              ? 'tw-opacity-100 tw-max-h-96'
+              : 'tw-opacity-0 tw-max-h-0 tw-overflow-hidden',
+          )}
+        >
+          <div className="tw-flex tw-flex-col tw-gap-1">
+            <div className="tw-flex tw-flex-row tw-gap-1">
+              {chips.slice(0, 2).map((value) => {
+                if (value) {
+                  return (
+                    <div
+                      key={value}
+                      className="tw-px-1.5 tw-py-0.5 tw-bg-white tw-rounded-[6px] tw-shadow-[0px_1px_2px_0px_rgba(16,24,40,0.05)] tw-outline tw-outline-1 tw-outline-offset-[-1px] tw-outline-gray-300 tw-inline-flex tw-justify-start tw-items-center tw-w-fit tw-h-[18px]"
+                    >
+                      <div className="tw-text-center tw-justify-start tw-text-slate-700 tw-text-xs tw-font-medium tw-leading-none">
+                        {value}
+                      </div>
+                    </div>
+                  );
+                }
+                return null;
+              })}
+            </div>
+            {chips[2] && (
+              <div className="tw-flex tw-flex-row tw-gap-1">
+                <div className="tw-px-1.5 tw-py-0.5 tw-bg-white tw-rounded-[6px] tw-shadow-[0px_1px_2px_0px_rgba(16,24,40,0.05)] tw-outline tw-outline-1 tw-outline-offset-[-1px] tw-outline-gray-300 tw-inline-flex tw-justify-start tw-items-center tw-w-fit tw-h-[18px]">
+                  <div className="tw-text-center tw-justify-start tw-text-slate-700 tw-text-xs tw-font-medium tw-leading-none">
+                    {chips[2]}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
-        </Collapsible.Body>
-      </Collapsible>
+          <div className="tw-flex tw-flex-col tw-gap-1">
+            <div className="tw-self-stretch tw-justify-start tw-text-gray-900 tw-text-sm tw-font-semibold tw-leading-tight">
+              {courseDetails?.name}
+            </div>
+            {dueDate && (
+              <div className="tw-text-gray-500 tw-text-xs">
+                {intl.formatMessage(courseOutlineMessages.dueDate, { dueDate })}
+              </div>
+            )}
+          </div>
+          <Button
+            labels={{ default: intl.formatMessage(courseOutlineMessages.publishCourse) }}
+            onClick={handlePublishCourse}
+            iconBefore={RocketIcon}
+            variant="secondary"
+            className="tw-text-sm !tw-h-10"
+            size="sm"
+          />
+        </div>
+      </div>
+
+      {/* Menu Items Section */}
+      <div
+        className={classNames(
+          'tw-flex-1 tw-transition-all tw-duration-300 tw-ease-in-out',
+          isSidebarOpen
+            ? 'tw-opacity-100 tw-max-h-full'
+            : 'tw-opacity-0 tw-max-h-0 tw-overflow-hidden',
+        )}
+      >
+        <div className="tw-px-4 tw-pb-6 tw-flex tw-flex-col tw-gap-1">
+          {mainMenuDropdowns.map((menuItem) => (
+            <MenuItem key={menuItem.id} menuItem={menuItem} />
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
