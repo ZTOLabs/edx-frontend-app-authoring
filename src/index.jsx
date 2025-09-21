@@ -46,6 +46,8 @@ import { ContentTagsDrawer } from './content-tags-drawer';
 import AccessibilityPage from './accessibility-page';
 import { ToastProvider } from './generic/toast-context';
 import AppEventContextProvider from './context/AppEventContext';
+import ModalContextProvider from './context/modal';
+import ModalContainerRoot from './Components/Modals';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import './index.scss';
@@ -127,9 +129,12 @@ const App = () => {
       <ToastProvider>
         <QueryClientProvider client={queryClient}>
           <Head />
-          <AppEventContextProvider>
-            <RouterProvider router={router} />
-          </AppEventContextProvider>
+          <ModalContextProvider>
+            <AppEventContextProvider>
+              <RouterProvider router={router} />
+              <ModalContainerRoot />
+            </AppEventContextProvider>
+          </ModalContextProvider>
         </QueryClientProvider>
       </ToastProvider>
     </AppProvider>

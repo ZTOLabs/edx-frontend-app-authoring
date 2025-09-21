@@ -5,6 +5,9 @@ import { useNavigate } from 'react-router';
 import { Plus } from '@untitledui/icons';
 import FeaturedLayout from 'home/layout/featured';
 import Button from 'shared/Components/Common/Button';
+import { useModalContext } from 'context/modal';
+import { ModalType } from 'shared/Components/Common/BaseModal';
+import { ModalKey } from 'constants/modal';
 import { RequestStatus } from '../../data/constants';
 import { getLoadingStatuses, getStudioHomeData } from '../data/selectors';
 import Courses from './courses';
@@ -25,12 +28,10 @@ const FeaturedCourses = ({
   const navigate = useNavigate();
 
   const { courses } = useSelector(getStudioHomeData);
+  const { setModal } = useModalContext();
 
   // Make sure it only shows the first 3 items
-  const filteredCourses = useMemo(
-    () => courses.slice(0, MAX_ITEMS),
-    [courses],
-  );
+  const filteredCourses = useMemo(() => courses.slice(0, MAX_ITEMS), [courses]);
 
   const { courseLoadingStatus } = useSelector(getLoadingStatuses);
 
@@ -40,14 +41,14 @@ const FeaturedCourses = ({
   const actions = (
     <>
       {hasAbilityToCreateNewCourse && (
-      <Button
-        className="!tw-w-auto"
-        variant="link"
-        size="sm"
-        disabled={false}
-        onClick={() => navigate('/courses')}
-        labels={{ default: intl.formatMessage(messages.allCoursesBtnText) }}
-      />
+        <Button
+          className="!tw-w-auto"
+          variant="link"
+          size="sm"
+          disabled={false}
+          onClick={() => navigate('/courses')}
+          labels={{ default: intl.formatMessage(messages.allCoursesBtnText) }}
+        />
       )}
       <Button
         className="!tw-w-auto tw-border-gray-300 tw-text-gray-700"
@@ -55,7 +56,21 @@ const FeaturedCourses = ({
         iconBefore={Plus}
         size="sm"
         disabled={false}
-        onClick={onClickNewCourse}
+        onClick={() => {
+          setModal({
+            name: ModalKey.CONFIRM_ACTION,
+            type: ModalType.DIALOG,
+            props: {
+              headerText: 'Confirm tao course',
+              bodyText: 'Tao course moi nhe',
+              primaryButtonText: 'Yes please',
+              secondaryButtonText: intl.formatMessage(messages.addNewCourseBtnText),
+              onSubmit: () => {
+                onClickNewCourse();
+              },
+            },
+          });
+        }}
         labels={{ default: intl.formatMessage(messages.addNewCourseBtnText) }}
       />
     </>
@@ -72,7 +87,6 @@ const FeaturedCourses = ({
         isEnabledPagination={isPaginationCoursesEnabled}
       />
     </FeaturedLayout>
-
   );
 };
 

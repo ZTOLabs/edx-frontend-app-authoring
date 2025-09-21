@@ -4,20 +4,21 @@ import { cva } from 'class-variance-authority';
 import { StatefulButton } from '@openedx/paragon';
 import { cn } from '../../lib/utils';
 
-interface ButtonProps {
+export interface ButtonProps {
   className?: string;
   name?: string;
   id?: string;
   type?: string;
   variant?: 'brand' | 'link' | 'secondary';
   state?: string;
-  labels?: Record<string, React.ReactNode>;
+  labels: Record<string, React.ReactNode>;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   onMouseDown?: React.MouseEventHandler<HTMLButtonElement>;
   iconBefore?: React.FC;
   iconAfter?: React.FC;
   disabled?: boolean;
   size?: 'sm' | 'md' | 'lg';
+  children?: React.ReactNode;
 }
 
 const buttonVariants = cva('tw-font-semibold focus:before:tw-hidden focus:!tw-outline-none focus:!tw-ring-0 focus:!tw-border-0', {
@@ -64,6 +65,7 @@ const Button = ({
   className,
   variant,
   size,
+  children,
   ...restProps
 }: ButtonProps) => (
   <StatefulButton
@@ -71,7 +73,9 @@ const Button = ({
     variant={variant}
     size={size}
     className={cn(buttonVariants({ variant, size }), className)}
-  />
+  >
+    {children}
+  </StatefulButton>
 );
 
 export default Button;

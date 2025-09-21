@@ -4,6 +4,14 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  --radius: 0.5rem;
+
+  /* Modal */
+  --modal-screen-spacing: 1.5rem;
+
+  /* Tooltip */
+  --zto-tooltip-z-index: 50;
+
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
