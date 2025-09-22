@@ -26,6 +26,8 @@ interface Props {
     run: string;
     url: string;
     imageUrl?: string;
+    startDate?: string;
+    endDate?: string;
   }[];
   showNewCourseContainer: boolean;
   onClickNewCourse: () => void;
@@ -77,7 +79,16 @@ const Courses: React.FC<Props> = ({
         <>
           {coursesDataItems.map(
             ({
-              courseKey, displayName, lmsLink, org, rerunLink, number, run, url, imageUrl,
+              courseKey,
+              displayName,
+              lmsLink,
+              org,
+              rerunLink,
+              number,
+              run, url,
+              imageUrl,
+              startDate,
+              endDate,
             }) => (
               <CardItem
                 key={courseKey}
@@ -91,6 +102,8 @@ const Courses: React.FC<Props> = ({
                 url={url}
                 isPaginated={isEnabledPagination}
                 imageUrl={imageUrl}
+                startDate={startDate}
+                endDate={endDate}
               />
             ),
           )}

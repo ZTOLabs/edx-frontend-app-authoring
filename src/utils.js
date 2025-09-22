@@ -324,3 +324,16 @@ export const useRunOnNextRender = (callback) => {
 export const capitalizeString = (string) => string.charAt(0).toUpperCase() + string.slice(1);
 
 export const convertFromSnakeCaseToTitleCase = (string) => string.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+
+/**
+ * Converts an ISO date string to "MMM DD, YYYY" format
+ * @param {string} isoDateString - ISO date string (e.g., "2025-09-22T10:30:00Z")
+ * @returns {string} formatted date string (e.g., "Sep 22, 2025")
+ */
+export const formatDateToReadable = (isoDateString) => {
+  if (!isoDateString) {
+    return '';
+  }
+  
+  return moment(isoDateString).format('MMM DD, YYYY');
+};

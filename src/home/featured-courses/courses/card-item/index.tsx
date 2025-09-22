@@ -13,7 +13,8 @@ import { getConfig } from '@edx/frontend-platform';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { cn } from 'shared/lib/utils';
-import { convertFromSnakeCaseToTitleCase } from '../../../../utils';
+import { ArrowRight } from '@untitledui/icons';
+import { convertFromSnakeCaseToTitleCase, formatDateToReadable } from '../../../../utils';
 import { getWaffleFlags } from '../../../../data/selectors';
 import { COURSE_CREATOR_STATES } from '../../../../constants';
 import { getStudioHomeData } from '../../../data/selectors';
@@ -30,7 +31,10 @@ interface BaseProps {
   courseKey?: string;
   isPaginated?: boolean;
   imageUrl?: string;
+  startDate?: string;
+  endDate?: string;
 }
+
 type Props = BaseProps & (
   /** If we should open this course/library in this MFE, this is the path to the edit page, e.g. '/course/foo' */
   { path: string, url?: never } |
@@ -56,6 +60,8 @@ const CardItem: React.FC<Props> = ({
   path,
   url,
   imageUrl,
+  startDate = '2025-09-22T10:30:00Z',
+  endDate = '2025-09-22T10:30:00Z',
 }) => {
   const intl = useIntl();
   const {
@@ -71,7 +77,6 @@ const CardItem: React.FC<Props> = ({
       ? url
       : new URL(url, getConfig().STUDIO_BASE_URL).toString()
   );
-  const subtitle = `${org} / ${number} / ${run}`;
   const readOnlyItem = !(lmsLink || rerunLink || url || path);
   const showActions = !(readOnlyItem);
   const isShowRerunLink = allowCourseReruns
@@ -80,6 +85,16 @@ const CardItem: React.FC<Props> = ({
   const hasDisplayName = (displayName ?? '').trim().length ? displayName : courseKey;
 
   const thumbnailImage = imageUrl ? `url(${imageUrl})` : 'none';
+
+  const renderSubtitle = () => {
+    return (
+      <div className="tw-text-sm tw-font-normal tw-text-gray-500 tw-w-full tw-truncate tw-line-clamp-1 hover:tw-no-underline tw-flex tw-flex-row tw-gap-2 tw-items-center">
+        {startDate && <span>{formatDateToReadable(startDate)}</span>}
+        <ArrowRight className="tw-size-3" />
+        {endDate && <span>{formatDateToReadable(endDate)}</span>}
+      </div>
+    );
+  };
 
   return (
     <Card className={cn(
@@ -117,9 +132,7 @@ const CardItem: React.FC<Props> = ({
         ) : (
           <span className="tw-text-sm tw-font-semibold tw-text-gray-900 tw-w-full tw-truncate tw-line-clamp-1 hover:tw-no-underline">{displayName}</span>
         )}
-        subtitle={
-          <span className="tw-text-sm tw-font-normal tw-text-gray-500 tw-w-full tw-truncate tw-line-clamp-1 hover:tw-no-underline">{subtitle}</span>
-        }
+        subtitle={renderSubtitle()}
         actions={showActions && (
           isPaginated ? (
             <Dropdown>
