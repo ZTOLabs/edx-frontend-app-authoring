@@ -29,6 +29,7 @@ interface BaseProps {
   rerunLink?: string | null;
   courseKey?: string;
   isPaginated?: boolean;
+  imageUrl?: string;
 }
 type Props = BaseProps & (
   /** If we should open this course/library in this MFE, this is the path to the edit page, e.g. '/course/foo' */
@@ -54,6 +55,7 @@ const CardItem: React.FC<Props> = ({
   isPaginated = false,
   path,
   url,
+  imageUrl,
 }) => {
   const intl = useIntl();
   const {
@@ -77,6 +79,8 @@ const CardItem: React.FC<Props> = ({
     && courseCreatorStatus === COURSE_CREATOR_STATES.granted;
   const hasDisplayName = (displayName ?? '').trim().length ? displayName : courseKey;
 
+  const thumbnailImage = imageUrl ? `url(${imageUrl})` : 'none';
+
   return (
     <Card className={cn(
       'tw-bg-white/70 tw-border tw-border-solid tw-border-white tw-h-full',
@@ -91,7 +95,7 @@ const CardItem: React.FC<Props> = ({
           navigate(destinationUrl);
         }}
         style={{
-          backgroundImage: 'url(https://placehold.co/600x400)',
+          backgroundImage: thumbnailImage,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',

@@ -25,6 +25,7 @@ interface Props {
     rerunLink: string | null;
     run: string;
     url: string;
+    imageUrl?: string;
   }[];
   showNewCourseContainer: boolean;
   onClickNewCourse: () => void;
@@ -76,7 +77,7 @@ const Courses: React.FC<Props> = ({
         <>
           {coursesDataItems.map(
             ({
-              courseKey, displayName, lmsLink, org, rerunLink, number, run, url,
+              courseKey, displayName, lmsLink, org, rerunLink, number, run, url, imageUrl,
             }) => (
               <CardItem
                 key={courseKey}
@@ -89,6 +90,7 @@ const Courses: React.FC<Props> = ({
                 run={run}
                 url={url}
                 isPaginated={isEnabledPagination}
+                imageUrl={imageUrl}
               />
             ),
           )}
