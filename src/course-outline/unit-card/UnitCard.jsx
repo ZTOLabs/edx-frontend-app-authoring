@@ -170,6 +170,8 @@ const UnitCard = ({
         return 'success';
       case 'draft':
         return 'warning';
+      case 'unpublished_changes':
+        return 'warning';
       default:
         return 'default';
     }

@@ -52,6 +52,10 @@ const messages = defineMessages({
     id: 'course-authoring.course-outline.messages.publishCourse.label',
     defaultMessage: 'Publish course',
   },
+  published: {
+    id: 'course-authoring.course-outline.messages.published.label',
+    defaultMessage: 'Published',
+  }
 });
 
 export default messages;

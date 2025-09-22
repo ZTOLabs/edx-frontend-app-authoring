@@ -50,6 +50,9 @@ import { getTagsExportFile } from './data/api';
 import CourseOutlineHeaderActionsSlot from '../plugin-slots/CourseOutlineHeaderActionsSlot';
 import Button from '../shared/Components/Common/Button';
 import { Plus } from '@untitledui/icons';
+import CourseSidebar from './course-sidebar/CourseSidebar';
+import classNames from 'classnames';
+import background from '@/assets/images/main-content-background.png';
 
 const CourseOutline = ({ courseId }) => {
   const intl = useIntl();
@@ -220,7 +223,7 @@ const CourseOutline = ({ courseId }) => {
   if (isLoading) {
     // eslint-disable-next-line react/jsx-no-useless-fragment
     return (
-      <Row className="m-0 mt-4 justify-content-center">
+      <Row className="tw-absolute tw-right-1/2 tw-top-1/2">
         <LoadingSpinner />
       </Row>
     );
@@ -280,138 +283,164 @@ const CourseOutline = ({ courseId }) => {
             />
           ) : null}
         </TransitionReplace> */}
-        <div className="tw-flex tw-justify-between tw-items-center">
-          <div className="tw-text-gray-900 tw-text-2xl tw-font-semibold">
-            {intl.formatMessage(messages.headingTitle)}
-          </div>
-          <Button
-            className="!tw-w-auto !tw-px-[14px]"
-            variant="brand"
-            iconBefore={Plus}
-            size="sm"
-            onClick={handleNewSectionSubmit}
-            labels={{ default: intl.formatMessage(messages.newSectionButton) }}
-          />
-        </div>
-        <div className="tw-flex tw-flex-col tw-gap-4">
-          {!errors?.outlineIndexApi && (
-            <div className="tw-mt-8">
-              <>
-                <DraggableList
-                  items={sections}
-                  setSections={setSections}
-                  restoreSectionList={restoreSectionList}
-                  handleSectionDragAndDrop={handleSectionDragAndDrop}
-                  handleSubsectionDragAndDrop={handleSubsectionDragAndDrop}
-                  handleUnitDragAndDrop={handleUnitDragAndDrop}
-                >
-                  <SortableContext
-                    id="root"
-                    items={sections}
-                    strategy={verticalListSortingStrategy}
-                  >
-                    {sections.map((section, sectionIndex) => (
-                      <SectionCard
-                        key={section.id}
-                        section={section}
-                        index={sectionIndex}
-                        canMoveItem={canMoveSection(sections)}
-                        savingStatus={savingStatus}
-                        onOpenPublishModal={openPublishModal}
-                        onOpenConfigureModal={openConfigureModal}
-                        onOpenDeleteModal={openDeleteModal}
-                        onEditSectionSubmit={handleEditSubmit}
-                        onDuplicateSubmit={handleDuplicateSectionSubmit}
-                        isSectionsExpanded={isSectionsExpanded}
-                        onNewUnitSubmit={handleNewUnitSubmit}
-                        onOrderChange={updateSectionOrderByIndex}
+        <div className="tw-flex tw-h-full">
+          <CourseSidebar courseId={courseId} />
+          <div className="tw-flex-1 tw-p-3 tw-h-full tw-relative">
+            <div
+              className="tw-absolute tw-inset-3 tw-opacity-30 tw-scale-x-[-1] tw-z-0"
+              style={{
+                backgroundImage: `url(${background})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                borderRadius: '20px',
+              }}
+            />
+            <div
+              className={classNames(
+                'tw-relative tw-z-10 tw-h-full',
+                'tw-p-8 tw-pb-0 tw-flex-1',
+                'tw-border tw-border-white tw-border-solid',
+                'tw-rounded-[20px]',
+                'tw-flex tw-flex-col tw-gap-8 tw-overflow-y-auto',
+              )}
+            >
+              <div className="tw-flex tw-justify-between tw-items-center">
+                <div className="tw-text-gray-900 tw-text-2xl tw-font-semibold">
+                  {intl.formatMessage(messages.headingTitle)}
+                </div>
+                <Button
+                  className="!tw-w-auto !tw-px-[14px]"
+                  variant="brand"
+                  iconBefore={Plus}
+                  size="sm"
+                  onClick={handleNewSectionSubmit}
+                  labels={{ default: intl.formatMessage(messages.newSectionButton) }}
+                />
+              </div>
+              <div className="tw-flex tw-flex-col tw-gap-4">
+                {!errors?.outlineIndexApi && (
+                  <div className="tw-mt-8">
+                    <>
+                      <DraggableList
+                        items={sections}
+                        setSections={setSections}
+                        restoreSectionList={restoreSectionList}
+                        handleSectionDragAndDrop={handleSectionDragAndDrop}
+                        handleSubsectionDragAndDrop={handleSubsectionDragAndDrop}
+                        handleUnitDragAndDrop={handleUnitDragAndDrop}
                       >
                         <SortableContext
-                          id={section.id}
-                          items={section.childInfo.children}
+                          id="root"
+                          items={sections}
                           strategy={verticalListSortingStrategy}
                         >
-                          {section.childInfo.children.map((subsection, subsectionIndex) => (
-                            <SubsectionCard
-                              key={subsection.id}
+                          {sections.map((section, sectionIndex) => (
+                            <SectionCard
+                              key={section.id}
                               section={section}
-                              subsection={subsection}
-                              index={subsectionIndex}
-                              getPossibleMoves={possibleSubsectionMoves(
-                                [...sections],
-                                sectionIndex,
-                                section,
-                                section.childInfo.children,
-                              )}
-                              isSectionsExpanded={isSectionsExpanded}
-                              isSelfPaced={statusBarData.isSelfPaced}
-                              isCustomRelativeDatesActive={isCustomRelativeDatesActive}
+                              index={sectionIndex}
+                              canMoveItem={canMoveSection(sections)}
                               savingStatus={savingStatus}
                               onOpenPublishModal={openPublishModal}
-                              onOpenDeleteModal={openDeleteModal}
-                              onEditSubmit={handleEditSubmit}
-                              onDuplicateSubmit={handleDuplicateSubsectionSubmit}
                               onOpenConfigureModal={openConfigureModal}
+                              onOpenDeleteModal={openDeleteModal}
+                              onEditSectionSubmit={handleEditSubmit}
+                              onDuplicateSubmit={handleDuplicateSectionSubmit}
+                              isSectionsExpanded={isSectionsExpanded}
                               onNewUnitSubmit={handleNewUnitSubmit}
-                              onAddUnitFromLibrary={handleAddUnitFromLibrary}
-                              onOrderChange={updateSubsectionOrderByIndex}
-                              onPasteClick={handlePasteClipboardClick}
+                              onOrderChange={updateSectionOrderByIndex}
                             >
                               <SortableContext
-                                id={subsection.id}
-                                items={subsection.childInfo.children}
+                                id={section.id}
+                                items={section.childInfo.children}
                                 strategy={verticalListSortingStrategy}
                               >
-                                {subsection.childInfo.children.map((unit, unitIndex) => (
-                                  <UnitCard
-                                    key={unit.id}
-                                    unit={unit}
-                                    subsection={subsection}
+                                {section.childInfo.children.map((subsection, subsectionIndex) => (
+                                  <SubsectionCard
+                                    key={subsection.id}
                                     section={section}
-                                    index={unitIndex}
-                                    isLastUnit={
-                                      unitIndex === subsection.childInfo.children.length - 1
-                                    }
-                                    getPossibleMoves={possibleUnitMoves(
+                                    subsection={subsection}
+                                    index={subsectionIndex}
+                                    getPossibleMoves={possibleSubsectionMoves(
                                       [...sections],
                                       sectionIndex,
-                                      subsectionIndex,
                                       section,
-                                      subsection,
-                                      subsection.childInfo.children,
+                                      section.childInfo.children,
                                     )}
+                                    isSectionsExpanded={isSectionsExpanded}
+                                    isSelfPaced={statusBarData.isSelfPaced}
+                                    isCustomRelativeDatesActive={isCustomRelativeDatesActive}
                                     savingStatus={savingStatus}
                                     onOpenPublishModal={openPublishModal}
-                                    onOpenConfigureModal={openConfigureModal}
                                     onOpenDeleteModal={openDeleteModal}
                                     onEditSubmit={handleEditSubmit}
-                                    onDuplicateSubmit={handleDuplicateUnitSubmit}
-                                    getTitleLink={getUnitUrl}
-                                    onOrderChange={updateUnitOrderByIndex}
-                                    discussionsSettings={discussionsSettings}
-                                  />
+                                    onDuplicateSubmit={handleDuplicateSubsectionSubmit}
+                                    onOpenConfigureModal={openConfigureModal}
+                                    onNewUnitSubmit={handleNewUnitSubmit}
+                                    onAddUnitFromLibrary={handleAddUnitFromLibrary}
+                                    onOrderChange={updateSubsectionOrderByIndex}
+                                    onPasteClick={handlePasteClipboardClick}
+                                  >
+                                    <SortableContext
+                                      id={subsection.id}
+                                      items={subsection.childInfo.children}
+                                      strategy={verticalListSortingStrategy}
+                                    >
+                                      {subsection.childInfo.children.map((unit, unitIndex) => (
+                                        <UnitCard
+                                          key={unit.id}
+                                          unit={unit}
+                                          subsection={subsection}
+                                          section={section}
+                                          index={unitIndex}
+                                          isLastUnit={
+                                            unitIndex === subsection.childInfo.children.length - 1
+                                          }
+                                          getPossibleMoves={possibleUnitMoves(
+                                            [...sections],
+                                            sectionIndex,
+                                            subsectionIndex,
+                                            section,
+                                            subsection,
+                                            subsection.childInfo.children,
+                                          )}
+                                          savingStatus={savingStatus}
+                                          onOpenPublishModal={openPublishModal}
+                                          onOpenConfigureModal={openConfigureModal}
+                                          onOpenDeleteModal={openDeleteModal}
+                                          onEditSubmit={handleEditSubmit}
+                                          onDuplicateSubmit={handleDuplicateUnitSubmit}
+                                          getTitleLink={getUnitUrl}
+                                          onOrderChange={updateUnitOrderByIndex}
+                                          discussionsSettings={discussionsSettings}
+                                        />
+                                      ))}
+                                    </SortableContext>
+                                  </SubsectionCard>
                                 ))}
                               </SortableContext>
-                            </SubsectionCard>
+                            </SectionCard>
                           ))}
                         </SortableContext>
-                      </SectionCard>
-                    ))}
-                  </SortableContext>
-                </DraggableList>
-                {courseActions.childAddable && (
-                  <Button
-                    iconBefore={Plus}
-                    onClick={handleNewSectionSubmit}
-                    labels={{ default: intl.formatMessage(messages.newSectionButton) }}
-                    variant="secondary"
-                    className="!tw-text-sm !tw-border-0 !tw-font-bold tw-mb-4 !tw-bg-[rgba(255,255,255,0.7)] hover:!tw-bg-brand-600"
-                  />
+                      </DraggableList>
+                      {courseActions.childAddable && (
+                        <Button
+                          iconBefore={Plus}
+                          onClick={handleNewSectionSubmit}
+                          labels={{ default: intl.formatMessage(messages.newSectionButton) }}
+                          variant="secondary"
+                          className="!tw-text-sm !tw-border-0 !tw-font-bold tw-mb-4 !tw-bg-[rgba(255,255,255,0.7)] hover:!tw-bg-brand-600"
+                        />
+                      )}
+                    </>
+                  </div>
                 )}
-              </>
+              </div>
             </div>
-          )}
+          </div>
         </div>
+
         <EnableHighlightsModal
           isOpen={isEnableHighlightsModalOpen}
           close={closeEnableHighlightsModal}
