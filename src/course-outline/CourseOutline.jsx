@@ -223,7 +223,7 @@ const CourseOutline = ({ courseId }) => {
   if (isLoading) {
     // eslint-disable-next-line react/jsx-no-useless-fragment
     return (
-      <Row className="m-0 mt-4 justify-content-center">
+      <Row className="tw-absolute tw-right-1/2 tw-top-1/2">
         <LoadingSpinner />
       </Row>
     );

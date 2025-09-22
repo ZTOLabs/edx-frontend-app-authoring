@@ -48,7 +48,7 @@ const CourseAuthoringPage = ({ courseId, children }) => {
     );
   }
   return (
-    <div className="tw-h-screen tw-w-full">
+    <div className="tw-h-screen tw-w-full tw-relative">
       {/* While V2 Editors are temporarily served from their own pages
         using url pattern containing /editor/,
         we shouldn't have the header and footer on these pages.
