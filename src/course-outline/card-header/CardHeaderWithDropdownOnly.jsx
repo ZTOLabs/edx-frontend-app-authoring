@@ -28,6 +28,9 @@ import { ITEM_BADGE_STATUS } from '../constants';
 import { scrollToElement } from '../utils';
 import CardStatus from './CardStatus';
 import messages from './messages';
+import { DotsVertical } from '@untitledui/icons';
+
+const GrayDotsVertical = () => <DotsVertical className="tw-text-gray-600" />;
 
 const CardHeaderWithDropdownOnly = ({
   title,
@@ -113,11 +116,11 @@ const CardHeaderWithDropdownOnly = ({
         className="tw-flex tw-items-center"
       >
         <Dropdown.Toggle
-          className="!tw-p-0 !tw-border-0 !tw-text-gray-600 !tw-bg-transparent !tw-shadow-none !tw-outline-none !tw-ring-0 !tw-w-4 !tw-h-4 focus:!tw-bg-transparent active:!tw-bg-transparent !text-gray-600 focus:!tw-text-gray-600 active:!tw-text-gray-600 hover:!tw-text-gray-600"
+          className="!tw-p-1 !tw-border-0 !tw-text-gray-600 !tw-bg-transparent !tw-shadow-none !tw-outline-none !tw-ring-0 !tw-w-6 !tw-h-6 focus:!tw-bg-transparent active:!tw-bg-transparent !text-gray-600 focus:!tw-text-gray-600 active:!tw-text-gray-600 hover:!tw-text-gray-600"
           id={`${namePrefix}-card-header__menu`}
           data-testid={`${namePrefix}-card-header__menu-button`}
           as={IconButton}
-          src={MoveVertIcon}
+          src={GrayDotsVertical}
           alt={`${namePrefix}-card-header__menu`}
           iconAs={Icon}
         />
