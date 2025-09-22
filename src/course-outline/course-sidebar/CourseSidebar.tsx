@@ -1,13 +1,26 @@
 import React, { useState } from 'react';
 import { useIntl } from '@edx/frontend-platform/i18n';
+import { useSelector, useDispatch } from 'react-redux';
 
-import Button from 'shared/Components/Common/Button';
 import { LayoutLeft, Rocket02 } from '@untitledui/icons';
 import classNames from 'classnames';
+import Button from '../../shared/Components/Common/Button';
 import { useModel } from '../../generic/model-store';
 import { useContentMenuItems, useSettingMenuItems, useToolsMenuItems } from '../../header/hooks';
-import MenuItem from './MenuItem.tsx';
+import MenuItem from './MenuItem';
+import PublishCourseModal from './PublishCourseModal';
 import courseOutlineMessages from '../messages';
+import { getSectionsList } from '../data/selectors';
+import { publishCourseSection } from '../data/api';
+import { RequestStatus } from '../../data/constants';
+import {
+  showProcessingNotification,
+  hideProcessingNotification,
+} from '../../generic/processing-notification/data/slice';
+import { updateSavingStatus } from '../data/slice';
+import { fetchCourseSectionQuery } from '../data/thunk';
+import { ITEM_BADGE_STATUS } from '../constants';
+import { getItemStatus } from '../utils';
 
 interface CourseSidebarProps {
   courseId: string;
@@ -17,8 +30,11 @@ const RocketIcon = () => <Rocket02 className="!tw-size-5" />;
 
 const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
   const intl = useIntl();
+  const dispatch = useDispatch();
   const courseDetails = useModel('courseDetails', courseId);
+  const sectionsList = useSelector(getSectionsList);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isPublishModalOpen, setIsPublishModalOpen] = useState(false);
 
   // Get menu items using the same hooks as the header
   const contentMenuItems = useContentMenuItems(courseId);
@@ -45,7 +61,58 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
   ];
 
   const handlePublishCourse = () => {
-    // TODO: Implement publish course functionality
+    setIsPublishModalOpen(true);
+  };
+
+  const handleClosePublishModal = () => {
+    setIsPublishModalOpen(false);
+  };
+
+  const isSectionPublishable = ({ hasChanges, published, visibilityState }) => {
+    const sectionStatus = getItemStatus({
+      published,
+      visibilityState,
+      hasChanges,
+    });
+    const isDisabled =
+      (sectionStatus === ITEM_BADGE_STATUS.live ||
+        sectionStatus === ITEM_BADGE_STATUS.publishedNotLive) &&
+      !hasChanges;
+    return !isDisabled;
+  };
+
+  const publishAllItems = async () => {
+    const allItemIds = sectionsList
+      .filter(({ hasChanges, published, visibilityState }) => {
+        return isSectionPublishable({ hasChanges, published, visibilityState });
+      })
+      .map((section) => section.id);
+
+    if (allItemIds.length === 0) {
+      return;
+    }
+
+    dispatch(updateSavingStatus({ status: RequestStatus.PENDING }));
+    dispatch(showProcessingNotification('Publishing course'));
+
+    try {
+      const publishPromises = allItemIds.map((itemId) => publishCourseSection(itemId));
+      await Promise.all(publishPromises);
+
+      const sectionIds = sectionsList.map((section) => section.id);
+      dispatch(fetchCourseSectionQuery(sectionIds));
+
+      dispatch(hideProcessingNotification());
+      dispatch(updateSavingStatus({ status: RequestStatus.SUCCESSFUL }));
+    } catch (error) {
+      dispatch(hideProcessingNotification());
+      dispatch(updateSavingStatus({ status: RequestStatus.FAILED }));
+    }
+  };
+
+  const handleConfirmPublish = async () => {
+    setIsPublishModalOpen(false);
+    await publishAllItems();
   };
 
   const handleToggleSidebar = () => {
@@ -62,11 +129,45 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
   };
 
   const chips = [courseDetails?.org, courseDetails?.number, getCourseRun(courseDetails?.id)];
-  const dueDate = new Intl.DateTimeFormat('en-US', {
-    month: 'short',
-    day: '2-digit',
-    year: 'numeric',
-  }).format(courseDetails?.endDate);
+
+  const dueDate = courseDetails?.end
+    ? new Intl.DateTimeFormat('en-US', {
+        month: 'short',
+        day: '2-digit',
+        year: 'numeric',
+      }).format(new Date(courseDetails.end))
+    : undefined;
+
+  // Prepare course data for the modal
+  const courseData = {
+    thumbnail: courseDetails?.media?.image?.raw,
+    title: courseDetails?.name,
+    tags: chips.filter(Boolean),
+    startDate: courseDetails?.start
+      ? new Intl.DateTimeFormat('en-US', {
+          month: 'short',
+          day: '2-digit',
+          year: 'numeric',
+        }).format(new Date(courseDetails.start))
+      : undefined,
+    endDate: courseDetails?.end
+      ? new Intl.DateTimeFormat('en-US', {
+          month: 'short',
+          day: '2-digit',
+          year: 'numeric',
+        }).format(new Date(courseDetails.end))
+      : undefined,
+  };
+
+  // Disable when:
+  // - All section are not publish-able
+  // - Start date and end date are not set
+  const isDisabledPublishCourse =
+    !sectionsList.every(({ hasChanges, published, visibilityState }) => {
+      return isSectionPublishable({ hasChanges, published, visibilityState });
+    }) ||
+    !courseDetails?.start ||
+    !courseDetails?.end;
 
   return (
     <div
@@ -119,7 +220,7 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
                   return (
                     <div
                       key={value}
-                      className="tw-px-1.5 tw-py-0.5 tw-bg-white tw-rounded-[6px] tw-shadow-[0px_1px_2px_0px_rgba(16,24,40,0.05)] tw-outline tw-outline-1 tw-outline-offset-[-1px] tw-outline-gray-300 tw-inline-flex tw-justify-start tw-items-center tw-w-fit tw-h-[18px]"
+                      className="tw-px-1.5 tw-py-0.5 tw-bg-white tw-rounded-[6px] tw-shadow-[0px_1px_2px_0px_rgba(16,24,40,0.05)] tw-outline tw-outline-1 tw-outline-offset-[-1px] tw-outline-gray-300 tw-inline-flex tw-justify-start tw-items-center tw-w-fit tw-h-[22px]"
                     >
                       <div className="tw-text-center tw-justify-start tw-text-slate-700 tw-text-xs tw-font-medium tw-leading-none">
                         {value}
@@ -132,7 +233,7 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
             </div>
             {chips[2] && (
               <div className="tw-flex tw-flex-row tw-gap-1">
-                <div className="tw-px-1.5 tw-py-0.5 tw-bg-white tw-rounded-[6px] tw-shadow-[0px_1px_2px_0px_rgba(16,24,40,0.05)] tw-outline tw-outline-1 tw-outline-offset-[-1px] tw-outline-gray-300 tw-inline-flex tw-justify-start tw-items-center tw-w-fit tw-h-[18px]">
+                <div className="tw-px-1.5 tw-py-0.5 tw-bg-white tw-rounded-[6px] tw-shadow-[0px_1px_2px_0px_rgba(16,24,40,0.05)] tw-outline tw-outline-1 tw-outline-offset-[-1px] tw-outline-gray-300 tw-inline-flex tw-justify-start tw-items-center tw-w-fit tw-h-[22px]">
                   <div className="tw-text-center tw-justify-start tw-text-slate-700 tw-text-xs tw-font-medium tw-leading-none">
                     {chips[2]}
                   </div>
@@ -155,8 +256,9 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
             onClick={handlePublishCourse}
             iconBefore={RocketIcon}
             variant="secondary"
-            className="tw-text-sm !tw-h-10"
+            className="tw-text-sm !tw-h-10 disabled:tw-bg-white disabled:tw-border-gray-200 disabled:tw-text-gray-400 focus:!tw-outline-1 focus:!tw-outline-gray-300"
             size="sm"
+            disabled={isDisabledPublishCourse}
           />
         </div>
       </div>
@@ -176,6 +278,14 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
           ))}
         </div>
       </div>
+
+      {/* Publish Course Modal */}
+      <PublishCourseModal
+        isOpen={isPublishModalOpen}
+        onClose={handleClosePublishModal}
+        onPublish={handleConfirmPublish}
+        courseData={courseData}
+      />
     </div>
   );
 };
