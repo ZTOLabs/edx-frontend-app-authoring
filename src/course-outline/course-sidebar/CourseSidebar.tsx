@@ -96,8 +96,10 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
     dispatch(showProcessingNotification('Publishing course'));
 
     try {
-      const publishPromises = allItemIds.map((itemId) => publishCourseSection(itemId));
-      await Promise.all(publishPromises);
+      // Cannot use Promise.all since backend seems to have a race condition on processing simultanous publish requests
+      for (const itemId of allItemIds) {
+        await publishCourseSection(itemId);
+      }
 
       const sectionIds = sectionsList.map((section) => section.id);
       dispatch(fetchCourseSectionQuery(sectionIds));
@@ -163,8 +165,8 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
   // - All section are not publish-able
   // - Start date and end date are not set
   const isDisabledPublishCourse =
-    !sectionsList.every(({ hasChanges, published, visibilityState }) => {
-      return isSectionPublishable({ hasChanges, published, visibilityState });
+    sectionsList.every(({ hasChanges, published, visibilityState }) => {
+      return !isSectionPublishable({ hasChanges, published, visibilityState });
     }) ||
     !courseDetails?.start ||
     !courseDetails?.end;
@@ -256,7 +258,7 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
             onClick={handlePublishCourse}
             iconBefore={RocketIcon}
             variant="secondary"
-            className="tw-text-sm !tw-h-10 disabled:tw-bg-white disabled:tw-border-gray-200 disabled:tw-text-gray-400 focus:!tw-outline-1 focus:!tw-outline-gray-300"
+            className="tw-text-sm !tw-h-10 disabled:tw-bg-white disabled:tw-border-gray-200 disabled:tw-text-gray-400 disabled:tw-pointer-events-none"
             size="sm"
             disabled={isDisabledPublishCourse}
           />
