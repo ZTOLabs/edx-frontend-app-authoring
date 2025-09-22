@@ -8,9 +8,9 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 
 import { useContentMaterialList } from 'library-authoring/data/apiHooks';
 import AlertWrapper from 'shared/Components/Common/AlertWrapper';
+import LibraryItem from 'library-page/libraries/library-item';
 import { LoadingSpinner } from '../../../generic/Loading';
 import messages from '../messages';
-import LibraryItem from './library-item';
 
 type Props = Record<never, never>;
 
@@ -43,7 +43,7 @@ const Libraries: React.FC<Props> = () => {
     );
   }
 
-  const hasMaterials = !isLoading && !isError && ((data!.results.length || 0) > 0);
+  const hasMaterials = !isLoading && !isError && ((data!.length || 0) > 0);
 
   return isError ? (
     <AlertWrapper status="danger">
@@ -52,29 +52,29 @@ const Libraries: React.FC<Props> = () => {
   ) : (
     <div className="courses-tab-container tw-grid tw-grid-cols-3 tw-gap-4">
       { hasMaterials
-        ? data!.results.slice(0, MAX_ITEMS).map(({
-          id, title, type, image, isAIGenerated,
+        ? data!.slice(0, MAX_ITEMS).map(({
+          id, displayName, type, imageUrl, isAIGenerated,
         }) => (
           <LibraryItem
             key={id}
-            displayName={title}
-            image={image}
+            displayName={displayName}
+            imageUrl={imageUrl}
             type={type}
             path={`/library/${id}`}
             isAIGenerated={isAIGenerated}
           />
         )) : isFiltered && !isLoading && (
-        <Alert className="mt-4">
-          <Alert.Heading>
-            {intl.formatMessage(messages.librariesV2TabLibraryNotFoundAlertTitle)}
-          </Alert.Heading>
-          <p>
-            {intl.formatMessage(messages.librariesV2TabLibraryNotFoundAlertMessage)}
-          </p>
-          <Button variant="primary" onClick={handleClearFilters}>
-            {intl.formatMessage(messages.coursesTabCourseNotFoundAlertCleanFiltersButton)}
-          </Button>
-        </Alert>
+          <Alert className="mt-4">
+            <Alert.Heading>
+              {intl.formatMessage(messages.librariesV2TabLibraryNotFoundAlertTitle)}
+            </Alert.Heading>
+            <p>
+              {intl.formatMessage(messages.librariesV2TabLibraryNotFoundAlertMessage)}
+            </p>
+            <Button variant="primary" onClick={handleClearFilters}>
+              {intl.formatMessage(messages.coursesTabCourseNotFoundAlertCleanFiltersButton)}
+            </Button>
+          </Alert>
         )}
     </div>
   );

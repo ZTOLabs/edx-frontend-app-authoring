@@ -7,18 +7,19 @@ import { getConfig } from '@edx/frontend-platform';
 import { Link } from 'react-router-dom';
 
 import { cn } from 'shared/lib/utils';
-import { ClipboardCheck, Stars02 } from '@untitledui/icons';
+import { Stars02 } from '@untitledui/icons';
+import { ContentMaterial } from 'library-authoring/data/api';
 import { getWaffleFlags } from '../../../data/selectors';
 
 interface BaseProps {
+  // ContentMaterial fields (individual props for flexibility)
   displayName: string;
-  fileType: string;
-  size?: string;
-  image: string;
-  lmsLink?: string | null;
-  rerunLink?: string | null;
-  courseKey?: string;
-  isAIGenerated?: boolean;
+  imageUrl: string;
+  type: ContentMaterial['type'];
+  isAIGenerated: boolean;
+  // Additional fields specific to this component
+  fileType?: string;
+
 }
 type Props = BaseProps & (
   /** If we should open this course/library in this MFE, this is the path to the edit page, e.g. '/course/foo' */
@@ -35,28 +36,22 @@ type Props = BaseProps & (
  */
 const LibraryItem: React.FC<Props> = ({
   displayName,
-  fileType,
-  image,
-  lmsLink = '',
-  rerunLink = '',
-  courseKey = '',
-  size = '',
+  imageUrl,
+  type,
+  isAIGenerated,
+  fileType = '',
   path,
   url,
-  isAIGenerated = false,
 }) => {
   const waffleFlags = useSelector(getWaffleFlags);
 
-  const subtitle = [fileType, size].filter(Boolean).join(' | ');
+  const subtitle = [type, fileType].filter(Boolean).join(' | ');
 
   const destinationUrl: string = path ?? (
     waffleFlags.useNewCourseOutlinePage
       ? url
       : new URL(url, getConfig().STUDIO_BASE_URL).toString()
   );
-
-  const readOnlyItem = !(lmsLink || rerunLink || url || path);
-  const hasDisplayName = (displayName ?? '').trim().length ? displayName : courseKey;
 
   return (
     <Card className={cn(
@@ -68,7 +63,7 @@ const LibraryItem: React.FC<Props> = ({
     >
       <div
         style={{
-          backgroundImage: `url(${image})`,
+          backgroundImage: `url(${imageUrl})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -79,28 +74,21 @@ const LibraryItem: React.FC<Props> = ({
         <Card.Header
           className="!tw-p-0 tw-flex tw-flex-col tw-gap-1"
           size="sm"
-          title={!readOnlyItem ? (
+          title={
             <Link
-              className="tw-text-sm tw-font-semibold tw-text-gray-900 tw-line-clamp-2 hover:tw-no-underline"
+              className="
+              tw-text-sm tw-font-semibold tw-text-gray-900 tw-line-clamp-2 hover:tw-no-underline
+              tw-w-fit tw-max-w-full
+              "
               to={destinationUrl}
             >
-              {hasDisplayName}
-            </Link>
-          ) : (
-            <span className="tw-text-sm tw-font-semibold tw-text-gray-900 tw-line-clamp-2 hover:tw-no-underline">
               {displayName}
-            </span>
-          )}
+            </Link>
+          }
           subtitle={
             <span className="tw-text-xs tw-font-normal tw-text-gray-500 tw-block tw-truncate tw-whitespace-nowrap hover:tw-no-underline">{subtitle}</span>
           }
         />
-        {courseKey && (
-        <div className="tw-mt-2 tw-flex tw-flex-row tw-gap-1 tw-items-center tw-text-gray-500">
-          <ClipboardCheck className="tw-size-4" />
-          <span className=" tw-text-xs tw-font-normal tw-leading-5 tw-block tw-truncate tw-whitespace-nowrap hover:tw-no-underline">{courseKey}</span>
-        </div>
-        )}
       </div>
 
       <div className="tw-top-0 tw-right-0">

@@ -6,6 +6,7 @@ import { useIntl } from '@edx/frontend-platform/i18n';
 
 import AlertWrapper from 'shared/Components/Common/AlertWrapper';
 import { useSelector } from 'react-redux';
+import { ContentMaterial } from 'library-authoring/data/api';
 import { LoadingSpinner } from '../../generic/Loading';
 import LibraryItem from './library-item';
 import { getLibraryData, getLoadingStatuses } from '../data/selectors';
@@ -25,8 +26,7 @@ const Libraries: React.FC<Props> = () => {
 
   const {
     materials,
-    numPages,
-  } = useSelector(getLibraryData);
+  } = useSelector(getLibraryData) as { materials: ContentMaterial[] };
 
   if (isLoadingLibrary) {
     return (
@@ -46,17 +46,15 @@ const Libraries: React.FC<Props> = () => {
     <div className="tw-grid tw-grid-cols-3 tw-gap-4">
       { hasMaterials
         ? materials.map(({
-          id, title, fileType, image, isAIGenerated, size, courseKey,
+          id, displayName, type, imageUrl, isAIGenerated,
         }) => (
           <LibraryItem
             key={id}
-            displayName={title}
-            image={image}
-            fileType={fileType}
-            size={size}
+            displayName={displayName}
+            imageUrl={imageUrl}
+            type={type}
             path={`/library/${id}`}
             isAIGenerated={isAIGenerated}
-            courseKey={courseKey}
           />
         )) : !isLoadingLibrary && (
         <AlertWrapper status="danger">

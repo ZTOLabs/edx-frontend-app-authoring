@@ -317,6 +317,14 @@ export interface BlockTypeMetadata {
   displayName: string;
 }
 
+export interface ContentMaterial {
+  id: string;
+  displayName: string;
+  imageUrl: string;
+  type: 'Image' | 'Presentation' | 'Text' | 'Quiz' | 'Video';
+  isAIGenerated: boolean;
+}
+
 export type UpdateCollectionComponentsRequest = Partial<CreateLibraryCollectionDataRequest>;
 
 /**
@@ -387,7 +395,7 @@ export async function getContentLibraryV2List(customParams: GetLibrariesV2Custom
  * Get a list of content materials.
  */
 // TODO: Add type for the response
-export async function getContentMaterialList(customParams: GetMaterialListCustomParams): Promise<any> {
+export async function getContentMaterialList(customParams: GetMaterialListCustomParams): Promise<ContentMaterial[]> {
   const { data } = await getAuthenticatedHttpClient()
     .get(getContentMaterialListApiUrl(), { params: customParams });
   return camelCaseObject(data);
