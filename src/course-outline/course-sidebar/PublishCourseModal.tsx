@@ -6,7 +6,7 @@ import classNames from 'classnames';
 
 import Button from 'shared/Components/Common/Button';
 import { ArrowRight, XClose } from '@untitledui/icons';
-import courseOutlineMessages from '../messages';
+import messages from './messages';
 
 interface PublishCourseModalProps {
   isOpen: boolean;
@@ -50,7 +50,7 @@ const PublishCourseModal: React.FC<PublishCourseModalProps> = ({
           {/* Modal Header */}
           <div className="tw-bg-white tw-box-border tw-content-stretch tw-flex tw-flex-col tw-gap-[4px] tw-items-start tw-justify-center tw-pb-[16px] tw-pt-[32px] tw-px-[24px] tw-relative tw-shrink-0 tw-w-full">
             <span className="tw-text-2xl tw-text-gray-900 tw-font-semibold">
-              Publish course confirmation
+              {intl.formatMessage(messages.publishCourseModalTitle)}
             </span>
             <div className="tw-absolute tw-top-4 tw-right-4">
               <button
@@ -68,7 +68,7 @@ const PublishCourseModal: React.FC<PublishCourseModalProps> = ({
           <div className="tw-bg-white tw-box-border tw-content-stretch tw-flex tw-flex-col tw-gap-[24px] tw-items-center tw-justify-center tw-pb-[24px] tw-pt-[16px] tw-px-[24px] tw-relative tw-shrink-0 tw-w-full">
             {/* Description */}
             <span className="tw-text-sm tw-text-gray-600">
-              Please review the course information before publishing.
+              {intl.formatMessage(messages.publishCourseModalDescription)}
             </span>
 
             {/* Course Thumbnail */}
@@ -108,14 +108,14 @@ const PublishCourseModal: React.FC<PublishCourseModalProps> = ({
           {/* Modal Footer */}
           <div className="tw-bg-gray-50 tw-box-border tw-content-stretch tw-flex tw-gap-[12px] tw-items-center tw-justify-end tw-p-[24px] tw-relative tw-shrink-0 tw-w-full">
             <Button
-              labels={{ default: 'Go back' }}
+              labels={{ default: intl.formatMessage(messages.publishCourseModalButtonBack) }}
               onClick={onClose}
               variant="secondary"
               size="sm"
               className="tw-border-gray-300 tw-text-gray-700 hover:!tw-bg-gray-50 hover:!tw-text-gray-800 hover:!tw-border-gray-300 active:!tw-bg-gray-50 active:!tw-text-gray-800 active:!tw-border-gray-300"
             />
             <Button
-              labels={{ default: 'Publish' }}
+              labels={{ default: intl.formatMessage(messages.publishCourseModalButtonPublish) }}
               onClick={handlePublish}
               variant="brand"
               size="sm"
