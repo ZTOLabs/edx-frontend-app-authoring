@@ -22,6 +22,7 @@ import { fetchCourseSectionQuery } from '../data/thunk';
 import { ITEM_BADGE_STATUS } from '../constants';
 import { getItemStatus } from '../utils';
 import { formatToDate } from '../../utils';
+import Badge from 'shared/Components/Common/Badge';
 
 interface CourseSidebarProps {
   courseId: string;
@@ -145,14 +146,13 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
   };
 
   // Disable when:
-  // - All section are not publish-able
   // - Start date and end date are not set
-  const isDisabledPublishCourse =
-    sectionsList.every(({ hasChanges, published, visibilityState }) => {
-      return !isSectionPublishable({ hasChanges, published, visibilityState });
-    }) ||
-    !courseDetails?.start ||
-    !courseDetails?.end;
+  // - Course is being generated (to be implemented)
+  const isDisabledPublishCourse = !courseDetails?.start || !courseDetails?.end;
+
+  const shouldDisplayLiveChip = sectionsList.every(({ hasChanges, published, visibilityState }) => {
+    return !isSectionPublishable({ hasChanges, published, visibilityState });
+  });
 
   return (
     <div
@@ -236,15 +236,21 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
               </div>
             )}
           </div>
-          <Button
-            labels={{ default: intl.formatMessage(courseOutlineMessages.publishCourse) }}
-            onClick={handlePublishCourse}
-            iconBefore={RocketIcon}
-            variant="secondary"
-            className="tw-text-sm !tw-h-10 disabled:tw-bg-white disabled:tw-border-gray-200 disabled:tw-text-gray-400 disabled:tw-pointer-events-none"
-            size="sm"
-            disabled={isDisabledPublishCourse}
-          />
+          {shouldDisplayLiveChip ? (
+            <Badge variant="success" className="tw-w-fit">
+              {intl.formatMessage(courseOutlineMessages.published)}
+            </Badge>
+          ) : (
+            <Button
+              labels={{ default: intl.formatMessage(courseOutlineMessages.publishCourse) }}
+              onClick={handlePublishCourse}
+              iconBefore={RocketIcon}
+              variant="secondary"
+              className="tw-text-sm !tw-h-10 disabled:tw-bg-white disabled:tw-border-gray-200 disabled:tw-text-gray-400 disabled:tw-pointer-events-none"
+              size="sm"
+              disabled={isDisabledPublishCourse}
+            />
+          )}
         </div>
       </div>
 
