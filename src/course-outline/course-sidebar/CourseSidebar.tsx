@@ -174,7 +174,7 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
   return (
     <div
       className={classNames(
-        'tw-h-full tw-overflow-y-hidden tw-border-0 tw-border-l tw-border-solid tw-flex tw-flex-col tw-border-l-gray-200 tw-transition-all tw-duration-300 tw-ease-in-out',
+        'tw-h-full tw-overflow-hidden tw-border-0 tw-border-l tw-border-solid tw-flex tw-flex-col tw-border-l-gray-200 tw-transition-all tw-duration-300 tw-ease-in-out',
         isSidebarOpen ? 'tw-w-56' : 'tw-w-8',
       )}
     >
