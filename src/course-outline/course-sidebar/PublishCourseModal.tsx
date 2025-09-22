@@ -96,15 +96,13 @@ const PublishCourseModal: React.FC<PublishCourseModalProps> = ({
             </div>
 
             {/* Date Range */}
-            <div className="tw-flex tw-gap-3 tw-items-center">
-              <span className="tw-text-md tw-text-gray-600 tx-font-semibold">
-                {startDate}
-              </span>
-              <ArrowRight className="tw-text-gray-500 tw-size-3" />
-              <span className="tw-text-md tw-text-gray-600 tx-font-semibold">
-                {endDate}
-              </span>
-            </div>
+            {startDate && endDate && (
+              <div className="tw-flex tw-gap-3 tw-items-center">
+                <span className="tw-text-md tw-text-gray-600 tx-font-semibold">{startDate}</span>
+                <ArrowRight className="tw-text-gray-500 tw-size-3" />
+                <span className="tw-text-md tw-text-gray-600 tx-font-semibold">{endDate}</span>
+              </div>
+            )}
           </div>
 
           {/* Modal Footer */}

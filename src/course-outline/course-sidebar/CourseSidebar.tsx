@@ -21,6 +21,7 @@ import { updateSavingStatus } from '../data/slice';
 import { fetchCourseSectionQuery } from '../data/thunk';
 import { ITEM_BADGE_STATUS } from '../constants';
 import { getItemStatus } from '../utils';
+import { formatToDate } from '../../utils';
 
 interface CourseSidebarProps {
   courseId: string;
@@ -132,33 +133,15 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
 
   const chips = [courseDetails?.org, courseDetails?.number, getCourseRun(courseDetails?.id)];
 
-  const dueDate = courseDetails?.end
-    ? new Intl.DateTimeFormat('en-US', {
-        month: 'short',
-        day: '2-digit',
-        year: 'numeric',
-      }).format(new Date(courseDetails.end))
-    : undefined;
+  const dueDate = courseDetails?.end ? formatToDate(courseDetails.end, 'MMM Do, YYYY') : undefined;
 
   // Prepare course data for the modal
   const courseData = {
     thumbnail: courseDetails?.media?.image?.raw,
     title: courseDetails?.name,
     tags: chips.filter(Boolean),
-    startDate: courseDetails?.start
-      ? new Intl.DateTimeFormat('en-US', {
-          month: 'short',
-          day: '2-digit',
-          year: 'numeric',
-        }).format(new Date(courseDetails.start))
-      : undefined,
-    endDate: courseDetails?.end
-      ? new Intl.DateTimeFormat('en-US', {
-          month: 'short',
-          day: '2-digit',
-          year: 'numeric',
-        }).format(new Date(courseDetails.end))
-      : undefined,
+    startDate: courseDetails?.start ? formatToDate(courseDetails.start, 'MMM Do, YYYY') : undefined,
+    endDate: courseDetails?.end ? formatToDate(courseDetails.end, 'MMM Do, YYYY') : undefined,
   };
 
   // Disable when:
