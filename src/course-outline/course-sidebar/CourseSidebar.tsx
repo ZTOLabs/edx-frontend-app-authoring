@@ -71,7 +71,7 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
   return (
     <div
       className={classNames(
-        'tw-h-screen tw-overflow-y-scroll tw-bg-brand-25 tw-border-0 tw-border-l tw-border-solid tw-flex tw-flex-col tw-border-l-gray-200 tw-transition-all tw-duration-300 tw-ease-in-out',
+        'tw-h-full tw-overflow-y-hidden tw-border-0 tw-border-l tw-border-solid tw-flex tw-flex-col tw-border-l-gray-200 tw-transition-all tw-duration-300 tw-ease-in-out',
         isSidebarOpen ? 'tw-w-56' : 'tw-w-8',
       )}
     >
@@ -166,7 +166,7 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
         className={classNames(
           'tw-flex-1 tw-transition-all tw-duration-300 tw-ease-in-out',
           isSidebarOpen
-            ? 'tw-opacity-100 tw-max-h-full'
+            ? 'tw-opacity-100 tw-max-h-full tw-overflow-y-auto'
             : 'tw-opacity-0 tw-max-h-0 tw-overflow-hidden',
         )}
       >
