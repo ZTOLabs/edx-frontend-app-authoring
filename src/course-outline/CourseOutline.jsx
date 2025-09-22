@@ -48,8 +48,8 @@ import { useCourseOutline } from './hooks';
 import messages from './messages';
 import { getTagsExportFile } from './data/api';
 import CourseOutlineHeaderActionsSlot from '../plugin-slots/CourseOutlineHeaderActionsSlot';
-import { Plus } from 'lucide-react';
 import Button from '../shared/Components/Common/Button';
+import { Plus } from '@untitledui/icons';
 
 const CourseOutline = ({ courseId }) => {
   const intl = useIntl();
@@ -123,9 +123,11 @@ const CourseOutline = ({ courseId }) => {
     // Wait for the course data to load before exporting tags.
     if (courseId && courseName && location.hash === '#export-tags') {
       setToastMessage(intl.formatMessage(messages.exportTagsCreatingToastMessage));
-      getTagsExportFile(courseId, courseName).then(() => {
+      getTagsExportFile(courseId, courseName)
+        .then(() => {
           setToastMessage(intl.formatMessage(messages.exportTagsSuccessToastMessage));
-      }).catch(() => {
+        })
+        .catch(() => {
           setToastMessage(intl.formatMessage(messages.exportTagsErrorToastMessage));
         });
 
@@ -140,10 +142,8 @@ const CourseOutline = ({ courseId }) => {
     setSections(() => [...sectionsList]);
   };
 
-  const {
-    isShow: isShowProcessingNotification,
-    title: processingNotificationTitle,
-  } = useSelector(getProcessingNotification);
+  const { isShow: isShowProcessingNotification, title: processingNotificationTitle } =
+    useSelector(getProcessingNotification);
 
   const currentItemData = useSelector(getCurrentItem);
   const deleteCategory = COURSE_BLOCK_NAMES[currentItemData.category]?.name.toLowerCase();
@@ -161,7 +161,7 @@ const CourseOutline = ({ courseId }) => {
     }
     setSections((prevSections) => {
       const newSections = arrayMove(prevSections, currentIndex, newIndex);
-      handleSectionDragAndDrop(newSections.map(section => section.id));
+      handleSectionDragAndDrop(newSections.map((section) => section.id));
       return newSections;
     });
   };
@@ -183,7 +183,7 @@ const CourseOutline = ({ courseId }) => {
       handleSubsectionDragAndDrop(
         sectionId,
         section.id,
-        newSubsections.map(subsection => subsection.id),
+        newSubsections.map((subsection) => subsection.id),
         restoreSectionList,
       );
     }
@@ -196,9 +196,7 @@ const CourseOutline = ({ courseId }) => {
    * @returns {void}
    */
   const updateUnitOrderByIndex = (section, moveDetails) => {
-    const {
-      fn, args, sectionId, subsectionId,
-    } = moveDetails;
+    const { fn, args, sectionId, subsectionId } = moveDetails;
     if (!args) {
       return;
     }
@@ -209,7 +207,7 @@ const CourseOutline = ({ courseId }) => {
         sectionId,
         section.id,
         subsectionId,
-        newUnits.map(unit => unit.id),
+        newUnits.map((unit) => unit.id),
         restoreSectionList,
       );
     }
@@ -283,11 +281,11 @@ const CourseOutline = ({ courseId }) => {
           ) : null}
         </TransitionReplace> */}
         <div className="tw-flex tw-justify-between tw-items-center">
-          <div className="tw-text-gray-900 tw-text-2xl tw-font-semibold tw-leading-loose">
+          <div className="tw-text-gray-900 tw-text-2xl tw-font-semibold">
             {intl.formatMessage(messages.headingTitle)}
           </div>
           <Button
-            className="!tw-w-auto"
+            className="!tw-w-auto !tw-px-[14px]"
             variant="brand"
             iconBefore={Plus}
             size="sm"
@@ -297,7 +295,7 @@ const CourseOutline = ({ courseId }) => {
         </div>
         <div className="tw-flex tw-flex-col tw-gap-4">
           {!errors?.outlineIndexApi && (
-            <div className="pt-4">
+            <div className="tw-mt-8">
               <>
                 <DraggableList
                   items={sections}
@@ -318,17 +316,13 @@ const CourseOutline = ({ courseId }) => {
                         section={section}
                         index={sectionIndex}
                         canMoveItem={canMoveSection(sections)}
-                        isSelfPaced={statusBarData.isSelfPaced}
-                        isCustomRelativeDatesActive={isCustomRelativeDatesActive}
                         savingStatus={savingStatus}
-                        onOpenHighlightsModal={handleOpenHighlightsModal}
                         onOpenPublishModal={openPublishModal}
                         onOpenConfigureModal={openConfigureModal}
                         onOpenDeleteModal={openDeleteModal}
                         onEditSectionSubmit={handleEditSubmit}
                         onDuplicateSubmit={handleDuplicateSectionSubmit}
                         isSectionsExpanded={isSectionsExpanded}
-                        onNewSubsectionSubmit={handleNewSubsectionSubmit}
                         onNewUnitSubmit={handleNewUnitSubmit}
                         onOrderChange={updateSectionOrderByIndex}
                       >
@@ -374,9 +368,10 @@ const CourseOutline = ({ courseId }) => {
                                     unit={unit}
                                     subsection={subsection}
                                     section={section}
-                                    isSelfPaced={statusBarData.isSelfPaced}
-                                    isCustomRelativeDatesActive={isCustomRelativeDatesActive}
                                     index={unitIndex}
+                                    isLastUnit={
+                                      unitIndex === subsection.childInfo.children.length - 1
+                                    }
                                     getPossibleMoves={possibleUnitMoves(
                                       [...sections],
                                       sectionIndex,
@@ -410,7 +405,7 @@ const CourseOutline = ({ courseId }) => {
                     onClick={handleNewSectionSubmit}
                     labels={{ default: intl.formatMessage(messages.newSectionButton) }}
                     variant="secondary"
-                    className="!tw-text-sm !tw-border-0 !tw-font-bold tw-mb-4 !tw-bg-[rgba(255,255,255,0.7)] hover:!tw-text-brand-600 active:!tw-text-white"
+                    className="!tw-text-sm !tw-border-0 !tw-font-bold tw-mb-4 !tw-bg-[rgba(255,255,255,0.7)] hover:!tw-bg-brand-600"
                   />
                 )}
               </>
