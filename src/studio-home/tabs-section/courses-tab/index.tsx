@@ -133,7 +133,7 @@ const CoursesTab: React.FC<Props> = ({
         <div className="tw-flex-1">
           {isShowProcessing && !isEnabledPagination && <ProcessingCourses />}
           {isEnabledPagination && (
-          <CoursesFilters dispatch={dispatch} locationValue={locationValue} isLoading={isLoading} />
+          <CoursesFilters dispatch={dispatch} locationValue={locationValue} />
           )}
           {hasCourses ? (
             <div className="tw-grid tw-grid-cols-3 2xl:tw-grid-cols-4 tw-gap-4">
