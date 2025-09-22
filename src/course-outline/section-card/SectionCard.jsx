@@ -199,8 +199,6 @@ const SectionCard = ({
 
   const isSectionWithNoUnit = section.childInfo?.children?.[0]?.childInfo?.children?.length === 0;
 
-  const isSectionWithNoUnit = section.childInfo?.children?.[0]?.childInfo?.children?.length === 0;
-
   return (
     <SortableItem
       id={id}
