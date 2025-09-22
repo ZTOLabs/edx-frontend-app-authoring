@@ -21,6 +21,7 @@ import AppLayout from 'shared/Components/Common/Layouts/AppLayout';
 
 import { initializeHotjar } from '@edx/frontend-enterprise-hotjar';
 import { logError } from '@edx/frontend-platform/logging';
+import { LibraryPage } from 'library-page';
 import messages from './i18n';
 import { StudentsPage } from './students-page/index';
 
@@ -97,18 +98,9 @@ const App = () => {
           )}
         />
 
-        <Route
-          path="/courses"
-          element={(
-            <StudioHome />
-          )}
-        />
-        <Route
-          path="/students"
-          element={(
-            <StudentsPage />
-          )}
-        />
+        <Route path="/libraries" element={<LibraryPage />} />
+        <Route path="/courses" element={<StudioHome />} />
+        <Route path="/students" element={<StudentsPage />} />
 
         <Route
           path="/component-picker"
