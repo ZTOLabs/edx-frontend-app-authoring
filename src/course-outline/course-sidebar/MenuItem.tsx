@@ -1,7 +1,7 @@
 import { Collapsible } from '@openedx/paragon';
 import { ChevronDown, ChevronRight } from '@untitledui/icons';
 import classNames from 'classnames';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 interface MenuItemProps {
@@ -25,9 +25,9 @@ const MenuItem: React.FC<MenuItemProps> = ({ menuItem }) => {
   const hasActiveItem = menuItem.items.some((_, index) => isMenuActive(index));
   const [isCollapsed, setIsCollapsed] = useState(!hasActiveItem);
 
-  const handleToggle = () => {
-    setIsCollapsed(!isCollapsed);
-  };
+  const handleToggle = useCallback(() => {
+    setIsCollapsed(prev => !prev);
+  }, [setIsCollapsed]);
 
   return (
     <Collapsible.Advanced open={!isCollapsed} onToggle={handleToggle}>

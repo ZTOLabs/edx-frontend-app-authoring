@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -132,18 +132,32 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
     return parts[parts.length - 1];
   };
 
-  const chips = [courseDetails?.org, courseDetails?.number, getCourseRun(courseDetails?.id)];
+  const chips = useMemo(
+    () => [courseDetails?.org, courseDetails?.number, getCourseRun(courseDetails?.id)],
+    [courseDetails?.org, courseDetails?.number, courseDetails?.id],
+  );
 
   const dueDate = courseDetails?.end ? formatToDate(courseDetails.end, 'MMM Do, YYYY') : undefined;
 
   // Prepare course data for the modal
-  const courseData = {
-    thumbnail: courseDetails?.media?.image?.raw,
-    title: courseDetails?.name,
-    tags: chips.filter(Boolean),
-    startDate: courseDetails?.start ? formatToDate(courseDetails.start, 'MMM Do, YYYY') : undefined,
-    endDate: courseDetails?.end ? formatToDate(courseDetails.end, 'MMM Do, YYYY') : undefined,
-  };
+  const courseData = useMemo(
+    () => ({
+      thumbnail: courseDetails?.media?.image?.raw,
+      title: courseDetails?.name,
+      tags: chips.filter(Boolean),
+      startDate: courseDetails?.start
+        ? formatToDate(courseDetails.start, 'MMM Do, YYYY')
+        : undefined,
+      endDate: courseDetails?.end ? formatToDate(courseDetails.end, 'MMM Do, YYYY') : undefined,
+    }),
+    [
+      courseDetails?.media?.image?.raw,
+      courseDetails?.name,
+      courseDetails?.start,
+      courseDetails?.end,
+      chips,
+    ],
+  );
 
   // Disable when:
   // - Start date and end date are not set
