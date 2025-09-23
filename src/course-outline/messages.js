@@ -55,6 +55,10 @@ const messages = defineMessages({
   published: {
     id: 'course-authoring.course-outline.messages.published.label',
     defaultMessage: 'Published',
+  },
+  disabledPublishButtonTooltip: {
+    id: 'course-authoring.course-outline.messages.disabledPublishButtonTooltip.label',
+    defaultMessage: 'The start and end dates for the course are not set.',
   }
 });
 

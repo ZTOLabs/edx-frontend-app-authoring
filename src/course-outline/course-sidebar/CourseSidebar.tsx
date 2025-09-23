@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { LayoutLeft, Rocket02 } from '@untitledui/icons';
 import classNames from 'classnames';
 import Button from '../../shared/Components/Common/Button';
+import { OverlayTrigger, Tooltip } from '@openedx/paragon';
 import { useModel } from '../../generic/model-store';
 import { useContentMenuItems, useSettingMenuItems, useToolsMenuItems } from '../../header/hooks';
 import MenuItem from './MenuItem';
@@ -255,15 +256,28 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
               {intl.formatMessage(courseOutlineMessages.published)}
             </Badge>
           ) : (
-            <Button
-              labels={{ default: intl.formatMessage(courseOutlineMessages.publishCourse) }}
-              onClick={handlePublishCourse}
-              iconBefore={RocketIcon}
-              variant="secondary"
-              className="tw-text-sm !tw-h-10 disabled:tw-bg-white disabled:tw-border-gray-200 disabled:tw-text-gray-400 disabled:tw-pointer-events-none"
-              size="sm"
-              disabled={isDisabledPublishCourse}
-            />
+            <OverlayTrigger
+              placement="top"
+              overlay={
+                isDisabledPublishCourse ? (
+                  <Tooltip id="publish-course-tooltip">
+                    {intl.formatMessage(courseOutlineMessages.disabledPublishButtonTooltip)}
+                  </Tooltip>
+                ) : (
+                  <div className="tw-size-0" />
+                )
+              }
+            >
+              <Button
+                labels={{ default: intl.formatMessage(courseOutlineMessages.publishCourse) }}
+                onClick={handlePublishCourse}
+                iconBefore={RocketIcon}
+                variant="secondary"
+                className="tw-text-sm !tw-h-10 disabled:tw-bg-white disabled:tw-border-gray-200 disabled:tw-text-gray-400 disabled:tw-cursor-not-allowed active:disabled:!tw-bg-white"
+                size="sm"
+                disabled={isDisabledPublishCourse}
+              />
+            </OverlayTrigger>
           )}
         </div>
       </div>
