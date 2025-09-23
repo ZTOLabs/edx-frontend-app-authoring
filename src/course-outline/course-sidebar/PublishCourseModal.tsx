@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import Button from 'shared/Components/Common/Button';
 import { ArrowRight, XClose } from '@untitledui/icons';
 import messages from './messages';
+import './modal.scss';
 
 interface PublishCourseModalProps {
   isOpen: boolean;
@@ -75,7 +76,8 @@ const PublishCourseModal: React.FC<PublishCourseModalProps> = ({
             <img
               src={thumbnail}
               alt="Course Thumbnail"
-              className="tw-w-[160px] tw-h-[107px] tw-object-cover tw-rounded-[8px] tw-border-[8px] tw-border-[rgba(135,91,247,0.2)] tw-border-solid"
+              className="tw-w-[160px] tw-h-[107px] tw-object-cover tw-rounded-[8px] tw-outline-[8px] tw-outline-[rgba(135,91,247,0.2)]"
+              style={{ outlineStyle: 'solid' }}
             />
 
             {/* Course Title and Tags */}
@@ -97,10 +99,10 @@ const PublishCourseModal: React.FC<PublishCourseModalProps> = ({
 
             {/* Date Range */}
             {startDate && endDate && (
-              <div className="tw-flex tw-gap-3 tw-items-center">
-                <span className="tw-text-md tw-text-gray-600 tx-font-semibold">{startDate}</span>
+              <div className="tw-flex tw-gap-2 tw-items-center">
+                <span className="tw-text-md tw-text-gray-600 tw-font-medium">{startDate}</span>
                 <ArrowRight className="tw-text-gray-500 tw-size-3" />
-                <span className="tw-text-md tw-text-gray-600 tx-font-semibold">{endDate}</span>
+                <span className="tw-text-md tw-text-gray-600 tw-font-medium">{endDate}</span>
               </div>
             )}
           </div>
