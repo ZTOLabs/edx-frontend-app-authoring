@@ -229,6 +229,7 @@ const SectionCard = ({
                   {
                     'tw-rotate-[270deg]': !isExpanded || isSectionWithNoUnit,
                   },
+                  isSectionWithNoUnit && 'tw-cursor-not-allowed',
                 )}
                 onClick={handleExpandContent}
                 disabled={isSectionWithNoUnit}
