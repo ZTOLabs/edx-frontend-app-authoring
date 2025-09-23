@@ -1,29 +1,29 @@
-import React, { useMemo, useState } from 'react';
 import { useIntl } from '@edx/frontend-platform/i18n';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { OverlayTrigger, Toast, Tooltip } from '@openedx/paragon';
 import { LayoutLeft, Rocket02 } from '@untitledui/icons';
 import classNames from 'classnames';
-import Button from '../../shared/Components/Common/Button';
-import { OverlayTrigger, Tooltip } from '@openedx/paragon';
-import { useModel } from '../../generic/model-store';
-import { useContentMenuItems, useSettingMenuItems, useToolsMenuItems } from '../../header/hooks';
-import MenuItem from './MenuItem';
-import PublishCourseModal from './PublishCourseModal';
-import courseOutlineMessages from '../messages';
-import { getSectionsList } from '../data/selectors';
-import { publishCourseSection } from '../data/api';
+import Badge from 'shared/Components/Common/Badge';
 import { RequestStatus } from '../../data/constants';
+import { useModel } from '../../generic/model-store';
 import {
-  showProcessingNotification,
-  hideProcessingNotification,
+  hideProcessingNotification
 } from '../../generic/processing-notification/data/slice';
+import { useContentMenuItems, useSettingMenuItems, useToolsMenuItems } from '../../header/hooks';
+import Button from '../../shared/Components/Common/Button';
+import { formatToDate } from '../../utils';
+import { ITEM_BADGE_STATUS } from '../constants';
+import { publishCourseSection } from '../data/api';
+import { getSectionsList } from '../data/selectors';
 import { updateSavingStatus } from '../data/slice';
 import { fetchCourseSectionQuery } from '../data/thunk';
-import { ITEM_BADGE_STATUS } from '../constants';
+import courseOutlineMessages from '../messages';
 import { getItemStatus } from '../utils';
-import { formatToDate } from '../../utils';
-import Badge from 'shared/Components/Common/Badge';
+import MenuItem from './MenuItem';
+import messages from './messages';
+import PublishCourseModal from './PublishCourseModal';
 import { getCourseRunFromCourseId } from './utils';
 
 interface CourseSidebarProps {
@@ -39,6 +39,8 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
   const sectionsList = useSelector(getSectionsList);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isPublishModalOpen, setIsPublishModalOpen] = useState(false);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [showErrorToast, setShowErrorToast] = useState(false);
 
   // Get menu items using the same hooks as the header
   const contentMenuItems = useContentMenuItems(courseId);
@@ -97,7 +99,6 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
     }
 
     dispatch(updateSavingStatus({ status: RequestStatus.PENDING }));
-    dispatch(showProcessingNotification('Publishing course'));
 
     try {
       // Cannot use Promise.all since backend seems to have a race condition on processing simultanous publish requests
@@ -111,14 +112,15 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
 
       dispatch(hideProcessingNotification());
       dispatch(updateSavingStatus({ status: RequestStatus.SUCCESSFUL }));
+      setShowSuccessToast(true);
     } catch (error) {
       dispatch(hideProcessingNotification());
       dispatch(updateSavingStatus({ status: RequestStatus.FAILED }));
+      setShowErrorToast(true);
     }
   };
 
   const handleConfirmPublish = async () => {
-    setIsPublishModalOpen(false);
     await publishAllItems();
   };
 
@@ -298,6 +300,15 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
         onPublish={handleConfirmPublish}
         courseData={courseData}
       />
+      {/* Success Toast */}
+      <Toast show={showSuccessToast} onClose={() => setShowSuccessToast(false)}>
+        {intl.formatMessage(messages.publishCourseModalSuccessMessage)}
+      </Toast>
+
+      {/* Error Toast */}
+      <Toast show={showErrorToast} onClose={() => setShowErrorToast(false)}>
+        {intl.formatMessage(messages.publishCourseModalErrorMessage)}
+      </Toast>
     </div>
   );
 };

@@ -17,6 +17,18 @@ const messages = defineMessages({
     id: 'course-authoring.course-outline.course-sidebar.publish-course-modal.button.publish',
     defaultMessage: 'Publish',
   },
+  publishCourseModalButtonPublishing: {
+    id: 'course-authoring.course-outline.course-sidebar.publish-course-modal.button.publishing',
+    defaultMessage: 'Publishing...',
+  },
+  publishCourseModalSuccessMessage: {
+    id: 'course-authoring.course-outline.course-sidebar.publish-course-modal.success.message',
+    defaultMessage: 'Course published successfully!',
+  },
+  publishCourseModalErrorMessage: {
+    id: 'course-authoring.course-outline.course-sidebar.publish-course-modal.error.message',
+    defaultMessage: 'Failed to publish course. Please try again.',
+  },
 });
 
 export default messages;

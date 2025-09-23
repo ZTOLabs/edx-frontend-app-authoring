@@ -1,18 +1,16 @@
-import React from 'react';
 import { useIntl } from '@edx/frontend-platform/i18n';
 import { ModalDialog } from '@openedx/paragon';
-import { X } from 'lucide-react';
-import classNames from 'classnames';
+import React, { useState } from 'react';
 
+import { ArrowRight, Loading01, XClose } from '@untitledui/icons';
 import Button from 'shared/Components/Common/Button';
-import { ArrowRight, XClose } from '@untitledui/icons';
 import messages from './messages';
 import './modal.scss';
 
 interface PublishCourseModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onPublish: () => void;
+  onPublish: () => Promise<void>;
   courseData?: {
     thumbnail?: string;
     title?: string;
@@ -21,6 +19,8 @@ interface PublishCourseModalProps {
     endDate?: string;
   };
 }
+
+const LoadingIcon = () => <Loading01 className="tw-animate-spin" />;
 
 const PublishCourseModal: React.FC<PublishCourseModalProps> = ({
   isOpen,
@@ -31,19 +31,29 @@ const PublishCourseModal: React.FC<PublishCourseModalProps> = ({
   const intl = useIntl();
 
   const { thumbnail, title, tags = [], startDate, endDate } = courseData;
+  const [isPublishing, setIsPublishing] = useState(false);
 
   const handlePublish = () => {
-    onPublish();
-    onClose();
+    setIsPublishing(true);
+    onPublish()
+      .then(() => {
+        onClose();
+      })
+      .catch(() => {})
+      .finally(() => {
+        setIsPublishing(false);
+      });
   };
 
   return (
     <ModalDialog
       isOpen={isOpen}
       onClose={onClose}
+      title=""
       variant="default"
       hasCloseButton={false}
       isFullscreenOnMobile
+      isOverflowVisible={false}
       className="tw-p-0 tw-w-[600px] tw-rounded-[16px] !tw-max-w-[600px]"
     >
       <div className="tw-bg-white tw-size-full">
@@ -56,7 +66,8 @@ const PublishCourseModal: React.FC<PublishCourseModalProps> = ({
             <div className="tw-absolute tw-top-4 tw-right-4">
               <button
                 onClick={onClose}
-                className="tw-text-gray-600 tw-size-8 tw-flex tw-items-center tw-justify-center tw-border-0 tw-bg-transparent"
+                disabled={isPublishing}
+                className="tw-text-gray-600 tw-size-8 tw-flex tw-items-center tw-justify-center tw-border-0 tw-bg-transparent disabled:tw-text-gray-500 disabled:tw-pointer-events-none"
                 type="button"
                 aria-label="Close modal"
               >
@@ -114,13 +125,23 @@ const PublishCourseModal: React.FC<PublishCourseModalProps> = ({
               onClick={onClose}
               variant="secondary"
               size="sm"
-              className="tw-border-gray-300 tw-text-gray-700 hover:!tw-bg-gray-50 hover:!tw-text-gray-800 hover:!tw-border-gray-300 active:!tw-bg-gray-50 active:!tw-text-gray-800 active:!tw-border-gray-300"
+              disabled={isPublishing}
+              className="tw-border-gray-300 tw-text-gray-700 hover:!tw-bg-gray-50 hover:!tw-text-gray-800 hover:!tw-border-gray-300 active:!tw-bg-gray-50 active:!tw-text-gray-800 active:!tw-border-gray-300 disabled:tw-pointer-events-none"
             />
             <Button
-              labels={{ default: intl.formatMessage(messages.publishCourseModalButtonPublish) }}
+              labels={{
+                default: intl.formatMessage(
+                  isPublishing
+                    ? messages.publishCourseModalButtonPublishing
+                    : messages.publishCourseModalButtonPublish,
+                ),
+              }}
               onClick={handlePublish}
               variant="brand"
               size="sm"
+              disabled={isPublishing}
+              className="disabled:tw-pointer-events-none disabled:!tw-bg-gray-300"
+              {...(isPublishing && { iconBefore: LoadingIcon })}
             />
           </div>
         </div>
