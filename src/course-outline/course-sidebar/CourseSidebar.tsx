@@ -24,6 +24,7 @@ import { ITEM_BADGE_STATUS } from '../constants';
 import { getItemStatus } from '../utils';
 import { formatToDate } from '../../utils';
 import Badge from 'shared/Components/Common/Badge';
+import { getCourseRunFromCourseId } from './utils';
 
 interface CourseSidebarProps {
   courseId: string;
@@ -125,17 +126,8 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
     setIsSidebarOpen((prev) => !prev);
   };
 
-  // Extract run from course ID (e.g., "course-v1:MITx+CS102+2025_T1" -> "2025_T1")
-  const getCourseRun = (courseIdParam) => {
-    if (!courseIdParam) {
-      return null;
-    }
-    const parts = courseIdParam.split('+');
-    return parts[parts.length - 1];
-  };
-
   const chips = useMemo(
-    () => [courseDetails?.org, courseDetails?.number, getCourseRun(courseDetails?.id)],
+    () => [courseDetails?.org, courseDetails?.number, getCourseRunFromCourseId(courseDetails?.id)],
     [courseDetails?.org, courseDetails?.number, courseDetails?.id],
   );
 
