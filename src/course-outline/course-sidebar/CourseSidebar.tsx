@@ -100,6 +100,7 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
 
     try {
       // Cannot use Promise.all since backend seems to have a race condition on processing simultanous publish requests
+      // TODO: Request backend to implement a batch publish API and use that instead
       for (const itemId of allItemIds) {
         await publishCourseSection(itemId);
       }
