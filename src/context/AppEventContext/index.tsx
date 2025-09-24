@@ -23,7 +23,7 @@ export const [useAppEventContext, AppEventContext] = createContext<AppEventConte
 export const AppEvent = SocketEvent;
 
 // TODO: use real url and token
-const socketUrl = 'http://localhost:8081';
+const socketUrl = 'http://localhost:3001';
 const token = '123';
 
 const createEmptyRegistryMap = () => {
@@ -77,6 +77,18 @@ export default function AppEventContextProvider({ children }: { children: React.
         handler: (data) => {
           console.log('received update data', data);
         },
+      },
+      [SocketEvent.THINKING_PROGRESS]: {
+        handler: (data) => {
+          console.log('received thinking progress stream data', data);
+        },
+        registry: eventCallbacksRef.current[SocketEvent.THINKING_PROGRESS],
+      },
+      [SocketEvent.OPEN_CREATE_COURSE_MODAL]: {
+        handler: () => {
+          console.log('received open create course modal data');
+        },
+        registry: eventCallbacksRef.current[SocketEvent.OPEN_CREATE_COURSE_MODAL],
       },
     };
     return handlers;
