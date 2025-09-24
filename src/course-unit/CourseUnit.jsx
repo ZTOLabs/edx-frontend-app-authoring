@@ -159,7 +159,7 @@ const CourseUnit = ({ courseId }) => {
           handleConfigureSubmit={handleConfigureSubmit}
         />
         <button
-          className="tw-text-brand-700 tw-font-semibold tw-text-sm tw-mb-4 tw-bg-[rgba(255,255,255,0.7)] hover:!tw-bg-brand-600 hover:!tw-text-white tw-border-0 tw-rounded-[100px] tw-py-4 tw-flex tw-justify-center tw-items-center tw-gap-[6px]"
+          className="tw-text-brand-700 tw-font-semibold tw-text-sm tw-mb-4 tw-bg-[rgba(255,255,255,0.7)] hover:!tw-bg-brand-600 hover:!tw-text-white tw-border-1 tw-border-white tw-border-solid tw-rounded-[100px] tw-py-4 tw-flex tw-justify-center tw-items-center tw-gap-[6px]"
           onClick={openNewComponentModal}
         >
           <Plus className="tw-size-5" />
