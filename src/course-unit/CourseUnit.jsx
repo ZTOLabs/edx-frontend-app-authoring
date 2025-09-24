@@ -172,7 +172,7 @@ const CourseUnit = ({ courseId }) => {
         title="Select New Component to Create"
         isOpen={isNewComponentModalOpen}
         onClose={closeNewComponentModal}
-        size="xl"
+        size="lg"
         isOverflowVisible={false}
       >
         <AddComponent
