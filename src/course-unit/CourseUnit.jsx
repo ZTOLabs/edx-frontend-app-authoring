@@ -141,7 +141,7 @@ const CourseUnit = ({ courseId }) => {
           />
           <button 
             className="tw-bg-transparent tw-border-0 tw-size-10 tw-flex tw-items-center tw-justify-center tw-p-[10px]"
-            onClick={openConfigureModal}
+            // onClick={openConfigureModal}
           >
             <DotsVertical className="tw-text-gray-600 tw-size-5 hover:tw-text-gray-700" />
           </button>
