@@ -223,6 +223,7 @@ const AddComponent = ({
                     component={component}
                     handleCreateNewXBlock={handleCreateNewXBlock}
                     modalParams={modalParams}
+                    onCloseNewComponentModal={onCloseNewComponentModal}
                   />
                 );
               })}
