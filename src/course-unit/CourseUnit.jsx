@@ -1,15 +1,18 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import {
-  Alert, Container, Layout, Button, TransitionReplace,
+  Alert,
+  Container,
+  Layout,
+  Button as OpenEdxButton,
+  TransitionReplace,
+  StandardModal,
+  useToggle,
 } from '@openedx/paragon';
 import { useIntl } from '@edx/frontend-platform/i18n';
-import {
-  Warning as WarningIcon,
-  CheckCircle as CheckCircleIcon,
-} from '@openedx/paragon/icons';
+import { Warning as WarningIcon, CheckCircle as CheckCircleIcon } from '@openedx/paragon/icons';
 import { CourseAuthoringUnitSidebarSlot } from '../plugin-slots/CourseAuthoringUnitSidebarSlot';
 
 import { getProcessingNotification } from '../generic/processing-notification/data/selectors';
@@ -33,10 +36,15 @@ import XBlockContainerIframe from './xblock-container-iframe';
 import MoveModal from './move-modal';
 import IframePreviewLibraryXBlockChanges from './preview-changes';
 import CourseUnitHeaderActionsSlot from '../plugin-slots/CourseUnitHeaderActionsSlot';
+import { DotsGrid, DotsVertical, Edit01, Eye, File05, Plus } from '@untitledui/icons';
+import Button from '../shared/Components/Common/Button';
+import { getItemIcon, getComponentStyleColor } from '../generic/block-type-utils';
+import { Icon } from '@openedx/paragon';
 
 const CourseUnit = ({ courseId }) => {
   const { blockId } = useParams();
   const intl = useIntl();
+  const [isNewComponentModalOpen, openNewComponentModal, closeNewComponentModal] = useToggle(false);
   const {
     courseUnit,
     isLoading,
@@ -73,6 +81,7 @@ const CourseUnit = ({ courseId }) => {
     handleNavigateToTargetUnit,
     addComponentTemplateData,
   } = useCourseUnit({ courseId, blockId });
+  console.log(courseUnit);
   const layoutGrid = useLayoutGrid(unitCategory, isUnitLibraryType);
 
   const readOnly = !!courseUnit.readOnly;
@@ -83,10 +92,8 @@ const CourseUnit = ({ courseId }) => {
 
   useScrollToLastPosition();
 
-  const {
-    isShow: isShowProcessingNotification,
-    title: processingNotificationTitle,
-  } = useSelector(getProcessingNotification);
+  const { isShow: isShowProcessingNotification, title: processingNotificationTitle } =
+    useSelector(getProcessingNotification);
 
   if (isLoading) {
     return <Loading />;
@@ -101,6 +108,73 @@ const CourseUnit = ({ courseId }) => {
   }
 
   return (
+    <div className="tw-flex tw-flex-col tw-gap-8">
+      <div className="tw-flex tw-gap-3">
+        <div className="tw-flex tw-flex-col tw-gap-2 tw-flex-1">
+          <div className="tw-flex tw-items-center tw-gap-2">
+            <File05 className="tw-text-brand-500 tw-size-4" />
+            <span className="tw-text-gray- tw-text-sm tw-font-semibold">Unit</span>
+          </div>
+          <span className="tw-text-xl tw-font-semibold tw-text-gray-900">{unitTitle}</span>
+        </div>
+        <div className="tw-flex tw-gap-3">
+          <Button
+            variant="secondary"
+            size="sm"
+            iconBefore={Plus}
+            labels={{ default: 'New component' }}
+            className="!tw-w-auto !tw-h-10 tw-border-gray-300 tw-text-gray-700 !tw-py-[10px] !tw-px-[14px] focus:!tw-border"
+            onClick={openNewComponentModal}
+          />
+          <button className="tw-bg-transparent tw-border-0 tw-size-10 tw-flex tw-items-center tw-justify-center">
+            <Eye className="tw-text-gray-600 tw-size-4" />
+          </button>
+          <button className="tw-bg-transparent tw-border-0 tw-size-10 tw-flex tw-items-center tw-justify-center">
+            <DotsVertical className="tw-text-gray-600 tw-size-4" />
+          </button>
+        </div>
+      </div>
+
+      <div className="tw-flex tw-flex-col tw-gap-4">
+        <XBlockContainerIframe
+          courseId={courseId}
+          blockId={blockId}
+          isUnitVerticalType={isUnitVerticalType}
+          courseUnitLoadingStatus={courseUnitLoadingStatus}
+          unitXBlockActions={unitXBlockActions}
+          courseVerticalChildren={courseVerticalChildren.children}
+          handleConfigureSubmit={handleConfigureSubmit}
+        />
+        <button
+          className="tw-text-brand-700 tw-font-semibold tw-text-sm tw-mb-4 tw-bg-[rgba(255,255,255,0.7)] hover:!tw-bg-brand-600 hover:!tw-text-white tw-border-0 tw-rounded-[100px] tw-py-4 tw-flex tw-justify-center tw-items-center tw-gap-[6px]"
+          onClick={openNewComponentModal}
+        >
+          <Plus className="tw-size-5" />
+          <span>New component</span>
+        </button>
+      </div>
+
+      {/* New Component Modal */}
+      <StandardModal
+        title="Select New Component to Create"
+        isOpen={isNewComponentModalOpen}
+        onClose={closeNewComponentModal}
+        size="xl"
+        isOverflowVisible={false}
+      >
+        <AddComponent
+          parentLocator={blockId}
+          isSplitTestType={isSplitTestType}
+          isUnitVerticalType={isUnitVerticalType}
+          handleCreateNewCourseXBlock={handleCreateNewCourseXBlock}
+          addComponentTemplateData={addComponentTemplateData}
+          onCloseNewComponentModal={closeNewComponentModal}
+        />
+      </StandardModal>
+    </div>
+  );
+
+  return (
     <>
       <Container size="xl" className="course-unit px-4">
         <section className="course-unit-container mb-4 mt-5">
@@ -112,53 +186,59 @@ const CourseUnit = ({ courseId }) => {
                 show={movedXBlockParams.isSuccess}
                 variant="success"
                 icon={CheckCircleIcon}
-                title={movedXBlockParams.isUndo
-                  ? intl.formatMessage(messages.alertMoveCancelTitle)
-                  : intl.formatMessage(messages.alertMoveSuccessTitle)}
-                description={movedXBlockParams.isUndo
-                  ? intl.formatMessage(messages.alertMoveCancelDescription, { title: movedXBlockParams.title })
-                  : intl.formatMessage(messages.alertMoveSuccessDescription, { title: movedXBlockParams.title })}
+                title={
+                  movedXBlockParams.isUndo
+                    ? intl.formatMessage(messages.alertMoveCancelTitle)
+                    : intl.formatMessage(messages.alertMoveSuccessTitle)
+                }
+                description={
+                  movedXBlockParams.isUndo
+                    ? intl.formatMessage(messages.alertMoveCancelDescription, {
+                        title: movedXBlockParams.title,
+                      })
+                    : intl.formatMessage(messages.alertMoveSuccessDescription, {
+                        title: movedXBlockParams.title,
+                      })
+                }
                 aria-hidden={movedXBlockParams.isSuccess}
                 dismissible
-                actions={movedXBlockParams.isUndo ? null : [
-                  <Button
-                    onClick={handleRollbackMovedXBlock}
-                    key="xblock-moved-alert-undo-move-button"
-                  >
-                    {intl.formatMessage(messages.undoMoveButton)}
-                  </Button>,
-                  <Button
-                    onClick={handleNavigateToTargetUnit}
-                    key="xblock-moved-alert-new-location-button"
-                  >
-                    {intl.formatMessage(messages.newLocationButton)}
-                  </Button>,
-                ]}
+                actions={
+                  movedXBlockParams.isUndo
+                    ? null
+                    : [
+                        <Button
+                          onClick={handleRollbackMovedXBlock}
+                          key="xblock-moved-alert-undo-move-button"
+                        >
+                          {intl.formatMessage(messages.undoMoveButton)}
+                        </Button>,
+                        <Button
+                          onClick={handleNavigateToTargetUnit}
+                          key="xblock-moved-alert-new-location-button"
+                        >
+                          {intl.formatMessage(messages.newLocationButton)}
+                        </Button>,
+                      ]
+                }
                 onClose={handleCloseXBlockMovedAlert}
               />
             ) : null}
           </TransitionReplace>
           {courseUnit.upstreamInfo?.upstreamLink && (
             <AlertMessage
-              title={intl.formatMessage(
-                messages.alertLibraryUnitReadOnlyText,
-                {
-                  link: (
-                    <Alert.Link
-                      className="ml-1"
-                      href={courseUnit.upstreamInfo.upstreamLink}
-                    >
-                      {intl.formatMessage(messages.alertLibraryUnitReadOnlyLinkText)}
-                    </Alert.Link>
-                  ),
-                },
-              )}
+              title={intl.formatMessage(messages.alertLibraryUnitReadOnlyText, {
+                link: (
+                  <Alert.Link className="ml-1" href={courseUnit.upstreamInfo.upstreamLink}>
+                    {intl.formatMessage(messages.alertLibraryUnitReadOnlyLinkText)}
+                  </Alert.Link>
+                ),
+              })}
               variant="info"
             />
           )}
           <SubHeader
             hideBorder
-            title={(
+            title={
               <HeaderTitle
                 unitTitle={unitTitle}
                 isTitleEditFormOpen={isTitleEditFormOpen}
@@ -166,21 +246,16 @@ const CourseUnit = ({ courseId }) => {
                 handleTitleEditSubmit={handleTitleEditSubmit}
                 handleConfigureSubmit={handleConfigureSubmit}
               />
-            )}
-            breadcrumbs={(
-              <Breadcrumbs
-                courseId={courseId}
-                parentUnitId={sequenceId}
-              />
-            )}
-            headerActions={(
+            }
+            breadcrumbs={<Breadcrumbs courseId={courseId} parentUnitId={sequenceId} />}
+            headerActions={
               <CourseUnitHeaderActionsSlot
                 category={unitCategory}
                 headerNavigationsActions={headerNavigationsActions}
                 unitTitle={unitTitle}
                 verticalBlocks={courseVerticalChildren.children}
               />
-            )}
+            }
           />
           {isUnitVerticalType && (
             <Sequence
@@ -202,10 +277,7 @@ const CourseUnit = ({ courseId }) => {
                 />
               )}
               {staticFileNotices && (
-                <PasteNotificationAlert
-                  staticFileNotices={staticFileNotices}
-                  courseId={courseId}
-                />
+                <PasteNotificationAlert staticFileNotices={staticFileNotices} courseId={courseId} />
               )}
               <XBlockContainerIframe
                 courseId={courseId}
@@ -228,8 +300,11 @@ const CourseUnit = ({ courseId }) => {
               {!readOnly && showPasteXBlock && canPasteComponent && isUnitVerticalType && (
                 <PasteComponent
                   clipboardData={sharedClipboardData}
-                  onClick={
-                    () => handleCreateNewCourseXBlock({ stagedContent: 'clipboard', parentLocator: blockId })
+                  onClick={() =>
+                    handleCreateNewCourseXBlock({
+                      stagedContent: 'clipboard',
+                      parentLocator: blockId,
+                    })
                   }
                   text={intl.formatMessage(messages.pasteButtonText)}
                 />
@@ -261,10 +336,7 @@ const CourseUnit = ({ courseId }) => {
           isShow={isShowProcessingNotification}
           title={processingNotificationTitle}
         />
-        <SavingErrorAlert
-          savingStatus={savingStatus}
-          errorMessage={errorMessage}
-        />
+        <SavingErrorAlert savingStatus={savingStatus} errorMessage={errorMessage} />
       </div>
     </>
   );
