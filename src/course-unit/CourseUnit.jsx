@@ -40,11 +40,15 @@ import { DotsGrid, DotsVertical, Edit01, Eye, File05, Plus } from '@untitledui/i
 import Button from '../shared/Components/Common/Button';
 import { getItemIcon, getComponentStyleColor } from '../generic/block-type-utils';
 import { Icon } from '@openedx/paragon';
+import ConfigureModal from '../generic/configure-modal/ConfigureModal';
+import { COURSE_BLOCK_NAMES } from '../constants';
+import { getCourseUnitData } from './data/selectors';
 
 const CourseUnit = ({ courseId }) => {
   const { blockId } = useParams();
   const intl = useIntl();
   const [isNewComponentModalOpen, openNewComponentModal, closeNewComponentModal] = useToggle(false);
+  const [isConfigureModalOpen, openConfigureModal, closeConfigureModal] = useToggle(false);
   const {
     courseUnit,
     isLoading,
@@ -81,7 +85,12 @@ const CourseUnit = ({ courseId }) => {
     handleNavigateToTargetUnit,
     addComponentTemplateData,
   } = useCourseUnit({ courseId, blockId });
-  console.log(courseUnit);
+  const currentItemData = useSelector(getCourseUnitData);
+  const isXBlockComponent = [
+    COURSE_BLOCK_NAMES.libraryContent.id,
+    COURSE_BLOCK_NAMES.splitTest.id,
+    COURSE_BLOCK_NAMES.component.id,
+  ].includes(currentItemData.category);
   const layoutGrid = useLayoutGrid(unitCategory, isUnitLibraryType);
 
   const readOnly = !!courseUnit.readOnly;
@@ -91,6 +100,10 @@ const CourseUnit = ({ courseId }) => {
   }, [unitTitle]);
 
   useScrollToLastPosition();
+
+  const onConfigureSubmit = (...arg) => {
+    handleConfigureSubmit(currentItemData.id, ...arg, closeConfigureModal);
+  };
 
   const { isShow: isShowProcessingNotification, title: processingNotificationTitle } =
     useSelector(getProcessingNotification);
@@ -115,7 +128,7 @@ const CourseUnit = ({ courseId }) => {
             <File05 className="tw-text-brand-500 tw-size-4" />
             <span className="tw-text-gray- tw-text-sm tw-font-semibold">Unit</span>
           </div>
-          <span className="tw-text-xl tw-font-semibold tw-text-gray-900">{unitTitle}</span>
+          <span className="tw-text-xl tw-font-semibold tw-text-gray-900 tw-break-words tw-wrap-anywhere tw-hyphens-auto">{unitTitle}</span>
         </div>
         <div className="tw-flex tw-gap-3">
           <Button
@@ -126,11 +139,11 @@ const CourseUnit = ({ courseId }) => {
             className="!tw-w-auto !tw-h-10 tw-border-gray-300 tw-text-gray-700 !tw-py-[10px] !tw-px-[14px] focus:!tw-border"
             onClick={openNewComponentModal}
           />
-          <button className="tw-bg-transparent tw-border-0 tw-size-10 tw-flex tw-items-center tw-justify-center">
-            <Eye className="tw-text-gray-600 tw-size-4" />
-          </button>
-          <button className="tw-bg-transparent tw-border-0 tw-size-10 tw-flex tw-items-center tw-justify-center">
-            <DotsVertical className="tw-text-gray-600 tw-size-4" />
+          <button 
+            className="tw-bg-transparent tw-border-0 tw-size-10 tw-flex tw-items-center tw-justify-center tw-p-[10px]"
+            onClick={openConfigureModal}
+          >
+            <DotsVertical className="tw-text-gray-600 tw-size-5 hover:tw-text-gray-700" />
           </button>
         </div>
       </div>
@@ -171,6 +184,21 @@ const CourseUnit = ({ courseId }) => {
           onCloseNewComponentModal={closeNewComponentModal}
         />
       </StandardModal>
+
+      {/* Unit Settings Modal */}
+      <ConfigureModal
+        isOpen={isConfigureModalOpen}
+        onClose={closeConfigureModal}
+        onConfigureSubmit={onConfigureSubmit}
+        currentItemData={currentItemData}
+        isSelfPaced={false}
+        isXBlockComponent={isXBlockComponent}
+        userPartitionInfo={currentItemData?.userPartitionInfo || {}}
+      />
+      <ProcessingNotification
+        isShow={isShowProcessingNotification}
+        title={processingNotificationTitle}
+      />
     </div>
   );
 
