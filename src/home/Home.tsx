@@ -9,7 +9,6 @@ import { MainCardLayout } from 'shared/Components/Common/Layouts/MainCardLayout'
 import { useAppEventContext } from 'context/AppEventContext';
 import { useEffect } from 'react';
 import { SocketEvent } from 'context/AppEventContext/types';
-import { useDialog } from 'shared/context/dialog';
 import { capitalizeString } from '../utils';
 
 import Loading from '../generic/Loading';
@@ -41,8 +40,6 @@ const Home = () => {
 
   const { username } = getAuthenticatedUser() as { username: string };
 
-  const { open } = useDialog();
-
   const { userIsActive } = studioHomeData;
 
   // TODO: This is an example of how to register an event callback, remove this after testing
@@ -54,14 +51,6 @@ const Home = () => {
     return () => {
       unregister();
     };
-  }, [registerEventCallback]);
-
-  useEffect(() => {
-    const unregister = registerEventCallback(SocketEvent.OPEN_CREATE_COURSE_MODAL, () => {
-      open();
-    });
-
-    return unregister;
   }, [registerEventCallback]);
 
   if (isLoadingPage && !isFiltered) {

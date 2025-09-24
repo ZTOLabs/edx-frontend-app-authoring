@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Socket, io } from 'socket.io-client';
 import { createContext } from 'utils/context';
 
+import { useDialog } from 'shared/context/dialog';
 import {
   ClientToServerEvents,
   EventHandlerConfig,
@@ -37,6 +38,7 @@ const createEmptyRegistryMap = () => {
 };
 
 export default function AppEventContextProvider({ children }: { children: React.ReactNode }) {
+  const { open } = useDialog();
   const [isConnected, setIsConnected] = useState(false);
   const socketRef = useRef<Socket<ServerToClientEvents, ClientToServerEvents> | null>(null);
 
@@ -93,6 +95,23 @@ export default function AppEventContextProvider({ children }: { children: React.
     };
     return handlers;
   }, []);
+
+  useEffect(() => {
+    let unregister: (() => void) | undefined;
+
+    if (isConnected) {
+      unregister = registerEventCallback(
+        SocketEvent.OPEN_CREATE_COURSE_MODAL,
+        () => {
+          open();
+        },
+      );
+    }
+
+    return () => {
+      unregister?.();
+    };
+  }, [registerEventCallback, isConnected, open]);
 
   useEffect(() => {
     const initSocket = async () => {

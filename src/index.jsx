@@ -184,13 +184,13 @@ const App = () => {
         <QueryClientProvider client={queryClient}>
           <Head />
           <CanvasContextProvider>
-            <AppEventContextProvider>
-              <DialogProvider>
+            <DialogProvider>
+              <AppEventContextProvider>
                 <RouterProvider router={router} />
                 <Canvas />
                 <CreateCourseModal />
-              </DialogProvider>
-            </AppEventContextProvider>
+              </AppEventContextProvider>
+            </DialogProvider>
           </CanvasContextProvider>
         </QueryClientProvider>
       </ToastProvider>
