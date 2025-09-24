@@ -15,7 +15,7 @@ import { useContentMenuItems, useSettingMenuItems, useToolsMenuItems } from '../
 import Button from '../../shared/Components/Common/Button';
 import { formatToDate } from '../../utils';
 import { ITEM_BADGE_STATUS } from '../constants';
-import { publishCourseSection } from '../data/api';
+import { bulkPublishCourseSections } from '../data/api';
 import { getSectionsList } from '../data/selectors';
 import { updateSavingStatus } from '../data/slice';
 import { fetchCourseSectionQuery } from '../data/thunk';
@@ -101,11 +101,7 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
     dispatch(updateSavingStatus({ status: RequestStatus.PENDING }));
 
     try {
-      // Cannot use Promise.all since backend seems to have a race condition on processing simultanous publish requests
-      // TODO: Request backend to implement a batch publish API and use that instead
-      for (const itemId of allItemIds) {
-        await publishCourseSection(itemId);
-      }
+      await bulkPublishCourseSections(courseId, allItemIds);
 
       const sectionIds = sectionsList.map((section) => section.id);
       dispatch(fetchCourseSectionQuery(sectionIds));

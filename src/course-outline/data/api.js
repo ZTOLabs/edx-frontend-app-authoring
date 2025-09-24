@@ -29,6 +29,7 @@ export const getXBlockBaseApiUrl = () => `${getApiBaseUrl()}/xblock/`;
 export const getCourseItemApiUrl = (itemId) => `${getXBlockBaseApiUrl()}${itemId}`;
 export const getXBlockApiUrl = (blockId) => `${getXBlockBaseApiUrl()}outline/${blockId}`;
 export const exportTags = (courseId) => `${getApiBaseUrl()}/api/content_tagging/v1/object_tags/${courseId}/export/`;
+export const bulkPublishCourseSectionsApiUrl = (courseId) => `${getApiBaseUrl()}/api/course/${courseId}/publish`;
 
 /**
  * @typedef {Object} courseOutline
@@ -210,6 +211,21 @@ export async function publishCourseSection(sectionId) {
   const { data } = await getAuthenticatedHttpClient()
     .post(getCourseItemApiUrl(sectionId), {
       publish: 'make_public',
+    });
+
+  return data;
+}
+
+/**
+ * Bulk publish course sections
+ * @param {string} courseId
+ * @param {Array<string>} sectionIds
+ * @returns {Promise<Object>}
+ */
+export async function bulkPublishCourseSections(courseId, sectionIds) {
+  const { data } = await getAuthenticatedHttpClient()
+    .post(bulkPublishCourseSectionsApiUrl(courseId), {
+      section_locators: sectionIds,
     });
 
   return data;
