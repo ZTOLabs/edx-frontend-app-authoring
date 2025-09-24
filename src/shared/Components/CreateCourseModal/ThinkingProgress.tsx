@@ -13,7 +13,12 @@ const TOTAL_STICKS = 71;
 
 const STEP_STREAMING_DELAY = 500;
 
-export default function ThinkingProgress({ className }: { className?: string }) {
+interface ThinkingProgressProps {
+  className?: string;
+  onCourseIdChange?: (courseId: string | null) => void;
+}
+
+export default function ThinkingProgress({ className, onCourseIdChange }: ThinkingProgressProps) {
   const { registerEventCallback } = useAppEventContext();
   const { close } = useDialog();
 
@@ -26,6 +31,12 @@ export default function ThinkingProgress({ className }: { className?: string }) 
     }),
     [],
   );
+
+  useEffect(() => {
+    if (onCourseIdChange) {
+      onCourseIdChange(thinkingProgress?.courseId || null);
+    }
+  }, [thinkingProgress?.courseId, onCourseIdChange]);
 
   useEffect(() => {
     const isCompleted = Number(thinkingProgress?.progress) === 100;

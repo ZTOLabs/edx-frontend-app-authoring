@@ -3,6 +3,8 @@ import animationData from 'assets/lotties/steamese-bot.json';
 import Lottie from 'lottie-react';
 import { useDialog } from 'shared/context/dialog';
 import { useIntl } from '@edx/frontend-platform/i18n';
+import { useNavigate } from 'react-router';
+import { useState } from 'react';
 import Button from '../Common/Button';
 import {
   Dialog,
@@ -18,7 +20,24 @@ import messages from './message';
 
 const CreateCourseModal = () => {
   const { isOpen, close } = useDialog();
+  const navigate = useNavigate();
   const intl = useIntl();
+
+  const [courseId, setCourseId] = useState<string | null>(null);
+
+  const handleCourseIdChange = (newCourseId: string | null) => {
+    setCourseId(newCourseId);
+  };
+
+  const handleGoToCourseList = () => {
+    navigate('/courses');
+    close();
+  };
+
+  const handleGoToCourseContent = () => {
+    navigate(`/course/${courseId}`);
+    close();
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={close}>
@@ -55,14 +74,14 @@ const CreateCourseModal = () => {
             <DialogDescription className="tw-text-gray-600 tw-font-normal tw-text-md tw-text-center">
               {intl.formatMessage(messages.description)}
             </DialogDescription>
-            <ThinkingProgress />
+            <ThinkingProgress onCourseIdChange={handleCourseIdChange} />
           </div>
         </div>
         <DialogFooter className="tw-sticky tw-bottom-0 tw-bg-gray-50 tw-p-6 !tw-w-full tw-flex !tw-gap-3 tw-flex-row !tw-justify-between">
           <DialogClose asChild>
-            <Button variant="tertiary" size="sm" labels={{ default: intl.formatMessage(messages.goToCourseListButton) }} />
+            <Button variant="tertiary" size="sm" labels={{ default: intl.formatMessage(messages.goToCourseListButton) }} onClick={handleGoToCourseList} />
           </DialogClose>
-          <Button variant="brand" size="sm" labels={{ default: intl.formatMessage(messages.goToCourseContentButton) }} />
+          <Button variant="brand" size="sm" labels={{ default: intl.formatMessage(messages.goToCourseContentButton) }} onClick={handleGoToCourseContent} disabled={!courseId} />
         </DialogFooter>
       </DialogContent>
     </Dialog>

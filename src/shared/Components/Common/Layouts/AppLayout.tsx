@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { SidebarInset, SidebarProvider, useSidebar } from '@/shared/Components/ui/sidebar';
 
 import { cn } from 'shared/lib/utils';
+import CreateCourseModal from 'shared/Components/CreateCourseModal/CreateCourseModal';
 import AppSidebar from './AppSidebar';
 import ChatBoxContainer from './Chatbox/ChatBoxContainer';
 import ChatBoxTrigger from './Chatbox/ChatBoxTrigger';
@@ -37,6 +38,7 @@ const Wrapper = () => (
     }
   >
     <AppLayout />
+    <CreateCourseModal />
   </SidebarProvider>
 );
 
