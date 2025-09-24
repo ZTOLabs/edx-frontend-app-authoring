@@ -126,7 +126,7 @@ const CourseUnit = ({ courseId }) => {
         <div className="tw-flex tw-flex-col tw-gap-2 tw-flex-1">
           <div className="tw-flex tw-items-center tw-gap-2">
             <File05 className="tw-text-brand-500 tw-size-4" />
-            <span className="tw-text-gray- tw-text-sm tw-font-semibold">Unit</span>
+            <span className="tw-text-gray- tw-text-sm tw-font-semibold">{intl.formatMessage(messages.pageTitle)}</span>
           </div>
           <span className="tw-text-xl tw-font-semibold tw-text-gray-900 tw-break-words tw-wrap-anywhere tw-hyphens-auto">{unitTitle}</span>
         </div>
@@ -135,7 +135,7 @@ const CourseUnit = ({ courseId }) => {
             variant="secondary"
             size="sm"
             iconBefore={Plus}
-            labels={{ default: 'New component' }}
+            labels={{ default: intl.formatMessage(messages.newComponentButtonText) }}
             className="!tw-w-auto !tw-h-10 tw-border-gray-300 tw-text-gray-700 !tw-py-[10px] !tw-px-[14px] focus:!tw-border"
             onClick={openNewComponentModal}
           />
@@ -163,13 +163,13 @@ const CourseUnit = ({ courseId }) => {
           onClick={openNewComponentModal}
         >
           <Plus className="tw-size-5" />
-          <span>New component</span>
+          <span>{intl.formatMessage(messages.newComponentButtonText)}</span>
         </button>
       </div>
 
       {/* New Component Modal */}
       <StandardModal
-        title="Select New Component to Create"
+        title={intl.formatMessage(messages.newComponentModalTitle)}
         isOpen={isNewComponentModalOpen}
         onClose={closeNewComponentModal}
         size="lg"
