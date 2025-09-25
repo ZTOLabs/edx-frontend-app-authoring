@@ -344,20 +344,6 @@ export const capitalizeString = (string) => string.charAt(0).toUpperCase() + str
 export const convertFromSnakeCaseToTitleCase = (string) =>
   string.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
 
-/**
- * Converts an ISO date string to "MMM DD, YYYY" format
- * @param {string} isoDateString - ISO date string (e.g., "2025-09-22T10:30:00Z")
- * @returns {string} formatted date string (e.g., "Sep 22, 2025")
- */
-export const formatDateToReadable = (isoDateString) => {
-  if (!isoDateString) {
-    return '';
-  }
-
-  const convertedDate = new Date(isoDateString).toLocaleString();
-
-  return moment(convertedDate).format('MMM DD, YYYY');
-};
 
 /**
  * Formats a UTC date string to local timezone with specified format
