@@ -29,7 +29,7 @@ export const getXBlockBaseApiUrl = () => `${getApiBaseUrl()}/xblock/`;
 export const getCourseItemApiUrl = (itemId) => `${getXBlockBaseApiUrl()}${itemId}`;
 export const getXBlockApiUrl = (blockId) => `${getXBlockBaseApiUrl()}outline/${blockId}`;
 export const exportTags = (courseId) => `${getApiBaseUrl()}/api/content_tagging/v1/object_tags/${courseId}/export/`;
-export const bulkPublishCourseSectionsApiUrl = (courseId) => `${getApiBaseUrl()}/api/course/${courseId}/publish`;
+export const bulkPublishCourseSectionsApiUrl = (courseId) => `${getApiBaseUrl()}/course/${courseId}/publish`;
 
 /**
  * @typedef {Object} courseOutline
