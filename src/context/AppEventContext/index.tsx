@@ -85,30 +85,12 @@ export default function AppEventContextProvider({ children }: { children: React.
       },
       [SocketEvent.OPEN_CREATE_COURSE_MODAL]: {
         handler: () => {
-          console.log('received open create course modal data');
+          open();
         },
-        registry: eventCallbacksRef.current[SocketEvent.OPEN_CREATE_COURSE_MODAL],
       },
     };
     return handlers;
   }, []);
-
-  useEffect(() => {
-    let unregister: (() => void) | undefined;
-
-    if (isConnected) {
-      unregister = registerEventCallback(
-        SocketEvent.OPEN_CREATE_COURSE_MODAL,
-        () => {
-          open();
-        },
-      );
-    }
-
-    return () => {
-      unregister?.();
-    };
-  }, [registerEventCallback, isConnected, open]);
 
   useEffect(() => {
     const initSocket = async () => {
