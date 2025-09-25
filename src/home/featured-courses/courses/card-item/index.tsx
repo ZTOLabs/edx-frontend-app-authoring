@@ -86,15 +86,12 @@ const CardItem: React.FC<Props> = ({
 
   const thumbnailImage = imageUrl ? `url(${imageUrl})` : 'none';
 
-  const convertedStartDate = new Date(startDate).toLocaleString();
-  const convertedEndDate = new Date(endDate).toLocaleString();
-
   const renderSubtitle = () => {
     return (
       <div className="tw-text-sm tw-font-normal tw-text-gray-500 tw-w-full tw-truncate tw-line-clamp-1 hover:tw-no-underline tw-flex tw-flex-row tw-gap-2 tw-items-center">
-        {startDate && <span>{formatDateToReadable(convertedStartDate)}</span>}
+        {startDate && <span>{formatDateToReadable(startDate)}</span>}
         <ArrowRight className="tw-size-3" />
-        {endDate && <span>{formatDateToReadable(convertedEndDate)}</span>}
+        {endDate && <span>{formatDateToReadable(endDate)}</span>}
       </div>
     );
   };

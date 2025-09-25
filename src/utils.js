@@ -334,6 +334,8 @@ export const formatDateToReadable = (isoDateString) => {
   if (!isoDateString) {
     return '';
   }
-  
-  return moment(isoDateString).format('MMM DD, YYYY');
+
+  const convertedDate = new Date(isoDateString).toLocaleString();
+
+  return moment(convertedDate).format('MMM DD, YYYY');
 };
