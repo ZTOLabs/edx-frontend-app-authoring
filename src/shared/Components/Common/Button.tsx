@@ -9,7 +9,7 @@ interface ButtonProps {
   name?: string;
   id?: string;
   type?: string;
-  variant?: 'brand' | 'link' | 'secondary' | 'secondaryGray';
+  variant?: 'brand' | 'link' | 'secondary' | 'secondaryGray' | 'tertiary';
   state?: string;
   labels?: Record<string, React.ReactNode>;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
@@ -21,7 +21,7 @@ interface ButtonProps {
 }
 
 const buttonVariants = cva(
-  'tw-inline-flex tw-items-center tw-justify-center focus:before:tw-hidden focus:!tw-outline-none focus:!tw-ring-0',
+  'tw-inline-flex tw-items-center tw-justify-center focus:before:tw-hidden focus:!tw-outline-none focus:!tw-ring-0 !tw-m-0',
   {
     variants: {
       size: {
@@ -103,6 +103,16 @@ const buttonVariants = cva(
           'disabled:tw-text-gray-400',
           'disabled:tw-border-gray-200',
           'disabled:tw-cursor-not-allowed',
+        ],
+        tertiary: [
+          'tw-py-[10px]',
+          'tw-px-[16px]',
+          'tw-w-full',
+          'tw-rounded-[100px]',
+          'tw-bg-white',
+          'tw-border-gray-300',
+          'focus:!tw-border-gray-300',
+          'focus:!tw-border',
         ],
       },
     },
