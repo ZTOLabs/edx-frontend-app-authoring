@@ -14,7 +14,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { cn } from 'shared/lib/utils';
 import { ArrowRight } from '@untitledui/icons';
-import { convertFromSnakeCaseToTitleCase, formatDateToReadable, formatToDate } from '../../../../utils';
+import { convertFromSnakeCaseToTitleCase, formatToDate } from '../../../../utils';
 import { getWaffleFlags } from '../../../../data/selectors';
 import { COURSE_CREATOR_STATES } from '../../../../constants';
 import { getStudioHomeData } from '../../../data/selectors';
@@ -60,8 +60,8 @@ const CardItem: React.FC<Props> = ({
   path,
   url,
   imageUrl,
-  startDate = '2025-09-22T10:30:00Z',
-  endDate = '2025-09-22T10:30:00Z',
+  startDate,
+  endDate,
 }) => {
   const intl = useIntl();
   const {
@@ -89,9 +89,9 @@ const CardItem: React.FC<Props> = ({
   const renderSubtitle = () => {
     return (
       <div className="tw-text-sm tw-font-normal tw-text-gray-500 tw-w-full tw-truncate tw-line-clamp-1 hover:tw-no-underline tw-flex tw-flex-row tw-gap-2 tw-items-center">
-        {startDate && <span>{formatToDate(startDate, 'MMM DD, YYYY')}</span>}
+        {startDate ? <span>{formatToDate(startDate, 'MMM DD, YYYY')}</span> : 'N/A'}
         <ArrowRight className="tw-size-3" />
-        {endDate && <span>{formatToDate(endDate, 'MMM DD, YYYY')}</span>}
+        {endDate ? <span>{formatToDate(endDate, 'MMM DD, YYYY')}</span> : 'N/A'}
       </div>
     );
   };
