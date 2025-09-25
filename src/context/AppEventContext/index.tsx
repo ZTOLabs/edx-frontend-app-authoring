@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Socket, io } from 'socket.io-client';
 import { createContext } from 'utils/context';
+import { useCanvasContext } from 'context/Canvas';
 
+import { useDialog } from 'shared/context/dialog';
 import {
   ClientToServerEvents,
   EventHandlerConfig,
@@ -23,7 +25,7 @@ export const [useAppEventContext, AppEventContext] = createContext<AppEventConte
 export const AppEvent = SocketEvent;
 
 // TODO: use real url and token
-const socketUrl = 'http://localhost:8081';
+const socketUrl = 'http://localhost:3001';
 const token = '123';
 
 const createEmptyRegistryMap = () => {
@@ -37,8 +39,10 @@ const createEmptyRegistryMap = () => {
 };
 
 export default function AppEventContextProvider({ children }: { children: React.ReactNode }) {
+  const { open } = useDialog();
   const [isConnected, setIsConnected] = useState(false);
   const socketRef = useRef<Socket<ServerToClientEvents, ClientToServerEvents> | null>(null);
+  const { openCanvas } = useCanvasContext();
 
   const eventCallbacksRef = useRef(createEmptyRegistryMap());
 
@@ -70,12 +74,18 @@ export default function AppEventContextProvider({ children }: { children: React.
       },
       [SocketEvent.OPEN_CANVAS]: {
         handler: (data) => {
-          console.log('received data', data);
+          openCanvas(data);
         },
       },
-      [SocketEvent.UPDATE_CANVAS]: {
+      [SocketEvent.THINKING_PROGRESS]: {
         handler: (data) => {
-          console.log('received update data', data);
+          console.log('received thinking progress stream data', data);
+        },
+        registry: eventCallbacksRef.current[SocketEvent.THINKING_PROGRESS],
+      },
+      [SocketEvent.OPEN_CREATE_COURSE_MODAL]: {
+        handler: () => {
+          open();
         },
       },
     };

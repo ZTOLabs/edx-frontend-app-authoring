@@ -1,15 +1,20 @@
+import { ThinkingProgressPayload } from 'types/thinkingProgress';
+import { CanvasContent } from 'types/canvas';
+
 export enum SocketEvent {
   CONNECT = 'connect',
   DISCONNECT = 'disconnect',
   OPEN_CANVAS = 'open_canvas',
-  UPDATE_CANVAS = 'update_canvas',
+  THINKING_PROGRESS = 'thinking_progress',
+  OPEN_CREATE_COURSE_MODAL = 'open_create_course_modal',
 }
 
 export interface ServerToClientEventPayloadMap {
   [SocketEvent.CONNECT]: undefined;
   [SocketEvent.DISCONNECT]: undefined;
-  [SocketEvent.OPEN_CANVAS]: { type: 'reports' }; // TODO: REVIEW
-  [SocketEvent.UPDATE_CANVAS]: { type: 'presentation'; data: any }; // TODO: REVIEW
+  [SocketEvent.OPEN_CREATE_COURSE_MODAL]: {};
+  [SocketEvent.THINKING_PROGRESS]: { event: any; data: ThinkingProgressPayload };
+  [SocketEvent.OPEN_CANVAS]: CanvasContent;
 }
 
 type SocketEventHandler = (data: Record<string, unknown>) => void;

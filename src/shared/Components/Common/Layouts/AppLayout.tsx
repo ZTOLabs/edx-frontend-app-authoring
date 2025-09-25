@@ -1,8 +1,10 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import { SidebarInset, SidebarProvider, useSidebar } from '@/shared/Components/ui/sidebar';
-
+import { IframeProvider } from 'generic/hooks/context/iFrameContext';
 import { cn } from 'shared/lib/utils';
+import CreateCourseModal from 'shared/Components/CreateCourseModal/CreateCourseModal';
+import { SidebarInset, SidebarProvider, useSidebar } from 'shared/Components/ui/sidebar';
+
 import AppSidebar from './AppSidebar';
 import ChatBoxContainer from './Chatbox/ChatBoxContainer';
 import ChatBoxTrigger from './Chatbox/ChatBoxTrigger';
@@ -20,8 +22,10 @@ const AppLayout = () => {
         )}
       >
         <Outlet />
-        <ChatBoxContainer />
-        {!open && <ChatBoxTrigger />}
+        <IframeProvider>
+          <ChatBoxContainer />
+          {!open && <ChatBoxTrigger />}
+        </IframeProvider>
       </SidebarInset>
     </div>
   );
@@ -37,6 +41,7 @@ const Wrapper = () => (
     }
   >
     <AppLayout />
+    <CreateCourseModal />
   </SidebarProvider>
 );
 
