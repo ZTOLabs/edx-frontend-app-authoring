@@ -359,3 +359,25 @@ export const convertFromSnakeCaseToTitleCase = (string) =>
  * // Returns: "2023-09-04"
  */
 export const formatToDate = (date, format = 'll, LT') => moment.utc(date).local().format(format);
+
+/**
+ * Formats a UTC date string to local timezone with specified format
+ * @param {string} date - The UTC date string to format
+ * @param {{'vi': string, 'en': string}} formatMap - The format map to format the date in
+ * @param {string} locale - The current locale
+ *
+ * @returns {string} The formatted date string in local timezone
+ * @example
+ * formatToDateWithLocale('2023-09-04T15:45:00Z', { vi: 'DD/MM/YYYY [lúc] HH:mm', en: 'll, LT' }, 'vi')
+ * // Returns: "27/11/2025 lúc 15:45"
+ *
+ * formatToDateWithLocale('2023-09-04T15:45:00Z', { vi: 'DD/MM/YYYY [lúc] HH:mm', en: 'll, LT' }, 'en')
+ * // Returns: "Sep 4, 2023, 3:45 PM"
+ */
+export const formatToDateWithLocale = (date, formatMap, locale) => {
+  const format = formatMap[locale];
+  if (!format) {
+    return formatToDate(date);
+  }
+  return formatToDate(date, format);
+};

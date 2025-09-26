@@ -20,7 +20,7 @@ import { DragContext } from '../drag-helper/DragContextProvider';
 import SortableItem from '../drag-helper/SortableItem';
 import { getItemStatus, scrollToElement } from '../utils';
 import xblockStatusMessages from '../xblock-status/messages';
-import { formatToDate } from '../../utils';
+import { formatToDateWithLocale } from '../../utils';
 
 const ChevronTriangleDown = () => (
   <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -202,7 +202,7 @@ const SectionCard = ({
   );
 
   const isDraggable = !isCreating || (actions.draggable && (actions.allowMoveUp || actions.allowMoveDown));
-  const releaseDate = section.start ? formatToDate(section.start, locale === 'vi' ? 'DD/MM/YYYY [lúc] HH:mm' : undefined) : '';
+  const releaseDate = section.start ? formatToDateWithLocale(section.start, { vi: 'DD/MM/YYYY [lúc] HH:mm', en: 'll, LT' }, locale) : '';
 
   const isSectionWithNoUnit = section.childInfo?.children?.[0]?.childInfo?.children?.length === 0;
 

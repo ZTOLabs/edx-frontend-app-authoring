@@ -14,7 +14,7 @@ import {
 } from '../../generic/processing-notification/data/slice';
 import { useContentMenuItems, useSettingMenuItems, useToolsMenuItems } from '../../header/hooks';
 import Button from '../../shared/Components/Common/Button';
-import { formatToDate } from '../../utils';
+import { formatToDateWithLocale } from '../../utils';
 import { ITEM_BADGE_STATUS } from '../constants';
 import { publishCourseSection } from '../data/api';
 import { getSectionsList } from '../data/selectors';
@@ -151,7 +151,7 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
     [courseDetails?.org, courseDetails?.number, courseDetails?.id],
   );
 
-  const dueDate = courseDetails?.end ? formatToDate(courseDetails.end, locale === 'vi' ? 'DD/MM/YYYY' : 'MMM Do, YYYY') : undefined;
+  const dueDate = courseDetails?.end ? formatToDateWithLocale(courseDetails.end, { vi: 'DD/MM/YYYY', en: 'MMM Do, YYYY' }, locale) : undefined;
 
   // Prepare course data for the modal
   const courseData = useMemo(
@@ -160,9 +160,9 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
       title: courseDetails?.name,
       tags: chips.filter(Boolean),
       startDate: courseDetails?.start
-        ? formatToDate(courseDetails.start, locale === 'vi' ? 'DD/MM/YYYY' : 'MMM Do, YYYY')
+        ? formatToDateWithLocale(courseDetails.start, { vi: 'DD/MM/YYYY', en: 'MMM Do, YYYY' }, locale)
         : undefined,
-      endDate: courseDetails?.end ? formatToDate(courseDetails.end, locale === 'vi' ? 'DD/MM/YYYY' : 'MMM Do, YYYY') : undefined,
+      endDate: courseDetails?.end ? formatToDateWithLocale(courseDetails.end, { vi: 'DD/MM/YYYY', en: 'MMM Do, YYYY' }, locale) : undefined,
     }),
     [
       courseDetails?.media?.image?.raw,
