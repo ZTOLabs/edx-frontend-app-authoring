@@ -1,5 +1,5 @@
 // @ts-check
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { getLocale, useIntl } from '@edx/frontend-platform/i18n';
 import { useToggle } from '@openedx/paragon';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
@@ -48,6 +48,7 @@ const SectionCard = ({
   onOrderChange,
 }) => {
   const currentRef = useRef(null);
+  const locale = getLocale();
   const intl = useIntl();
   const dispatch = useDispatch();
   const { activeId, overId } = useContext(DragContext);
@@ -201,7 +202,7 @@ const SectionCard = ({
   );
 
   const isDraggable = !isCreating || (actions.draggable && (actions.allowMoveUp || actions.allowMoveDown));
-  const releaseDate = section.start ? formatToDate(section.start) : '';
+  const releaseDate = section.start ? formatToDate(section.start, locale === 'vi' ? 'DD/MM/YYYY [lúc] HH:mm' : undefined) : '';
 
   const isSectionWithNoUnit = section.childInfo?.children?.[0]?.childInfo?.children?.length === 0;
 

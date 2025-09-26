@@ -21,6 +21,7 @@ module.exports = createConfig('eslint', {
     'arrow-body-style': 'off',
     'object-curly-newline': 'off',
     'react/function-component-definition': 'off',
+    'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
   },
   settings: {
     // Import URLs should be resolved using aliases
