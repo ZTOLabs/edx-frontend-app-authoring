@@ -62,7 +62,7 @@ const messages = defineMessages({
   },
   numberOfComponents: {
     id: 'course-authoring.course-outline.messages.numberOfComponents.label',
-    defaultMessage: 'Number of components: {numberOfComponents}',
+    defaultMessage: '{numberOfComponents} components',
   },
 });
 
