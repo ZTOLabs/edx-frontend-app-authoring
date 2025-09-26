@@ -2655,5 +2655,11 @@
   "course-authoring.course-outline.course-sidebar.publish-course-modal.button.publish": "Xuất bản",
   "course-authoring.course-outline.course-sidebar.publish-course-modal.button.publishing": "Đang xuất bản...",
   "course-authoring.course-outline.course-sidebar.publish-course-modal.success.message": "Khóa học đã được xuất bản thành công!",
-  "course-authoring.course-outline.course-sidebar.publish-course-modal.error.message": "Không thể xuất bản khóa học. Vui lòng thử lại."
+  "course-authoring.course-outline.course-sidebar.publish-course-modal.error.message": "Không thể xuất bản khóa học. Vui lòng thử lại.",
+  "course-authoring.course-unit.page.title": "Bài giảng",
+  "course-authoring.course-unit.new-component.button.text": "Thêm thành phần mới",
+  "authoring.create-course-modal.title": "Đang tạo nội dung khóa học",
+  "authoring.create-course-modal.description": "Việc tạo nội dung có thể mất vài phút. Vui lòng đợi.",
+  "authoring.create-course-modal.go-to-course-list-button": "Chuyển đến danh sách khóa học",
+  "authoring.create-course-modal.go-to-course-content-button": "Chuyển đến nội dung khóa học"
 }
