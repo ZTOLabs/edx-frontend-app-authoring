@@ -1,4 +1,4 @@
-import { getLocale, useIntl } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@edx/frontend-platform/i18n';
 import React, { useCallback, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
@@ -34,7 +34,6 @@ interface CourseSidebarProps {
 const RocketIcon = () => <Rocket02 className="!tw-size-5" />;
 
 const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
-  const locale = getLocale();
   const intl = useIntl();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -151,7 +150,7 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
     [courseDetails?.org, courseDetails?.number, courseDetails?.id],
   );
 
-  const dueDate = courseDetails?.end ? formatToDateWithLocale(courseDetails.end, { vi: 'DD/MM/YYYY', en: 'MMM Do, YYYY' }, locale) : undefined;
+  const dueDate = formatToDateWithLocale(courseDetails?.end);
 
   // Prepare course data for the modal
   const courseData = useMemo(
@@ -159,10 +158,8 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
       thumbnail: courseDetails?.media?.image?.raw,
       title: courseDetails?.name,
       tags: chips.filter(Boolean),
-      startDate: courseDetails?.start
-        ? formatToDateWithLocale(courseDetails.start, { vi: 'DD/MM/YYYY', en: 'MMM Do, YYYY' }, locale)
-        : undefined,
-      endDate: courseDetails?.end ? formatToDateWithLocale(courseDetails.end, { vi: 'DD/MM/YYYY', en: 'MMM Do, YYYY' }, locale) : undefined,
+      startDate: formatToDateWithLocale(courseDetails?.start),
+      endDate: formatToDateWithLocale(courseDetails?.end),
     }),
     [
       courseDetails?.media?.image?.raw,

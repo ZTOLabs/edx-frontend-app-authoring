@@ -8,7 +8,7 @@ import {
   ActionRow,
 } from '@openedx/paragon';
 import { MoreVert } from '@openedx/paragon/icons';
-import { getLocale, useIntl } from '@edx/frontend-platform/i18n';
+import { useIntl } from '@edx/frontend-platform/i18n';
 import { getConfig } from '@edx/frontend-platform';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -63,7 +63,6 @@ const CardItem: React.FC<Props> = ({
   startDate,
   endDate,
 }) => {
-  const locale = getLocale();
   const intl = useIntl();
   const {
     allowCourseReruns,
@@ -90,9 +89,9 @@ const CardItem: React.FC<Props> = ({
   const renderSubtitle = () => {
     return (
       <div className="tw-text-sm tw-font-normal tw-text-gray-500 tw-w-full tw-truncate tw-line-clamp-1 hover:tw-no-underline tw-flex tw-flex-row tw-gap-2 tw-items-center">
-        {startDate ? <span>{formatToDateWithLocale(startDate, { vi: 'DD/MM/YYYY', en: 'MMM DD, YYYY' }, locale)}</span> : 'N/A'}
+        {startDate ? <span>{formatToDateWithLocale(startDate, { vi: 'DD/MM/YYYY', en: 'MMM DD, YYYY' })}</span> : 'N/A'}
         <ArrowRight className="tw-size-3" />
-        {endDate ? <span>{formatToDateWithLocale(endDate, { vi: 'DD/MM/YYYY', en: 'MMM DD, YYYY' }, locale)}</span> : 'N/A'}
+        {endDate ? <span>{formatToDateWithLocale(endDate, { vi: 'DD/MM/YYYY', en: 'MMM DD, YYYY' })}</span> : 'N/A'}
       </div>
     );
   };

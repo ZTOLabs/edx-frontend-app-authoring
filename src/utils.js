@@ -17,6 +17,7 @@ import {
   endOfDayTime,
   startOfDayTime,
 } from './pages-and-resources/discussions/app-config-form/utils';
+import { getLocale } from '@edx/frontend-platform/i18n';
 import { DATE_TIME_FORMAT } from './constants';
 
 export const executeThunk = async (thunk, dispatch, getState) => {
@@ -363,18 +364,21 @@ export const formatToDate = (date, format = 'll, LT') => moment.utc(date).local(
 /**
  * Formats a UTC date string to local timezone with specified format
  * @param {string} date - The UTC date string to format
- * @param {{'vi': string, 'en': string}} formatMap - The format map to format the date in
- * @param {string} locale - The current locale
+ * @param {{'vi': string, 'en': string}} [formatMap={'vi': 'DD/MM/YYYY', 'en': 'MMM Do, YYYY'}] - The format map to format the date in
  *
- * @returns {string} The formatted date string in local timezone
+ * @returns {string | undefined} The formatted date string in local timezone
  * @example
- * formatToDateWithLocale('2023-09-04T15:45:00Z', { vi: 'DD/MM/YYYY [lúc] HH:mm', en: 'll, LT' }, 'vi')
+ * formatToDateWithLocale('2023-09-04T15:45:00Z', { vi: 'DD/MM/YYYY [lúc] HH:mm', en: 'll, LT' })
  * // Returns: "27/11/2025 lúc 15:45"
  *
- * formatToDateWithLocale('2023-09-04T15:45:00Z', { vi: 'DD/MM/YYYY [lúc] HH:mm', en: 'll, LT' }, 'en')
- * // Returns: "Sep 4, 2023, 3:45 PM"
+ * formatToDateWithLocale('2023-09-04T15:45:00Z')
+ * // Returns: "Sep 4, 2023"
  */
-export const formatToDateWithLocale = (date, formatMap, locale) => {
+export const formatToDateWithLocale = (date, formatMap = { vi: 'DD/MM/YYYY', en: 'MMM Do, YYYY' }) => {
+  if (!date) {
+    return undefined;
+  }
+  const locale = getLocale();
   const format = formatMap[locale];
   if (!format) {
     return formatToDate(date);
