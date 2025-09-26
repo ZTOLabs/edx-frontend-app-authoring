@@ -8,7 +8,9 @@ import { Link } from 'react-router-dom';
 
 import { cn } from 'shared/lib/utils';
 import { Stars02 } from '@untitledui/icons';
+import { getLocale } from '@edx/frontend-platform/i18n';
 import { getWaffleFlags } from '../../../../data/selectors';
+import { getLibraryTypeTranslation } from './utils';
 
 interface BaseProps {
   displayName: string;
@@ -44,7 +46,7 @@ const LibraryItem: React.FC<Props> = ({
   isAIGenerated = false,
 }) => {
   const waffleFlags = useSelector(getWaffleFlags);
-
+  const locale = getLocale();
   const destinationUrl: string = path ?? (
     waffleFlags.useNewCourseOutlinePage
       ? url
@@ -88,7 +90,7 @@ const LibraryItem: React.FC<Props> = ({
             </span>
           )}
           subtitle={
-            <span className="tw-text-xs tw-font-normal tw-text-gray-500 tw-block tw-truncate tw-whitespace-nowrap hover:tw-no-underline">{type}</span>
+            <span className="tw-text-xs tw-font-normal tw-text-gray-500 tw-block tw-truncate tw-whitespace-nowrap hover:tw-no-underline">{getLibraryTypeTranslation(type, locale)}</span>
           }
         />
       </div>
