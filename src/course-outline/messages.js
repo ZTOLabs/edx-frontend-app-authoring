@@ -59,7 +59,11 @@ const messages = defineMessages({
   disabledPublishButtonTooltip: {
     id: 'course-authoring.course-outline.messages.disabledPublishButtonTooltip.label',
     defaultMessage: 'The start and end dates for the course are not set.',
-  }
+  },
+  numberOfComponents: {
+    id: 'course-authoring.course-outline.messages.numberOfComponents.label',
+    defaultMessage: 'Number of components: {numberOfComponents}',
+  },
 });
 
 export default messages;
