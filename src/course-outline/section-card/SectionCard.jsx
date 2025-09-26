@@ -102,7 +102,7 @@ const SectionCard = ({
   } = section;
 
   const { generationStatus } = xmlAttributes;
-  const isCreating = generationStatus === GenerationStatus.CREATING;
+  const isCreating = generationStatus === GenerationStatus.IN_PROGRESS;
 
   useEffect(() => {
     if (activeId === id && isExpanded) {
