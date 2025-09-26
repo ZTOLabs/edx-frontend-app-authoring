@@ -391,7 +391,7 @@
   "course-authoring.course-search.noResultsSubtitle": "",
   "course-authoring.course-search.openInNewWindow": "",
   "course-authoring.course-search.searchError": "",
-  "course-authoring.studio-home.heading.title": "Chào mừng đến với EduOne, {userName}",
+  "course-authoring.studio-home.heading.title": "Chào mừng đến với {platformName}, {userName}",
   "course-authoring.studio-home.my-courses.title": "Khóa học của tôi",
   "course-authoring.studio-home.courses.tab.all-courses.btn.text": "Xem tất cả",
   "course-authoring.studio-home.add-new-course.btn.text": "Tạo khóa học mới",

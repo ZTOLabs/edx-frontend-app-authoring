@@ -20,6 +20,7 @@ import { useStudioHome } from './hooks';
 import AlertMessage from '../generic/alert-message';
 import FeaturedCourses from './featured-courses';
 import FeaturedLibraries from './featured-libraries';
+import { PLATFORM_NAME } from '../constants';
 
 const Home = () => {
   const intl = useIntl();
@@ -98,6 +99,7 @@ const Home = () => {
             <section>
               <h2 className="tw-font-medium tw-text-4xl tw-leading-[44px] tw-text-gray-900 tw-tracking-[-0.72px] tw-mb-0">
                 {intl.formatMessage(messages.headingTitle, {
+                  platformName: PLATFORM_NAME,
                   userName: capitalizeString(username) || 'Teacher',
                 })}
               </h2>
