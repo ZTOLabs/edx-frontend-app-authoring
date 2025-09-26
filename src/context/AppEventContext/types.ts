@@ -8,6 +8,10 @@ export enum SocketEvent {
   THINKING_PROGRESS = 'thinking_progress',
 }
 
+export enum ClientToServerEvent {
+  JOIN_ROOM = 'join_room',
+}
+
 export interface ServerToClientEventPayloadMap {
   [SocketEvent.CONNECT]: undefined;
   [SocketEvent.DISCONNECT]: undefined;
@@ -21,9 +25,12 @@ export type ServerToClientEvents = {
   [E in SocketEvent]: SocketEventHandler;
 };
 
+export interface ClientToServerEventPayloadMap {
+  [ClientToServerEvent.JOIN_ROOM]: { channel: string };
+}
+
 export type ClientToServerEvents = {
-  // No client-to-server events in this case, but needed for Socket typing
-  __dummy: never; // This property will never be used, just to satisfy the linter
+  [E in ClientToServerEvent]: (payload: ClientToServerEventPayloadMap[E]) => void;
 };
 
 export type NotificationCallback<E extends SocketEvent> = (

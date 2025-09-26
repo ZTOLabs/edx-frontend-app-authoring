@@ -4,7 +4,9 @@ import { createContext } from 'utils/context';
 import { useCanvasContext } from 'context/Canvas';
 
 import { useDialog } from 'shared/context/dialog';
+import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import {
+  ClientToServerEvent,
   ClientToServerEvents,
   EventHandlerConfig,
   NotificationCallback,
@@ -39,6 +41,7 @@ const createEmptyRegistryMap = () => {
 };
 
 export default function AppEventContextProvider({ children }: { children: React.ReactNode }) {
+  const { userId } = getAuthenticatedUser();
   const { open } = useDialog();
   const [isConnected, setIsConnected] = useState(false);
   const socketRef = useRef<Socket<ServerToClientEvents, ClientToServerEvents> | null>(null);
@@ -78,7 +81,7 @@ export default function AppEventContextProvider({ children }: { children: React.
         },
       },
       [SocketEvent.THINKING_PROGRESS]: {
-        handler: (data) => {
+        handler: () => {
           open();
         },
         registry: eventCallbacksRef.current[SocketEvent.THINKING_PROGRESS],
@@ -94,6 +97,8 @@ export default function AppEventContextProvider({ children }: { children: React.
           token,
         },
       }) as Socket<ServerToClientEvents, ClientToServerEvents>;
+
+      socketRef.current.emit(ClientToServerEvent.JOIN_ROOM, { channel: `user:${userId}` });
 
       // Register all event handlers defined in the eventHandlers map
       Object.entries(eventHandlers).forEach(([event, config]) => {
