@@ -79,14 +79,9 @@ export default function AppEventContextProvider({ children }: { children: React.
       },
       [SocketEvent.THINKING_PROGRESS]: {
         handler: (data) => {
-          console.log('received thinking progress stream data', data);
-        },
-        registry: eventCallbacksRef.current[SocketEvent.THINKING_PROGRESS],
-      },
-      [SocketEvent.OPEN_CREATE_COURSE_MODAL]: {
-        handler: () => {
           open();
         },
+        registry: eventCallbacksRef.current[SocketEvent.THINKING_PROGRESS],
       },
     };
     return handlers;
