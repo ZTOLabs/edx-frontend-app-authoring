@@ -3,12 +3,14 @@ import { ChevronDown, ChevronRight } from '@untitledui/icons';
 import classNames from 'classnames';
 import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import NavigationMenuItem from './NavigationMenuItem';
 
 interface MenuItemProps {
   menuItem: {
     id: string;
     title: string;
-    items: Array<{
+    href?: string;
+    items?: Array<{
       href: string;
       title: string;
     }>;
@@ -19,13 +21,27 @@ interface MenuItemProps {
 const MenuItem: React.FC<MenuItemProps> = ({ menuItem, isItemActive }) => {
   const navigate = useNavigate();
 
-  // Check if any item in this menu is active
-  const hasActiveItem = menuItem.items.some(item => isItemActive(item.href));
+  // Check if any item in this menu is active (only if items exist)
+  const hasActiveItem = menuItem.items
+    ? menuItem.items.some((item) => isItemActive(item.href))
+    : false;
   const [isCollapsed, setIsCollapsed] = useState(!hasActiveItem);
 
   const handleToggle = useCallback(() => {
-    setIsCollapsed(prev => !prev);
+    setIsCollapsed((prev) => !prev);
   }, [setIsCollapsed]);
+
+  // If item has no children, render it as a simple clickable item
+  if (!menuItem.items || menuItem.items.length === 0) {
+    return (
+      <NavigationMenuItem
+        isActive={menuItem.href ? isItemActive(menuItem.href) : false}
+        onClick={() => menuItem.href && navigate(menuItem.href)}
+      >
+        {menuItem.title}
+      </NavigationMenuItem>
+    );
+  }
 
   return (
     <Collapsible.Advanced open={!isCollapsed} onToggle={handleToggle}>
@@ -46,17 +62,15 @@ const MenuItem: React.FC<MenuItemProps> = ({ menuItem, isItemActive }) => {
       </Collapsible.Trigger>
       <Collapsible.Body>
         <div className="tw-flex tw-flex-col tw-gap-1">
-          {menuItem.items.map((item, index) => (
-            <div
+          {menuItem.items.map((item) => (
+            <NavigationMenuItem
               key={item.title}
-              className={classNames(
-                'tw-self-stretch tw-justify-start tw-text-slate-700 tw-text-sm tw-font-medium tw-leading-tight tw-pl-6 tw-pr-3 tw-py-[10px] tw-cursor-pointer',
-                isItemActive(item.href) && 'tw-text-violet-700 tw-bg-violet-100 tw-rounded-[8px]',
-              )}
+              className="tw-pl-6 tw-pr-3"
+              isActive={isItemActive(item.href)}
               onClick={() => navigate(item.href)}
             >
               {item.title}
-            </div>
+            </NavigationMenuItem>
           ))}
         </div>
       </Collapsible.Body>

@@ -46,6 +46,7 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
 
   // Get menu items using the same hooks as the header
   const contentMenuItems = useContentMenuItems(courseId);
+  const filteredContentMenuItems = useMemo(() => contentMenuItems.filter((item) => !item.href.includes('libraries') && !item.href.includes('videos')), [contentMenuItems]);
   const settingMenuItems = useSettingMenuItems(courseId);
   const toolsMenuItems = useToolsMenuItems(courseId);
 
@@ -54,8 +55,11 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
     // Get all menu items from all sections
     const allMenuItems = [...contentMenuItems, ...settingMenuItems, ...toolsMenuItems];
 
-    // First check for exact matches across all menu items
-    const hasExactMatch = allMenuItems.some(item => location.pathname === item.href);
+    const directHrefs = [`/course/${courseId}/libraries`, `/course/${courseId}/students`];
+    const allHrefs = [...allMenuItems.map(item => item.href), ...directHrefs];
+
+    // First check for exact matches across all menu items and direct hrefs
+    const hasExactMatch = allHrefs.some(itemHref => location.pathname === itemHref);
 
     if (hasExactMatch) {
       // If there's an exact match, only highlight that specific item
@@ -70,7 +74,17 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({ courseId }) => {
     {
       id: `${intl.formatMessage({ id: 'header.links.content', defaultMessage: 'Content' })}-dropdown-menu`,
       title: intl.formatMessage({ id: 'header.links.content', defaultMessage: 'Content' }),
-      items: contentMenuItems,
+      items: filteredContentMenuItems,
+    },
+    {
+      id: `${intl.formatMessage({ id: 'header.links.libraries', defaultMessage: 'Libraries' })}-dropdown-menu`,
+      title: intl.formatMessage({ id: 'header.links.libraries', defaultMessage: 'Libraries' }),
+      href: `/course/${courseId}/libraries`,
+    },
+    {
+      id: `${intl.formatMessage({ id: 'header.links.students', defaultMessage: 'Students' })}-dropdown-menu`,
+      title: intl.formatMessage({ id: 'header.links.students', defaultMessage: 'Students' }),
+      href: `/course/${courseId}/students`,
     },
     {
       id: `${intl.formatMessage({ id: 'header.links.settings', defaultMessage: 'Settings' })}-dropdown-menu`,
