@@ -218,7 +218,7 @@
   "course-authoring.group-configurations.container.contains-groups": "Chứa {len, số nhiều, một {1 nhóm} khác { {len} nhóm}}",
   "course-authoring.group-configurations.container.not-in-use": "không được sử dụng",
   "course-authoring.group-configurations.container.used-in-locations": "Được sử dụng trong {len, số nhiều, một {1 vị trí} khác { vị trí {len} }}",
-  "course-authoring.page.title": "Khóa học tác giả | {siteName}",
+  "course-authoring.page.title": "{siteName}",
   "header.links.content": "Nội dung",
   "header.links.settings": "Cài đặt",
   "header.links.content.tools": "Công cụ",

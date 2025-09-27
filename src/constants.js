@@ -109,3 +109,4 @@ export const iframeMessageTypes = {
 };
 
 export const PLATFORM_NAME = 'EduOne';
+export const SITE_NAME = 'Octo';

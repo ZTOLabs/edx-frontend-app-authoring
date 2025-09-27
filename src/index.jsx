@@ -52,6 +52,7 @@ import CanvasContextProvider from './context/Canvas';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import './index.scss';
+import { SITE_NAME } from './constants';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -244,6 +245,8 @@ initialize({
           ENABLE_CERTIFICATE_PAGE: process.env.ENABLE_CERTIFICATE_PAGE || 'false',
           ENABLE_TAGGING_TAXONOMY_PAGES: process.env.ENABLE_TAGGING_TAXONOMY_PAGES || 'false',
           ENABLE_HOME_PAGE_COURSE_API_V2: process.env.ENABLE_HOME_PAGE_COURSE_API_V2 === 'true',
+          FAVICON_URL: process.env.FAVICON_URL || '/favicon.svg',
+          SITE_NAME: process.env.SITE_NAME || SITE_NAME,
           ENABLE_CHECKLIST_QUALITY: process.env.ENABLE_CHECKLIST_QUALITY || 'true',
           ENABLE_GRADING_METHOD_IN_PROBLEMS:
             process.env.ENABLE_GRADING_METHOD_IN_PROBLEMS === 'true',
