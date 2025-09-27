@@ -123,10 +123,9 @@ const PublishCourseModal: React.FC<PublishCourseModalProps> = ({
             <Button
               labels={{ default: intl.formatMessage(messages.publishCourseModalButtonBack) }}
               onClick={onClose}
-              variant="secondary"
-              size="sm"
+              variant="secondaryGray"
+              size="md"
               disabled={isPublishing}
-              className="tw-border-gray-300 tw-text-gray-700 hover:!tw-bg-gray-50 hover:!tw-text-gray-800 hover:!tw-border-gray-300 active:!tw-bg-gray-50 active:!tw-text-gray-800 active:!tw-border-gray-300 disabled:tw-pointer-events-none"
             />
             <Button
               labels={{
@@ -138,7 +137,7 @@ const PublishCourseModal: React.FC<PublishCourseModalProps> = ({
               }}
               onClick={handlePublish}
               variant="brand"
-              size="sm"
+              size="md"
               disabled={isPublishing}
               className="disabled:tw-pointer-events-none disabled:!tw-bg-gray-300"
               {...(isPublishing && { iconBefore: LoadingIcon })}

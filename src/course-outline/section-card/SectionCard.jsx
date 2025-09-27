@@ -256,10 +256,10 @@ const SectionCard = ({
             </div>
             <div className="tw-flex tw-gap-2 tw-items-center">
               <Button
-                variant="secondary"
+                variant="secondaryGray"
                 size="sm"
                 iconBefore={Plus}
-                className="!tw-w-auto tw-border-gray-300 tw-text-gray-700 !tw-py-[6px] !tw-px-[10px] focus:!tw-border"
+                className="!tw-w-auto"
                 labels={{ default: intl.formatMessage(courseUnitMessages.newUnitBtnText) }}
                 onClick={handleNewUnitSubmit}
               />

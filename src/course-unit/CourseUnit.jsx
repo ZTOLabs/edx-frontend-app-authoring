@@ -81,20 +81,24 @@ const CourseUnit = ({ courseId }) => {
         <div className="tw-flex tw-flex-col tw-gap-2 tw-flex-1">
           <div className="tw-flex tw-items-center tw-gap-2">
             <File05 className="tw-text-brand-500 tw-size-4" />
-            <span className="tw-text-gray- tw-text-sm tw-font-semibold">{intl.formatMessage(messages.pageTitle)}</span>
+            <span className="tw-text-gray-700 tw-text-sm tw-font-semibold">
+              {intl.formatMessage(messages.pageTitle)}
+            </span>
           </div>
-          <span className="tw-text-xl tw-font-semibold tw-text-gray-900 tw-break-words tw-wrap-anywhere tw-hyphens-auto">{unitTitle}</span>
+          <span className="tw-text-xl tw-font-semibold tw-text-gray-900 tw-break-words tw-wrap-anywhere tw-hyphens-auto">
+            {unitTitle}
+          </span>
         </div>
         <div className="tw-flex tw-gap-3">
           <Button
-            variant="secondary"
-            size="sm"
+            variant="secondaryGray"
+            size="md"
             iconBefore={Plus}
             labels={{ default: intl.formatMessage(messages.newComponentButtonText) }}
-            className="!tw-w-auto !tw-h-10 tw-border-gray-300 tw-text-gray-700 !tw-py-[10px] !tw-px-[14px] focus:!tw-border"
+            className="!tw-w-auto"
             onClick={openNewComponentModal}
           />
-          <button 
+          <button
             className="tw-bg-transparent tw-border-0 tw-size-10 tw-flex tw-items-center tw-justify-center tw-p-[10px]"
             onClick={() => {
               // TODO: Implement the Unit setting dropdown for this button in MVP
@@ -116,13 +120,15 @@ const CourseUnit = ({ courseId }) => {
           courseVerticalChildren={courseVerticalChildren.children}
           handleConfigureSubmit={handleConfigureSubmit}
         />
-        <button
-          className="tw-text-brand-700 tw-font-semibold tw-text-sm tw-mb-4 tw-bg-[rgba(255,255,255,0.7)] hover:!tw-bg-brand-600 hover:!tw-text-white tw-border tw-border-white tw-border-solid tw-rounded-[100px] tw-py-4 !tw-px-0 tw-flex tw-justify-center tw-items-center tw-gap-[6px]"
+
+        <Button
+          iconBefore={Plus}
           onClick={openNewComponentModal}
-        >
-          <Plus className="tw-size-5" />
-          <span>{intl.formatMessage(messages.newComponentButtonText)}</span>
-        </button>
+          labels={{ default: intl.formatMessage(messages.newComponentButtonText) }}
+          variant="secondary"
+          size="md"
+          className="!tw-h-[52px] !tw-border-0 !tw-mb-4 !tw-bg-[rgba(255,255,255,0.7)] hover:!tw-bg-violet-50/70"
+        />
       </div>
 
       {/* New Component Modal */}

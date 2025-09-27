@@ -275,10 +275,10 @@ const CourseOutline = ({ courseId }) => {
             {intl.formatMessage(messages.headingTitle)}
           </div>
           <Button
-            className="!tw-w-auto !tw-px-[14px]"
+            className="!tw-w-auto"
             variant="brand"
             iconBefore={Plus}
-            size="sm"
+            size="md"
             onClick={handleNewSectionSubmit}
             labels={{ default: intl.formatMessage(messages.newSectionButton) }}
           />
@@ -395,7 +395,8 @@ const CourseOutline = ({ courseId }) => {
                     onClick={handleNewSectionSubmit}
                     labels={{ default: intl.formatMessage(messages.newSectionButton) }}
                     variant="secondary"
-                    className="!tw-text-sm !tw-border-0 !tw-font-bold !tw-mb-4 !tw-bg-[rgba(255,255,255,0.7)] hover:!tw-bg-violet-50/70"
+                    size="md"
+                    className="!tw-h-[52px] !tw-border-0 !tw-mb-4 !tw-bg-[rgba(255,255,255,0.7)] hover:!tw-bg-violet-50/70"
                   />
                 )}
               </>
