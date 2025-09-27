@@ -25,10 +25,10 @@ const buttonVariants = cva(
   {
     variants: {
       size: {
-        xs: 'tw-text-xs tw-font-medium tw-py-[3px] tw-px-[8px] tw-gap-1',
-        sm: 'tw-text-sm tw-font-semibold tw-py-[6px] tw-px-[10px] tw-gap-1',
-        md: 'tw-text-sm tw-font-semibold tw-py-[10px] tw-px-[14px] tw-gap-1',
-        lg: 'tw-text-md tw-font-semibold tw-py-[10px] tw-px-4 tw-gap-[6px]',
+        xs: 'tw-text-xs tw-font-medium tw-py-[3px] tw-px-[8px] tw-gap-1 tw-h-[24px]',
+        sm: 'tw-text-sm tw-font-semibold tw-py-[6px] tw-px-[10px] tw-gap-1 tw-h-[32px]',
+        md: 'tw-text-sm tw-font-semibold tw-py-[10px] tw-px-[14px] tw-gap-1 tw-h-[40px]',
+        lg: 'tw-text-md tw-font-semibold tw-py-[10px] tw-px-4 tw-gap-[6px] tw-h-[44px]',
       },
       variant: {
         brand: [

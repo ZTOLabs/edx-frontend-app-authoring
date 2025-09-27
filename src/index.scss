@@ -228,7 +228,21 @@ mark {
 }
 
 .btn {
+  // Since the spacing of icon is already dealt with inside the button with flexbox, we don't need to apply margins
   .btn-icon-before {
-    margin-inline-end: 4px !important;
+    margin-inline-end: 0px !important;
+  }
+  .btn-icon-after {
+    margin-inline-start: 0px !important;
+  }
+
+  // The size of the icon in a button, defined by the design system (16x16 for xs buttons, 20x20 for the rest)
+  .pgn__icon__xs {
+    width: 16px !important;
+    height: 16px !important;
+  }
+  .pgn__icon__sm, .pgn__icon__md, .pgn__icon__lg {
+    width: 20px !important;
+    height: 20px !important;
   }
 }
