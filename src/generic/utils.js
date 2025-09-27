@@ -7,10 +7,8 @@ import { isEmpty } from 'lodash';
  * @returns {string} The combined title
  */
 const getPageHeadTitle = (courseOrSectionName, pageName) => {
-  if (isEmpty(courseOrSectionName)) {
-    return `${pageName} | ${process.env.SITE_NAME}`;
-  }
-  return `${pageName} | ${courseOrSectionName} | ${process.env.SITE_NAME}`;
+  // For now, we just need to display the site name. This might change in the future 
+  return process.env.SITE_NAME;
 };
 
 export default getPageHeadTitle;
