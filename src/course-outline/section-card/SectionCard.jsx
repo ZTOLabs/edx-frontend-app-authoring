@@ -101,7 +101,7 @@ const SectionCard = ({
     xmlAttributes,
   } = section;
 
-  const generationStatus = GenerationStatus.DONE
+  const { generationStatus } = xmlAttributes;
   const isCreating = generationStatus === GenerationStatus.IN_PROGRESS;
 
   useEffect(() => {
