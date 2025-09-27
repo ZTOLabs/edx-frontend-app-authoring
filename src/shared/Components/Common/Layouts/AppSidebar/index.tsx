@@ -81,7 +81,7 @@ const AppSidebar = ({ ...props } : React.ComponentProps<typeof Sidebar>) => {
       className="tw-h-screen !tw-px-3 !tw-py-6 !tw-bg-brand-25 tw-w-fit"
       {...props}
     >
-      <SidebarHeader className="tw-flex tw-items-center tw-justify-center !tw-pb-6">
+      <SidebarHeader className="tw-flex tw-items-center tw-justify-center !tw-pb-6 !tw-px-0 !tw-pt-0">
         <AppLogo />
       </SidebarHeader>
 
