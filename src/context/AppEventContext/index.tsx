@@ -2,8 +2,10 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Socket, io } from 'socket.io-client';
 import { createContext } from 'utils/context';
 import { useCanvasContext } from 'context/Canvas';
-
+import { getJwtToken } from 'utils/auth';
 import { useDialog } from 'shared/context/dialog';
+import { configs } from 'configuration';
+
 import {
   ClientToServerEvents,
   EventHandlerConfig,
@@ -23,10 +25,6 @@ interface AppEventContextValue {
 
 export const [useAppEventContext, AppEventContext] = createContext<AppEventContextValue>();
 export const AppEvent = SocketEvent;
-
-// TODO: use real url and token
-const socketUrl = 'http://localhost:3001';
-const token = '123';
 
 const createEmptyRegistryMap = () => {
   return Object.values(SocketEvent).reduce(
@@ -94,7 +92,8 @@ export default function AppEventContextProvider({ children }: { children: React.
 
   useEffect(() => {
     const initSocket = async () => {
-      socketRef.current = io(socketUrl, {
+      const token = await getJwtToken();
+      socketRef.current = io(configs.socketUrl, {
         auth: {
           token,
         },
