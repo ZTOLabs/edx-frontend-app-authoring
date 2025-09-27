@@ -11,7 +11,7 @@ import { useEffect } from 'react';
 import { SocketEvent } from 'context/AppEventContext/types';
 import { capitalizeString } from '../utils';
 
-import Loading from '../generic/Loading';
+import Loading, { LoadingSpinner } from '../generic/Loading';
 import InternetConnectionAlert from '../generic/internet-connection-alert';
 import VerifyEmailLayout from './verify-email-layout';
 import CreateNewCourseForm from './create-new-course-form';
@@ -55,7 +55,13 @@ const Home = () => {
   }, [registerEventCallback]);
 
   if (isLoadingPage && !isFiltered) {
-    return <Loading />;
+    return (
+      <div className="tw-w-full tw-relative">
+        <Row className="tw-absolute tw-right-1/2 tw-top-1/2">
+          <LoadingSpinner />
+        </Row>
+      </div>
+    );
   }
 
   const getMainBody = () => {
