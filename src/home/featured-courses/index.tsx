@@ -43,17 +43,17 @@ const FeaturedCourses = ({
       <Button
         className="!tw-w-auto"
         variant="link"
-        size="sm"
+        size="md"
         disabled={false}
         onClick={() => navigate('/courses')}
         labels={{ default: intl.formatMessage(messages.allCoursesBtnText) }}
       />
       )}
       <Button
-        className="!tw-w-auto tw-border-gray-300 tw-text-gray-700"
-        variant="secondary"
+        className="!tw-w-auto"
+        variant="secondaryGray"
         iconBefore={Plus}
-        size="sm"
+        size="md"
         disabled={false}
         onClick={onClickNewCourse}
         labels={{ default: intl.formatMessage(messages.addNewCourseBtnText) }}
