@@ -1,14 +1,14 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
-import { getConfig } from '@edx/frontend-platform';
+import { SITE_NAME } from '../constants';
 
 import messages from './messages';
 
 const Head = ({ intl }) => (
   <Helmet>
     <title>
-      {intl.formatMessage(messages['course-authoring.page.title'], { siteName: getConfig().SITE_NAME })}
+      {intl.formatMessage(messages['course-authoring.page.title'], { siteName: SITE_NAME })}
     </title>
     <link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml" />
   </Helmet>

@@ -1,3 +1,4 @@
+import { SITE_NAME } from '../constants';
 import { isEmpty } from 'lodash';
 
 /**
@@ -7,8 +8,8 @@ import { isEmpty } from 'lodash';
  * @returns {string} The combined title
  */
 const getPageHeadTitle = (courseOrSectionName, pageName) => {
-  // For now, we just need to display the site name. This might change in the future 
-  return process.env.SITE_NAME;
+  // Use hard-coded site name instead of getting from config
+  return SITE_NAME;
 };
 
 export default getPageHeadTitle;
