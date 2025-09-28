@@ -51,7 +51,7 @@ const CreateCourseModal = () => {
       >
         <div className="tw-h-full tw-px-6">
           <DialogHeader className="!tw-pt-8 !tw-pb-4">
-            <DialogTitle className="!tw-text-2xl !tw-font-semibold tw-text-gray-900">
+            <DialogTitle className="!tw-text-2xl !tw-font-semibold tw-text-gray-900 !tw-mb-0">
               {intl.formatMessage(messages.title)}
             </DialogTitle>
           </DialogHeader>
@@ -71,7 +71,7 @@ const CreateCourseModal = () => {
                 autoPlay
               />
             </div>
-            <DialogDescription className="tw-text-gray-600 tw-font-normal tw-text-md tw-text-center">
+            <DialogDescription className="tw-text-gray-600 tw-font-normal tw-text-md tw-text-center !tw-mb-0">
               {intl.formatMessage(messages.description)}
             </DialogDescription>
             <ThinkingProgress onCourseIdChange={handleCourseIdChange} />
