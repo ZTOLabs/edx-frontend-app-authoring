@@ -79,9 +79,9 @@ const CreateCourseModal = () => {
         </div>
         <DialogFooter className="tw-sticky tw-bottom-0 tw-bg-gray-50 tw-p-6 !tw-w-full tw-flex !tw-gap-3 tw-flex-row !tw-justify-between">
           <DialogClose asChild>
-            <Button variant="tertiary" size="sm" labels={{ default: intl.formatMessage(messages.goToCourseListButton) }} onClick={handleGoToCourseList} />
+            <Button variant="secondaryGray" size="md" labels={{ default: intl.formatMessage(messages.goToCourseListButton) }} onClick={handleGoToCourseList} />
           </DialogClose>
-          <Button variant="brand" size="sm" labels={{ default: intl.formatMessage(messages.goToCourseContentButton) }} onClick={handleGoToCourseContent} disabled={!courseId} />
+          <Button variant="brand" size="md" labels={{ default: intl.formatMessage(messages.goToCourseContentButton) }} onClick={handleGoToCourseContent} disabled={!courseId} />
         </DialogFooter>
       </DialogContent>
     </Dialog>
