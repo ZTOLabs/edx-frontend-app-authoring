@@ -4,9 +4,9 @@ import { Sidebar, useSidebar } from 'shared/Components/ui/sidebar';
 import iframeEvents from 'shared/constants/iframeEvents';
 import { cn } from 'shared/lib/utils';
 import { getJwtToken } from 'utils/auth';
+import { configs } from 'configuration';
 
-// TODO: Get from env variable
-const CHATBOX_URL = 'http://localhost:3000/chatbox';
+const CHATBOX_URL = `${configs.eduoneAgentFeUrl}/chatbox`;
 
 const ChatBoxContainer = () => {
   const { setOpen } = useSidebar();
@@ -63,10 +63,7 @@ const ChatBoxContainer = () => {
     <Sidebar
       side="right"
       collapsible="offcanvas"
-      className={cn(
-        'tw-w-[352px] tw-right-3',
-        'tw-py-3',
-      )}
+      className="tw-w-[352px] tw-right-3 tw-py-3"
     >
       <div
         className={cn(

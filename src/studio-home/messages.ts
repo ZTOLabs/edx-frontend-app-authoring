@@ -2,7 +2,7 @@ import { defineMessages } from '@edx/frontend-platform/i18n';
 
 const messages = defineMessages({
   headingTitle: {
-    id: 'course-authoring.studio-home.heading.title',
+    id: 'course-authoring.studio-home.my-courses.title',
     defaultMessage: 'My Courses',
   },
   addNewCourseBtnText: {

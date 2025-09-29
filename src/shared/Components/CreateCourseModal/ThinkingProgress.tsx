@@ -114,9 +114,6 @@ export default function ThinkingProgress({ className, onCourseIdChange }: Thinki
               <div className="tw-flex tw-justify-between tw-items-center tw-gap-2 tw-text-gray-600 tw-font-semibold tw-text-md">
                 {thinkingProgress?.step}
               </div>
-              <div className="tw-text-xs tw-text-grayWarm-500 tw-font-normal">
-                Choose the knowledge unit to be tested from the available matrix.
-              </div>
             </div>
           )}
           <AccordionTrigger className="tw-p-0 !tw-h-6 tw-bg-transparent tw-border-none tw-gap-2">

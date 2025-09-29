@@ -16,6 +16,7 @@ import { useClipboard } from '../../generic/clipboard';
 import CourseOutlineUnitCardExtraActionsSlot from '../../plugin-slots/CourseOutlineUnitCardExtraActionsSlot';
 import CardHeaderWithDropdownOnly from '../card-header/CardHeaderWithDropdownOnly';
 import messages from '../card-header/messages';
+import courseOutlineMessages from '../messages';
 import TitleLink from '../card-header/TitleLink';
 import { setCurrentItem, setCurrentSection, setCurrentSubsection } from '../data/slice';
 import { fetchCourseSectionQuery } from '../data/thunk';
@@ -197,20 +198,28 @@ const UnitCard = ({
         isDroppable={actions.childAddable}
         componentStyle={{
           marginBottom: isLastUnit ? '0px' : '24px',
+          alignItems: 'start',
         }}
       >
-        <div className="tw-flex tw-gap-2 tw-items-center" ref={currentRef}>
-          <div className="tw-flex-1">
-            <button
-              onClick={() => navigate(getTitleLink(id))}
-              type="button"
-              className="tw-flex tw-items-center tw-gap-2 tw-border-0 tw-bg-transparent tw-w-fit tw-px-0"
-            >
-              <div className="tw-flex tw-items-center tw-justify-center tw-size-6">
-                <File05 className="tw-text-violet-500 tw-size-4" />
-              </div>
-              <div className="tw-text-sm tw-font-semibold tw-text-gray-700">{displayName}</div>
-            </button>
+        <div className="tw-flex tw-gap-2 tw-items-start" ref={currentRef}>
+          <div className="tw-flex tw-gap-1 tw-flex-col tw-flex-1">
+            <div className="tw-flex-1">
+              <button
+                onClick={() => navigate(getTitleLink(id))}
+                type="button"
+                className="tw-flex tw-items-center tw-gap-2 tw-border-0 tw-bg-transparent tw-w-fit tw-px-0"
+              >
+                <div className="tw-flex tw-items-center tw-justify-center tw-size-6">
+                  <File05 className="tw-text-violet-500 tw-size-4" />
+                </div>
+                <div className="tw-text-sm tw-font-semibold tw-text-gray-700">{displayName}</div>
+              </button>
+            </div>
+            <div className="tw-text-xs tw-font-normal tw-text-gray-500 tw-ml-8">
+              {intl.formatMessage(courseOutlineMessages.numberOfComponents, {
+                numberOfComponents: unit?.childInfo?.numberOfChildren || 0,
+              })}
+            </div>
           </div>
           <div className="tw-flex tw-gap-2 tw-items-center">
             <Badge variant={getBadgeVariant(unitStatus)}>{badgeTitle}</Badge>
@@ -286,6 +295,9 @@ UnitCard.propTypes = {
       upstreamRef: PropTypes.string.isRequired,
       versionSynced: PropTypes.number.isRequired,
     }).isRequired,
+    childInfo: PropTypes.shape({
+      numberOfChildren: PropTypes.number,
+    }),
   }).isRequired,
   subsection: PropTypes.shape({
     id: PropTypes.string.isRequired,

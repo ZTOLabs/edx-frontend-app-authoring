@@ -14,15 +14,15 @@
     "@types/react-dom": "^18"
   },
   "scripts": {
-    "build": "fedx-scripts webpack",
+    "build": "NODE_ENV=production fedx-scripts webpack",
     "i18n_extract": "fedx-scripts formatjs extract",
     "stylelint": "stylelint \"plugins/**/*.scss\" \"src/**/*.scss\" \"scss/**/*.scss\" --config .stylelintrc.json",
     "lint": "npm run stylelint && fedx-scripts eslint --ext .js --ext .jsx --ext .ts --ext .tsx .",
     "lint:fix": "npm run stylelint -- --fix && fedx-scripts eslint --fix --ext .js --ext .jsx --ext .ts --ext .tsx .",
     "snapshot": "TZ=UTC fedx-scripts jest --updateSnapshot",
-    "start": "fedx-scripts webpack-dev-server --progress",
+    "start": "NODE_ENV=development fedx-scripts webpack-dev-server --progress",
     "start:with-theme": "paragon install-theme && npm start && npm install",
-    "dev": "PUBLIC_PATH=/authoring/ MFE_CONFIG_API_URL='http://localhost:8000/api/mfe_config/v1' fedx-scripts webpack-dev-server --progress --host apps.local.openedx.io",
+    "dev": "NODE_ENV=development PUBLIC_PATH=/authoring/ MFE_CONFIG_API_URL='http://localhost:8000/api/mfe_config/v1' fedx-scripts webpack-dev-server --progress --host apps.local.openedx.io",
     "test": "TZ=UTC fedx-scripts jest --coverage --passWithNoTests",
     "test:ci": "TZ=UTC fedx-scripts jest --silent --coverage --passWithNoTests",
     "types": "tsc --noEmit"

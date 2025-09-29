@@ -107,3 +107,5 @@ export const iframeMessageTypes = {
   xblockEvent: 'xblock-event',
   openPlayground: 'open_playground',
 };
+
+export const PLATFORM_NAME = 'EduOne';
