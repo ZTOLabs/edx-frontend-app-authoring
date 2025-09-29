@@ -6,13 +6,15 @@ export enum SocketEvent {
   DISCONNECT = 'disconnect',
   OPEN_CANVAS = 'open_canvas',
   THINKING_PROGRESS = 'thinking_progress',
-  OPEN_CREATE_COURSE_MODAL = 'open_create_course_modal',
+}
+
+export enum ClientToServerEvent {
+  JOIN_ROOM = 'join-room',
 }
 
 export interface ServerToClientEventPayloadMap {
   [SocketEvent.CONNECT]: undefined;
   [SocketEvent.DISCONNECT]: undefined;
-  [SocketEvent.OPEN_CREATE_COURSE_MODAL]: {};
   [SocketEvent.THINKING_PROGRESS]: { event: any; data: ThinkingProgressPayload };
   [SocketEvent.OPEN_CANVAS]: CanvasContent;
 }
@@ -23,9 +25,12 @@ export type ServerToClientEvents = {
   [E in SocketEvent]: SocketEventHandler;
 };
 
+export interface ClientToServerEventPayloadMap {
+  [ClientToServerEvent.JOIN_ROOM]: string ;
+}
+
 export type ClientToServerEvents = {
-  // No client-to-server events in this case, but needed for Socket typing
-  __dummy: never; // This property will never be used, just to satisfy the linter
+  [E in ClientToServerEvent]: (payload: ClientToServerEventPayloadMap[E]) => void;
 };
 
 export type NotificationCallback<E extends SocketEvent> = (

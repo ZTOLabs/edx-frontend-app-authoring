@@ -4,9 +4,11 @@ import { createContext } from 'utils/context';
 import { useCanvasContext } from 'context/Canvas';
 import { getJwtToken } from 'utils/auth';
 import { useDialog } from 'shared/context/dialog';
+import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { configs } from 'configuration';
 
 import {
+  ClientToServerEvent,
   ClientToServerEvents,
   EventHandlerConfig,
   NotificationCallback,
@@ -37,6 +39,7 @@ const createEmptyRegistryMap = () => {
 };
 
 export default function AppEventContextProvider({ children }: { children: React.ReactNode }) {
+  const { userId } = getAuthenticatedUser();
   const { open } = useDialog();
   const [isConnected, setIsConnected] = useState(false);
   const socketRef = useRef<Socket<ServerToClientEvents, ClientToServerEvents> | null>(null);
@@ -76,15 +79,10 @@ export default function AppEventContextProvider({ children }: { children: React.
         },
       },
       [SocketEvent.THINKING_PROGRESS]: {
-        handler: (data) => {
-          console.log('received thinking progress stream data', data);
-        },
-        registry: eventCallbacksRef.current[SocketEvent.THINKING_PROGRESS],
-      },
-      [SocketEvent.OPEN_CREATE_COURSE_MODAL]: {
         handler: () => {
           open();
         },
+        registry: eventCallbacksRef.current[SocketEvent.THINKING_PROGRESS],
       },
     };
     return handlers;
@@ -98,6 +96,12 @@ export default function AppEventContextProvider({ children }: { children: React.
           token,
         },
       }) as Socket<ServerToClientEvents, ClientToServerEvents>;
+
+      socketRef.current.on('connect', () => {
+        if (socketRef.current) {
+          socketRef.current.emit(ClientToServerEvent.JOIN_ROOM, `user:${userId}`);
+        }
+      });
 
       // Register all event handlers defined in the eventHandlers map
       Object.entries(eventHandlers).forEach(([event, config]) => {

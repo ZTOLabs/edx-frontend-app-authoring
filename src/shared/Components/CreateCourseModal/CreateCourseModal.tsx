@@ -40,7 +40,7 @@ const CreateCourseModal = () => {
   };
 
   return (
-    <Dialog key={courseId} open={isOpen} onOpenChange={close}>
+    <Dialog open={isOpen} onOpenChange={close}>
       <DialogContent
         className={cn(
           'sm:max-w-[425px] tw-bg-white !tw-rounded-2xl !tw-w-[600px] !tw-max-w-[600px] tw-gap-0 !tw-p-0',
