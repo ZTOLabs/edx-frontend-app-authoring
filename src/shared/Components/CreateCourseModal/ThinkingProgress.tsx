@@ -67,7 +67,7 @@ export default function ThinkingProgress({ className, onCourseIdChange }: Thinki
       const handleEvent = () => {
         const { event } = socketEvent;
         switch (event) {
-          case 'THINKING_PROGRESS_STREAM': {
+          case 'thinking_progress_update': {
             setThinkingProgress(socketEvent.data);
             break;
           }
