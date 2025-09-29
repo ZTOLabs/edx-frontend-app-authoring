@@ -9,7 +9,7 @@ export enum SocketEvent {
 }
 
 export enum ClientToServerEvent {
-  JOIN_ROOM = 'join_room',
+  JOIN_ROOM = 'join-room',
 }
 
 export interface ServerToClientEventPayloadMap {
