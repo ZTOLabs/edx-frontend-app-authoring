@@ -26,7 +26,7 @@ export type ServerToClientEvents = {
 };
 
 export interface ClientToServerEventPayloadMap {
-  [ClientToServerEvent.JOIN_ROOM]: { channel: string };
+  [ClientToServerEvent.JOIN_ROOM]: string ;
 }
 
 export type ClientToServerEvents = {

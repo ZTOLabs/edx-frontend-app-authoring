@@ -98,7 +98,7 @@ export default function AppEventContextProvider({ children }: { children: React.
         },
       }) as Socket<ServerToClientEvents, ClientToServerEvents>;
 
-      socketRef.current.emit(ClientToServerEvent.JOIN_ROOM, { channel: `user:${userId}` });
+      socketRef.current.emit(ClientToServerEvent.JOIN_ROOM, `user:${userId}`);
 
       // Register all event handlers defined in the eventHandlers map
       Object.entries(eventHandlers).forEach(([event, config]) => {
